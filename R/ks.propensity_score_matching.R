@@ -1,0 +1,33 @@
+#' ks.propensity_score_matching
+#'
+#' Propensity score matching.
+#'
+#' @param dataset Original dataset.
+#' @param match_by Vector describing by which variables should the dataset be matched.
+#' @param method Passed to `matchit()`.
+#' @param distance Passed to `matchit()`.
+#'
+ks.propensity_score_matching = function(dataset, match_by = c("age_at_diagnosis","gender.x"), method = "nearest", distance = "logit"){
+  library(MatchIt)
+  library(mice)
+
+  #tempdane = dataset
+  tempdane = dplyr::select(dataset, match_by)
+  tempdane$Class = ifelse(dataset$Class == "Cancer", TRUE, FALSE)
+  library(mice)
+  temp1 = mice(tempdane, m=1)
+  temp2 = temp1$data
+  temp3 = mice::complete(temp1)
+
+
+  temp3 = temp3[complete.cases(temp3),]
+
+  tempform = ks.create_miRNA_formula(match_by)
+  mod_match <- MatchIt::matchit(tempform,
+                       method = method, distance = distance,
+                       data = temp3)
+
+  newdata = match.data(mod_match)
+  newdatafull = dataset[as.numeric(rownames(newdata)),]
+  return(newdatafull)
+}

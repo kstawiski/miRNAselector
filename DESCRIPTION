@@ -1,0 +1,70 @@
+Package: miRNAselector
+Type: Package
+Title: miRNAselect - a package for biomarker miRNA selection based on miRNA-seq NGS data. 
+Version: 0.1.0
+Author: Konrad Stawiski
+Maintainer: Konrad Stawiski <konrad@konsta.com.pl>
+Description: To be completed...
+    A package for biomarker miRNA selection based on miRNA-seq NGS data. 
+License: 
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    mxnet
+VignetteBuilder: knitr
+Imports: 
+    dplyr,
+    plyr,
+    edgeR,
+    epiDisplay,
+    rsq,
+    MASS,
+    Biocomb,
+    caret,
+    pROC,
+    ggplot2,
+    DMwR,
+    ROSE,
+    gridExtra,
+    gplots,
+    devtools,
+    stringr,
+    data.table,
+    doParallel,
+    bounceR,
+    Boruta,
+    spFSR,
+    varSelRF,
+    My.stepwise,
+    psych,
+    C50,
+    randomForest,
+    nnet,
+    reticulate,
+    stargazer,
+    limma,
+    ggrepel,
+    classInt,
+    ggbiplot,
+    plotly,
+    keras,
+    cutpointr,
+    GDCRNATools,
+    naniar,
+    visdat,
+    imputeMissings,
+    foreach,
+    deepnet,
+    snow,
+    calibrate,
+    networkD3,
+    VennDiagram,
+    RSNNS,
+    kernlab,
+    car,
+    PairedData,
+    profileR,
+    xgboost
+RoxygenNote: 7.0.2
