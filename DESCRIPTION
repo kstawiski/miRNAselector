@@ -6,7 +6,7 @@ Author: Konrad Stawiski
 Maintainer: Konrad Stawiski <konrad@konsta.com.pl>
 Description: To be completed...
     A package for biomarker miRNA selection based on miRNA-seq NGS data. 
-License: 
+License: License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
