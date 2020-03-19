@@ -1,4 +1,5 @@
 install.packages("devtools",repos = "http://cran.r-project.org")
+install.packages("roxygen2")
 install.packages("BiocManager",repos = "http://cran.r-project.org")
 library(BiocManager)
 BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
