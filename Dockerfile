@@ -31,6 +31,8 @@ RUN apt install -y texinfo texlive-fonts-extra texlive libcairo2-dev freeglut3-d
 RUN cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git
 RUN cd /incubator-mxnet && mkdir build && cd build && cmake -DUSE_CUDA=OFF -DUSE_MKL_IF_AVAILABLE=ON -DUSE_MKLDNN=OFF -DUSE_OPENMP=ON -DUSE_OPENCV=ON .. && make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas && make install && cp -a . .. && cp -a . ../lib && pwd
 
+RUN apt install -y python3-venv
+
 COPY vignettes/setup.R /
 
 RUN Rscript /setup.R
