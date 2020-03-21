@@ -76,8 +76,6 @@ RUN mkdir /root/miRNAselector/
 
 RUN mkdir /root/miRNAselector/demo/
 
-COPY vignettes/ /root/miRNAselector/demo/
-
 RUN conda install nbconvert
 
 RUN apt-get install texlive-xetex texlive-fonts-recommended texlive-generic-recommended pandoc
@@ -86,8 +84,10 @@ COPY docker/logo.png /opt/conda/lib/python3.7/site-packages/notebook/static/base
 
 COPY docker/entrypoint.sh /entrypoint.sh
 
-COPY ["docker/Basic Analysis.ipynb","/root/miRNAselector/Basic Analysis.ipynb"]
+COPY docker/update.R /update.R
 
 RUN chmod +x /entrypoint.sh
+
+RUN conda install -c conda-forge jupytext
 
 ENTRYPOINT ["/entrypoint.sh"]
