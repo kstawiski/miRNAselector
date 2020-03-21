@@ -74,8 +74,6 @@ COPY docker/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 
 RUN mkdir /root/miRNAselector/
 
-RUN mkdir /root/miRNAselector/demo/
-
 RUN conda install nbconvert
 
 RUN apt-get install texlive-xetex texlive-fonts-recommended texlive-generic-recommended pandoc

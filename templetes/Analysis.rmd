@@ -31,3 +31,11 @@ output:
     latex_engine: xelatex
   sansfont: Calibri Light
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(1)
+library(miRNAselector)
+library(dplyr)
+library(data.table)
+```
