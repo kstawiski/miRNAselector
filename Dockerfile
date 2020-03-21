@@ -56,6 +56,38 @@ RUN cd /incubator-mxnet/ && make -f R-package/Makefile rpkg
 
 RUN echo 'root:biostat' | chpasswd
 
+RUN conda update --all
 
+RUN conda install -c anaconda jupyter
 
+COPY docker/register_jupyter.R /
 
+RUN Rscript /register_jupyter.R
+
+EXPOSE 8888
+
+RUN whereis jupyter
+
+RUN jupyter notebook --generate-config
+
+COPY docker/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
+
+RUN mkdir /root/miRNAselector/
+
+RUN mkdir /root/miRNAselector/demo/
+
+COPY vignettes/ /root/miRNAselector/demo/
+
+RUN conda install nbconvert
+
+RUN apt-get install texlive-xetex texlive-fonts-recommended texlive-generic-recommended pandoc
+
+COPY docker/logo.png /opt/conda/lib/python3.7/site-packages/notebook/static/base/images/logo.png
+
+COPY docker/entrypoint.sh /entrypoint.sh
+
+COPY ["docker/Basic Analysis.ipynb","/root/miRNAselector/Basic Analysis.ipynb"]
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
