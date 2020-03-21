@@ -1,3 +1,5 @@
+![](vignettes/logo.png)
+
 # miRNAselector package
 
 Authors: Konrad Stawiski (konrad@konsta.com.pl), Marcin Kaszkowiak
