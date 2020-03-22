@@ -14,53 +14,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link href="css/starter-template.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
-    <script src="js/cpufunctions.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="css/style.css" type="text/css" />
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-        aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-        </button> 
-        <a class="navbar-brand" href="#">miRNAselector:</a></div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active">
-              <a href="#">Start</a>
-            </li>
-            <li>
-              <a href="e">Analysis, Report &amp; Export</a>
-            </li>
-          </ul>
-        </div>
-        <!--/.nav-collapse -->
-      </div>
-    </nav>
+    
     <div class="container">
       <div class="starter-template">
-        <img src="logo.png" width="80%" />
+        <p><center><img src="logo.png" width="70%" /></p>
+    <p><br></p>
       </div>
-        <h2>Introduction</h2>
-        <p>Welcome to 
-        <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS and qPCR data.</p>
-        <h2>Upload your data</h2>
-        <pre><?php system("ps -ef"); ?></pre>
-        <pre><?php system("df -h"); ?></pre>
-        <h2>System Monitor</h2>
-		<pre><?php passthru('top -n 1'); ?></pre>
+        <p>Welcome to <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS and qPCR data.</p>
+           <div class="panel-group">
+    <?php if ($_GET["msg"] != "") { ?>
+        <div class="panel panel-danger">
+      <div class="panel-heading"><i class="fas fa-exclamation-triangle"></i></i>&emsp;&emsp;MESSAGE</div>
+      <div class="panel-body"><b><?php echo htmlentities($_GET['msg']); ?></b></div>
     </div>
+    <?php } ?>
+              <div class="panel panel-primary">
+              <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;PIPELINE STATUS</div>
+              <div class="panel-body">STATUS: </div>
+             </div>
+                  
+                      <div class="panel panel-warning">
+      <div class="panel-heading"><i class="fas fa-bars"></i>&emsp;&emsp;OPTIONS</div>
+      <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;
+<a href="e" target="_blank" role="button" class="btn btn-danger"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a></div>
+    </div>
+                  
+                      <div class="panel panel-success">
+      <div class="panel-heading"><i class="fas fa-cloud-upload-alt"></i>&emsp;&emsp;Upload the file and start the pipeline</div>
+      <div class="panel-body">
+      
+            <?php if(!file_exists("/root/miRNAselector/data.csv")) { ?>
+          
+          <form action="process.php?type=upload" method="post" enctype="multipart/form-data">
+        <p>Select <code>.csv</code> file to upload:</p>
+          <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
+        <input type="submit" class="btn btn-primary" value="Upload Image" name="submit">
+            </form>  
+        
+            <?php } else { ?>
+            
+            <pre><?php system("Rscript /root/miRNAselector/miRNAselector/docker/1_formalcheckcsv.R"); ?></pre>
+        <a href="view.php?f=data.csv" class="btn btn-info" role="button" target="popup" onclick="window.open('view.php?f=data.csv','popup','width=600,height=600'); return false;">View data</a> <a href="process.php?type=cleandata" class="btn btn-danger" role="button">Delete data and reupload</a>
+                
+                <?php } ?>
+      
+      </div>
+    </div>
+                  
+                  
+                  
+         </div>         
+        
+                  
+                  
+		
+    </div>
+                  <!--Modal: Name-->
+<div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Body-->
+      <div class="modal-body mb-0 p-0">
+
+        <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+          <iframe class="embed-responsive-item" src="top.php" allowfullscreen></iframe>
+        </div>
+
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <span class="mr-4">Running <code>top</code> every 2 seconds...</span>
+
+        <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+      </div>
+
+    </div>
+    <!--/.Content-->
+
+  </div>
+</div>
+<!--Modal: Name-->
     <hr />
     <footer class="footer">
       <div class="container">
-        <span class="text-muted">miRNAselector by Konrad Stawiski and Marcin Kaszkowiak | Contact: konrad@konsta.com.pl | WWW: 
-        <a href="https://biostat.umed.pl">www.biostat.umed.pl</a></span>
+        <span class="text-muted">miRNAselector by Konrad Stawiski and Marcin Kaszkowiak&emsp;&emsp;&emsp;&emsp;<i class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i class="fas fa-globe-europe"></i> 
+        <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i class="fab fa-github"></i> <a href="https://github.com/kstawiski/miRNAselector" target="_blank">https://github.com/kstawiski/miRNAselector</a></span>
       </div>
     </footer>
     <!-- /.container -->
