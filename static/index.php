@@ -19,9 +19,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	    <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
+    <link href="css/starter-template.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
 	<script src="js/cpufunctions.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
@@ -76,7 +78,7 @@
 			  
 			  
 			  <div class="starter-template">
-		<h2><i class="fas fa-monitor-heart-rate"></i> System Monitor</h2>
+		<h2><i class="fas fa-microchip"></i> System Monitor</h2>
 		<div id="tabs" class="tabbg" style="border: 1px solid grey">
             <ul>
                 <li><a href="#tabs-3">Overview</a></li >
