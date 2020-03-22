@@ -20,7 +20,9 @@
     <meta name="author" content="">
 	    <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+	<script src="js/cpufunctions.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -55,9 +57,138 @@
               <h2><i class="fas fa-info"></i> Introduction</h2>
               <p>Welcome to <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS and qPCR data.</p>
               
- <h2><i class="fas fa-upload"></i> Upload your data</h2> 
+			<h2><i class="fas fa-upload"></i> Upload your data</h2> 
               <p><pre><?php system("ps -ef"); ?></pre></p>
               <p><pre><?php system("df -h"); ?></pre></p>
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  <div class="starter-template">
+		<h2><i class="fas fa-monitor-heart-rate"></i> System Monitor</h2>
+		<div id="tabs" class="tabbg" style="border: 1px solid grey">
+            <ul>
+                <li><a href="#tabs-3">Overview</a></li >
+                <li><a href="#tabs-1">CPU Monitor</a></li>
+                <li><a href="#tabs-2">RAM Monitor</a></li>
+                <li><a href="#tabs-4">GPU Monitor</a></li>
+            </ul>
+
+            <div id="tabs-1">
+                <div class="grid half">&nbsp;
+                    <div class="left">
+                        <b>&nbsp;CPU Usage:</b>&nbsp;
+                    </div>
+                    <div id="cpu" class="left">&nbsp;</div>
+                    <div class="left">%</div>
+                    <?php
+                        $width = 5;
+                        for($i = 0; $i < 40; $i++){
+                            print("<div id='cpu$i' class='big bar' style='left: ".$width."px;'>&nbsp;</div>  ");
+                            $width = $width + 17;
+                        }
+                        ?>
+                </div>
+
+                <div style="height:18px;">&nbsp;</div>
+
+                <div class="grid half">&nbsp;
+                    <div class="left">
+                        <b>&nbsp;CPU Temperature:</b>&nbsp;
+                    </div>
+                    <div id="cputemp" class="left">&nbsp;</div>
+                    <div class="left">°C</div>
+                    <?php
+                    $width = 5;
+                    for($i = 0; $i < 40; $i++){
+                        print("<div id='cputemp$i' class='big bar' style='left: ".$width."px;'>&nbsp;</div>  ");
+                        $width = $width + 17;
+                    }
+                    ?>
+                </div>
+            </div>
+
+            <div id="tabs-2">
+                <div class="grid full">&nbsp;
+                    <div class="left">
+                        <b>&nbsp;RAM Usage:</b>&nbsp;
+                    </div>
+                    <div id="ram" class="left">&nbsp;
+                    </div><div class="left">%</div>
+                    <?php
+                        $width = 5;
+                        for($i = 0; $i < 40; $i++){
+                            print("<div id='ram$i'  class='big bar' style = 'left: ".$width."px;'>&nbsp;</div> ");
+                            $width = $width + 17;
+                        }
+                    ?>
+                </div>
+            </div>
+
+            <div id="tabs-3">
+                <div class="grid half">&nbsp;
+                    <div class="left">
+                        <b>&nbsp;CPU Usage:</b>&nbsp;
+                    </div>
+                    <div id="cpuO" class="left">&nbsp;
+                    </div><div class="left">%</div>
+                    <?php
+                        $width = 5;
+                        for($i = 0; $i < 40; $i++){
+                            print("<div id='cpuO$i' class='small bar' style = 'left: ".$width."px;'>&nbsp;</div>  ");
+                            $width = $width + 17;
+                        }
+                    ?>
+                </div>
+
+                <div style="height:18px;">&nbsp;</div>
+
+                <div class="grid half">&nbsp;
+                    <div class="left"><b>&nbsp;RAM Usage:</b>&nbsp;</div><div id="ramO" class="left">&nbsp;</div><div class="left">%</div>
+                    <?php
+                        $width = 5;
+                        for($i = 0; $i < 40; $i++){
+                            print("<div id='ramO$i' class='small bar' style = 'left: ".$width."px;'>&nbsp;</div> ");
+                            $width = $width + 17;
+                        }
+                    ?>
+                </div>
+            </div>
+
+            <div id="tabs-4">
+                <div class="grid full">&nbsp;
+                    <div class="left">
+                        <b>&nbsp;GPU Temperatur:</b>&nbsp;
+                    </div>
+                    <div id="gputemp" class="left">&nbsp;
+                    </div><div class="left">°C</div>
+                    <?php
+                    $width = 5;
+                    for($i = 0; $i < 40; $i++){
+                        print("<div id='gputemp$i'  class='big bar' style = 'left: ".$width."px;'>&nbsp;</div> ");
+                        $width = $width + 17;
+                    }
+                    ?>
+                </div>
+            </div>
+	  </div>
+      </div>
+			  
+			  
+			  
+			  
+			  
               </div>
 	 
               
