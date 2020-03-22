@@ -96,6 +96,8 @@ COPY docker/php.ini /etc/php/7.3/fpm/php.ini
 
 COPY docker/default /etc/nginx/sites-available/default
 
+COPY docker/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+
 EXPOSE 80
 
 ENTRYPOINT ["/entrypoint.sh"]
