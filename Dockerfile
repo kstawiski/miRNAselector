@@ -88,4 +88,14 @@ RUN chmod +x /entrypoint.sh
 
 RUN conda install -c conda-forge jupytext
 
+RUN apt-get install -y nginx php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php7.3-intl php7.3-mbstring php7.3-xmlrpc php7.3-gd php7.3-xml php7.3-cli php7.3-zip php7.3-soap php7.3-imap nano
+
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+COPY docker/php.ini /etc/php/7.3/fpm/php.ini
+
+COPY docker/default /etc/nginx/sites-available/default
+
+EXPOSE 80
+
 ENTRYPOINT ["/entrypoint.sh"]
