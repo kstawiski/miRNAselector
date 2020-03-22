@@ -10,7 +10,7 @@ Authors: Konrad Stawiski (konrad@konsta.com.pl), Marcin Kaszkowiak
 
 Docker image: https://hub.docker.com/r/kstawiski/mirnaselector
 
-Starting command: `docker run --rm -p 28888:8888 mirnaselector`
+Starting command: `docker run --rm -p 28888:80 mirnaselector`
 
 Pearls:
 
