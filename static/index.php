@@ -97,11 +97,11 @@ echo $form->form_open('','','process.php?type=configure');
 
 // Co na wejsciu
 $options = array(
-  'transformed'    => 'Already normalized values (e.g. log(TPM), deltaCt)',
   'counts'    => 'Read counts (require transformation to log10(TPM) and filtration)',
   'countswithoutfilter'    => 'Read counts (require transformation to log10(TPM) but no filtration)',
+  'transformed'    => 'Already normalized and filtered values (e.g. log(TPM), deltaCt)',
 );
-echo $form->input_select('input_format', 'Input features format:','','','','','transformed',$options);
+echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
 
 // Jeśli missing
 if(file_get_contents('/root/miRNAselector/var_missing.txt') == "TRUE") {
