@@ -51,7 +51,7 @@ if ($uploadOk == 0) {
             file_put_contents('/root/miRNAselector/var_missing_imput.txt', $form->post('missing_imput'));
             fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_missing.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_missing.html')\n");
             $ile_krokow = $ile_krokow + 1;
-        }
+        } else { file_put_contents('/root/miRNAselector/var_missing_imput.txt', "no"); }
 
         // Preprocessing
         file_put_contents('/root/miRNAselector/var_input_format.txt', $form->post('input_format'));
@@ -63,7 +63,7 @@ if ($uploadOk == 0) {
             file_put_contents('/root/miRNAselector/var_correct_batch.txt', $form->post('correct_batch'));
             fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_correct_batch.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_correct_batch.html')\n");
             $ile_krokow = $ile_krokow + 1;
-        }
+        } else { file_put_contents('/root/miRNAselector/var_correct_batch.txt', "no"); }
 
         // Najwazniejszy raport
         fwrite($file, "source('/root/miRNAselector/miRNAselector/templetes/featureselection.R')\n");
