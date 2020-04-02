@@ -53,17 +53,15 @@ if ($uploadOk == 0) {
             $ile_krokow = $ile_krokow + 1;
         }
 
+        // Preprocessing
+        file_put_contents('/root/miRNAselector/var_input_format.txt', $form->post('input_format'));
+        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_preprocessing.html')\n");
+        $ile_krokow = $ile_krokow + 1;
+
         // Czy batch correct
         if($form->post('correct_batch') != "") { 
             file_put_contents('/root/miRNAselector/var_correct_batch.txt', $form->post('correct_batch'));
             fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_correct_batch.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_correct_batch.html')\n");
-            $ile_krokow = $ile_krokow + 1;
-        }
-
-        // Czy wymaga normalizacji
-        file_put_contents('/root/miRNAselector/var_input_format.txt', $form->post('input_format'));
-        if($form->post('input_format') == "counts" || $form->post('input_format') == "countswithoutfilter") {
-            fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_toTPM.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_toTPM.html')\n");
             $ile_krokow = $ile_krokow + 1;
         }
 
