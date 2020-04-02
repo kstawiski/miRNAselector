@@ -29,11 +29,12 @@ missing = T } else
 { cat(paste0("\n✓ There are no missing data in features.")) }
 
 batch = F
-if("Batch" %in% colnames(dane)) { cat("\n✓ The file contains Batch variable that can be used for batch-effect correction. ")
-batch = T }
+if("Batch" %in% colnames(dane)) { cat("\n✓ The file contains `Batch` variable that can be used for batch-effect correction. Please check if the following contingency table is correct:\n ")
+print(table(dane$Class, dane$Batch))
+batch = T } else { cat("\n✓ The file does not contain `Batch` variable that can be used for batch-effect correction. Batch correction will be omitted.") }
 
-fwrite(dane, "data_start.csv")
+if(!file.exists("data_start.csv")) { fwrite(dane, "data_start.csv") }
 # Out: czy missing,czy batch
-writeLines(as.character(batch), "var_batch.txt")
-writeLines(as.character(missing), "var_missing.txt")
-writeLines(as.character("OK"), "var_initcheck.txt")
+writeLines(as.character(batch), "var_batch.txt", sep="")
+writeLines(as.character(missing), "var_missing.txt", sep="")
+writeLines("OK", "var_initcheck.txt", sep="")
