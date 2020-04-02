@@ -12,7 +12,7 @@ switch($_GET['type'])
         $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
         if(in_array($_FILES['fileToUpload']['type'],$mimes)){
         $uploadOk = 1;
-        } else { $uploadOk = 0; $msg .= "Your upload file is not a correct csv-formatted file. "; }
+        } else { $uploadOk = 0; $msg .= "Your upload file is not a correct csv-formatted file. "; file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); }
         
         // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
@@ -21,8 +21,10 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $msg = "The file `". basename( $_FILES["fileToUpload"]["name"]). "` has been uploaded. It was saved as `data.csv` in the main project directory. You can continue with formal checking of file and starting the pipeline.";
+        file_put_contents('/root/miRNAselector/var_status.txt', "[1] DATA UPLOADED (UNCONFIGURED)");
     } else {
         $msg = $msg . "There was an error uploading your file. ";
+        file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
     }
 }
         
@@ -32,6 +34,7 @@ if ($uploadOk == 0) {
     case "cleandata":
         unlink("/root/miRNAselector/data.csv");
         $msg .= "Data file deleted. Please upload new file.";
+        file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
         break;
     
     

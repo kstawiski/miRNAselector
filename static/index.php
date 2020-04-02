@@ -1,3 +1,11 @@
+<?php
+if (!file_exists('/root/miRNAselector/var_status.txt')) { file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); } // Wyjściowy status.
+$status = file_get_contents('/root/miRNAselector/var_status.txt');
+
+
+?>
+
+
 <html>
   <head>
     <title>miRNAselector</title>
@@ -26,6 +34,7 @@
     <p><br></p>
       </div>
         <p>Welcome to <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS and qPCR data.</p>
+        <p>Test.</p>
            <div class="panel-group">
     <?php if ($_GET["msg"] != "") { ?>
         <div class="panel panel-danger">
@@ -35,7 +44,7 @@
     <?php } ?>
               <div class="panel panel-primary">
               <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;PIPELINE STATUS</div>
-              <div class="panel-body">STATUS: </div>
+              <div class="panel-body">STATUS: <code><b><?php echo $status; ?></b></code></div>
              </div>
                   
                       <div class="panel panel-warning">
@@ -59,6 +68,7 @@
             <?php } else { ?>
             
             <pre><?php system("Rscript /root/miRNAselector/miRNAselector/docker/1_formalcheckcsv.R"); ?></pre>
+            <p>Initial check status: <code><b><?php $var_initcheck = file_get_contents('/root/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code></p>
         <a href="view.php?f=data.csv" class="btn btn-info" role="button" target="popup" onclick="window.open('view.php?f=data.csv','popup','width=600,height=600'); return false;">View data</a> <a href="process.php?type=cleandata" class="btn btn-danger" role="button">Delete data and reupload</a>
                 
                 <?php } ?>

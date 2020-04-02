@@ -57,9 +57,12 @@
      
     				//Print the table header
     				$tableOutput.="<THEAD><TR style='background-color: lightgray;text-align:center;'>";
-    				$tableOutput.="<TD><B>Row</B></TD>"; 
-    				foreach ($logOriginalHeader as $field)
-    					$tableOutput.="<TD><B>".$field."</B></TD>"; //Add the columns
+                    $tableOutput.="<TD><B>Row</B></TD>"; 
+                    $ihead = 0;
+    				foreach ($logOriginalHeader as $field) {
+                        $tableOutput.="<TD><B>".$field."</B></TD>"; //Add the columns
+                        if (++$ihead == 100) break;   // Nie więcej niż 100 kolumn.
+                    }
     				$tableOutput.="</TR></THEAD>";
      
                     $tableOutput.="<TBODY>";
@@ -67,11 +70,15 @@
     				$countLines = 0;
     				foreach ($fileLines as $line) {
     					if(trim($line) !== ''){ //Remove blank lines
-    							$countLines++;
+                                $countLines++;
+                                if ($countLines == 1000) break; // Nie więcej niż 1000 przypadków.
     							$arrayFields = array_map('trim', str_getcsv($line, $delimiter, $enclosure)); //Convert line to array
     							$tableOutput.="<TR><TD style='background-color: lightgray;'>".$countLines."</TD>";
-    							foreach ($arrayFields as $field)
-    								$tableOutput.="<TD>".$field."</TD>"; //Add the columns
+                                $ihead = 0;
+                                foreach ($arrayFields as $field) {
+                                    $tableOutput.="<TD>".$field."</TD>"; //Add the columns
+                                    if (++$ihead == 100) break; // Nie więcej niż 100 kolumn.
+                                }
     							$tableOutput.="</TR>";
     						}
     				}
