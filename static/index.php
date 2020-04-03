@@ -95,6 +95,8 @@ $status = file_get_contents('/root/miRNAselector/var_status.txt');
 $form = new Formr('bootstrap');
 echo $form->form_open('','','process.php?type=configure');
 
+echo $form->input_text('project_name','Project name (will be printed on analysis reports):');
+
 // Co na wejsciu
 $options = array(
   'counts'    => 'Read counts (require transformation to log10(TPM) and filtration)',
@@ -102,6 +104,13 @@ $options = array(
   'transformed'    => 'Already normalized and filtered values (e.g. log(TPM), deltaCt)',
 );
 echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
+
+// Korekcja
+$options = array(
+    'yes'    => 'Yes (correct column names to latest version of miRbase)',
+    'no'    => 'No (do not correct names)'
+  );
+echo $form->input_select('correct_names', 'Correct miRNA names (correct aliases using latest version of miRbase; ignored for non-miRNA features):','','','','','yes',$options);
 
 // Jeśli missing
 if(file_get_contents('/root/miRNAselector/var_missing.txt') == "TRUE") {

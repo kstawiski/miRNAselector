@@ -66,5 +66,7 @@ Imports:
     car,
     PairedData,
     profileR,
-    xgboost
+    xgboost,
+    kableExtra,
+    VIM
 RoxygenNote: 7.0.2

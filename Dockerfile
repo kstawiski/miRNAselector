@@ -4,7 +4,7 @@ RUN apt update
 RUN apt dist-upgrade -y
 
 RUN apt-get install -y \
-    apt-transport-https \
+    apt-transport-https screen \
     build-essential libxml2-dev \
     ca-certificates \
     cmake \

@@ -2,6 +2,40 @@
 $msg = "";
 require_once 'class.formr.php';
 $form = new Formr('bootstrap');
+
+/* print the contents of a url */
+function print_r_xml($arr,$wrapper = 'data',$cycle = 1)
+{
+	//useful vars
+	$new_line = "\n";
+
+	//start building content
+	if($cycle == 1) { $output = '<?xml version="1.0" encoding="UTF-8" ?>'.$new_line; }
+	$output.= tabify($cycle - 1).'<'.$wrapper.'>'.$new_line;
+	foreach($arr as $key => $val)
+	{
+		if(!is_array($val))
+		{
+			$output.= tabify($cycle).'<'.htmlspecialchars($key).'>'.$val.'</'.htmlspecialchars($key).'>'.$new_line;
+		}
+		else
+		{
+			$output.= print_r_xml($val,$key,$cycle + 1).$new_line;
+		}
+	}
+	$output.= tabify($cycle - 1).'</'.$wrapper.'>';
+
+	//return the value
+	return $output;
+}
+
+/* tabify */
+function tabify($num_tabs)
+{
+	for($x = 1; $x <= $num_tabs; $x++) { $return.= "\t"; }
+	return $return;
+}
+
 switch($_GET['type'])
 {
     case "upload":
@@ -41,29 +75,35 @@ if ($uploadOk == 0) {
     
     
     case "configure":
+        // Walidacja
+        $weryfikacja = TRUE;
+        
+        if (strlen($form->post('project_name'))<3)
+        { $msg .= " Project name has to be longer than 2 characters."; $weryfikacja = FALSE; }
+
+        
+
+        if($weryfikacja == FALSE) {
+            $msg .= " → PLEASE SET UP A VALID VALUES AND TRY GENERATING CONFIG AGAIN!";
+            $msg = urlencode($msg);
+            header("Location: /?msg=" . $msg);
+            die();
+        }
+        // Zapis do XML
+        $msg .= print_r_xml($_POST);
+        file_put_contents('/root/miRNAselector/config.xml', print_r_xml($_POST));
+
         $file = fopen('/root/miRNAselector/pipeline.R', 'w');
         fwrite($file, "library(miRNAselector)\n");
         fwrite($file, "library(knitr)\n");
         fwrite($file, "library(rmarkdown)\n");
         // Najpierw czy braki
         $ile_krokow = 0;
-        if($form->post('missing_imput') != "") { 
-            file_put_contents('/root/miRNAselector/var_missing_imput.txt', $form->post('missing_imput'));
-            fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_missing.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_missing.html')\n");
-            $ile_krokow = $ile_krokow + 1;
-        } else { file_put_contents('/root/miRNAselector/var_missing_imput.txt', "no"); }
 
         // Preprocessing
         file_put_contents('/root/miRNAselector/var_input_format.txt', $form->post('input_format'));
-        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_preprocessing.html')\n");
+        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html_output', output_file = '/root/miRNAselector/result_preprocessing.html')\n");
         $ile_krokow = $ile_krokow + 1;
-
-        // Czy batch correct
-        if($form->post('correct_batch') != "") { 
-            file_put_contents('/root/miRNAselector/var_correct_batch.txt', $form->post('correct_batch'));
-            fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_correct_batch.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_correct_batch.html')\n");
-            $ile_krokow = $ile_krokow + 1;
-        } else { file_put_contents('/root/miRNAselector/var_correct_batch.txt', "no"); }
 
         // Najwazniejszy raport
         fwrite($file, "source('/root/miRNAselector/miRNAselector/templetes/featureselection.R')\n");
@@ -72,13 +112,13 @@ if ($uploadOk == 0) {
         fwrite($file, "source('/root/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
         $ile_krokow = $ile_krokow + 1;
 
-        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_raport.Rmd', output_format = 'html', output_file = '/root/miRNAselector/result_raport.html')\n");
+        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_raport.Rmd', output_format = 'html_output', output_file = '/root/miRNAselector/result_raport.html')\n");
         $ile_krokow = $ile_krokow + 1;
         
         file_put_contents('/root/miRNAselector/var_maxsteps.txt', $ile_krokow);
         
         fclose($file);
-        $msg .= file_get_contents("/root/miRNAselector/pipeline.R");
+        //$msg .= file_get_contents("/root/miRNAselector/pipeline.R");
         //file_put_contents('/root/miRNAselector/var_status.txt', "[2] PROCESSING");
         break;
     
@@ -99,6 +139,6 @@ if ($uploadOk == 0) {
     
     
 }  
-if ($msg != "") { $msg = urlencode($msg); header("Location: /?msg=" . $msg); } else { header("Location: /" . $msg); }
+if ($msg != "") { $msg = urlencode($msg); header("Location: /?msg=" . $msg); } else { header("Location: /"); }
 
 ?>

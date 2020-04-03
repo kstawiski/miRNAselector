@@ -147,13 +147,13 @@ c.NotebookApp.default_url = '/tree'
 #  forgeries, requiring API requests to either:
 #  
 #  - originate from pages served by this server (validated with XSRF cookie and
-#  token), or - authenticate with a token
+#  token), or - aucrossthenticate with a token
 #  
 #  Some anonymous compute resources still desire the ability to run code,
 #  completely without authentication. These services can disable all
 #  authentication and security checks, with the full knowledge of what that
 #  implies.
-#c.NotebookApp.disable_check_xsrf = False
+c.NotebookApp.disable_check_xsrf = True
 
 ## Whether to enable MathJax for typesetting math/TeX
 #  
