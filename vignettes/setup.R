@@ -13,6 +13,7 @@ devtools::install_github("STATWORX/bounceR", force = T)
 devtools::install_github("vqv/ggbiplot", force = T)
 devtools::install_github("Thie1e/cutpointr", force = T)
 
+
 library(keras)
 install_keras()
 
