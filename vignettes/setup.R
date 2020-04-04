@@ -1,5 +1,5 @@
 install.packages("devtools",repos = "http://cran.r-project.org")
-install.packages("roxygen2")
+install.packages(c("roxygen2","rmarkdown","xtable","knitr"))
 install.packages("BiocManager",repos = "http://cran.r-project.org")
 library(BiocManager)
 BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
@@ -7,7 +7,7 @@ BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDispla
                        "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow",
                        "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
                        "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr", "rpart", "party", "mgcv", "GDCRNATools",
-                       "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "kableExtra", "VIM"))
+                       "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "kableExtra", "VIM", "mice", "MatchIt", "XML"))
 devtools::install_github("STATWORX/bounceR", force = T)
 #devtools::install_github("rstudio/reticulate")
 devtools::install_github("vqv/ggbiplot", force = T)
