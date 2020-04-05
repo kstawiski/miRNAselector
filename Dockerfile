@@ -68,7 +68,7 @@ RUN Rscript /register_jupyter.R
 
 EXPOSE 8888
 
-RUN jupyter notebook --generate-config && mkdir /root/miRNAselector/ && conda install nbconvert && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-generic-recommended pandoc
+RUN jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-generic-recommended pandoc
 
 COPY docker/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 
@@ -88,6 +88,18 @@ COPY docker/default /etc/nginx/sites-available/default
 
 COPY docker/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
+RUN apt-get install -y gdebi-core apt-utils uuid && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5033-amd64.deb && gdebi --non-interactive rstudio-server-1.2.5033-amd64.deb && apt -f install && apt autoremove -y --purge
+
+RUN cd / && git clone https://github.com/grst/rstudio-server-conda.git && chmod -R 777 /rstudio-server-conda/ 
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV CRAN_URL https://cloud.r-project.org/
+RUN chmod 777 -R /miRNAselector && useradd -d /miRNAselector/ -g rstudio-server mirnaselector \
+      && echo mirnaselector:mirnaselector | chpasswd && adduser mirnaselector sudo \
+      && echo "r-cran-repos=${CRAN_URL}" >> /etc/rstudio/rsession.conf \
+      && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+EXPOSE 8787
 EXPOSE 80
 
 ENTRYPOINT ["/entrypoint.sh"]

@@ -1,7 +1,7 @@
 <?php
 require_once 'class.formr.php';
-if (!file_exists('/root/miRNAselector/var_status.txt')) { file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); } // Wyjściowy status.
-$status = file_get_contents('/root/miRNAselector/var_status.txt');
+if (!file_exists('/miRNAselector/var_status.txt')) { file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); } // Wyjściowy status.
+$status = file_get_contents('/miRNAselector/var_status.txt');
 
 
 ?>
@@ -61,7 +61,7 @@ $status = file_get_contents('/root/miRNAselector/var_status.txt');
                     the pipeline</div>
                 <div class="panel-body">
 
-                    <?php if(!file_exists("/root/miRNAselector/data.csv")) { ?>
+                    <?php if(!file_exists("/miRNAselector/data.csv")) { ?>
 
                     <form action="process.php?type=upload" method="post" enctype="multipart/form-data">
                         <p>Select <code>.csv</code> file to upload:</p>
@@ -71,9 +71,9 @@ $status = file_get_contents('/root/miRNAselector/var_status.txt');
 
                     <?php } else { ?>
 
-                    <pre><?php system("Rscript /root/miRNAselector/miRNAselector/docker/1_formalcheckcsv.R"); ?></pre>
+                    <pre><?php system("Rscript /miRNAselector/miRNAselector/docker/1_formalcheckcsv.R"); ?></pre>
                     <p>Initial check status:
-                        <code><b><?php $var_initcheck = file_get_contents('/root/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code>
+                        <code><b><?php $var_initcheck = file_get_contents('/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code>
                     </p>
                     <p><a href="view.php?f=data.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('view.php?f=data.csv','popup','width=600,height=600'); return false;">View
@@ -113,7 +113,7 @@ $options = array(
 echo $form->input_select('correct_names', 'Correct miRNA names (correct aliases using latest version of miRbase; ignored for non-miRNA features):','','','','','yes',$options);
 
 // Jeśli missing
-if(file_get_contents('/root/miRNAselector/var_missing.txt') == "TRUE") {
+if(file_get_contents('/miRNAselector/var_missing.txt') == "TRUE") {
 $options = array(
   'pmm'    => 'Use predictive mean matching for missing data imputation',
   'mean'  => 'Use mean value for variable for missing data imputation',
@@ -124,7 +124,7 @@ echo $form->input_select('missing_imput', 'Missing data imputation:','','','',''
 }
 
 // Jeśli batch
-if(file_get_contents('/root/miRNAselector/var_batch.txt') == "TRUE") {
+if(file_get_contents('/miRNAselector/var_batch.txt') == "TRUE") {
   $options = array(
     'no'    => 'Do not correct batch effect',
     'yes1'  => 'Correct batch effect with ComBat (model: ~ Batch)',

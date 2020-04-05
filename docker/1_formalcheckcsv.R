@@ -1,4 +1,4 @@
-setwd("/root/miRNAselector/")
+setwd("/miRNAselector/")
 suppressMessages(library(data.table))
 suppressMessages(library(dplyr))
 dane = fread("data.csv")

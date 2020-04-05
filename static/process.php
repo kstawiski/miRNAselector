@@ -39,7 +39,7 @@ function tabify($num_tabs)
 switch($_GET['type'])
 {
     case "upload":
-        $target_dir = "/root/miRNAselector/";
+        $target_dir = "/miRNAselector/";
         $target_file = $target_dir . "data.csv";
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -48,7 +48,7 @@ switch($_GET['type'])
         $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
         if(in_array($_FILES['fileToUpload']['type'],$mimes)){
         $uploadOk = 1;
-        } else { $uploadOk = 0; $msg .= "Your upload file is not a correct csv-formatted file. "; file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); }
+        } else { $uploadOk = 0; $msg .= "Your upload file is not a correct csv-formatted file. "; file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); }
         
         // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
@@ -57,10 +57,10 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $msg = "The file `". basename( $_FILES["fileToUpload"]["name"]). "` has been uploaded. It was saved as `data.csv` in the main project directory. You can continue with formal checking of file and starting the pipeline.";
-        file_put_contents('/root/miRNAselector/var_status.txt', "[1] DATA UPLOADED (UNCONFIGURED)");
+        file_put_contents('/miRNAselector/var_status.txt', "[1] DATA UPLOADED (UNCONFIGURED)");
     } else {
         $msg = $msg . "There was an error uploading your file. ";
-        file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
+        file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
     }
 }
         
@@ -68,9 +68,9 @@ if ($uploadOk == 0) {
 
         
     case "cleandata":
-        unlink("/root/miRNAselector/data.csv");
+        unlink("/miRNAselector/data.csv");
         $msg .= "Data file deleted. Please upload new file.";
-        file_put_contents('/root/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
+        file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
         break;
     
     
@@ -91,9 +91,9 @@ if ($uploadOk == 0) {
         }
         // Zapis do XML
         $msg .= print_r_xml($_POST);
-        file_put_contents('/root/miRNAselector/config.xml', print_r_xml($_POST));
+        file_put_contents('/miRNAselector/config.xml', print_r_xml($_POST));
 
-        $file = fopen('/root/miRNAselector/pipeline.R', 'w');
+        $file = fopen('/miRNAselector/pipeline.R', 'w');
         fwrite($file, "library(miRNAselector)\n");
         fwrite($file, "library(knitr)\n");
         fwrite($file, "library(rmarkdown)\n");
@@ -101,25 +101,25 @@ if ($uploadOk == 0) {
         $ile_krokow = 0;
 
         // Preprocessing
-        file_put_contents('/root/miRNAselector/var_input_format.txt', $form->post('input_format'));
-        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html_output', output_file = '/root/miRNAselector/result_preprocessing.html')\n");
+        file_put_contents('/miRNAselector/var_input_format.txt', $form->post('input_format'));
+        fwrite($file, "render('/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html_output', output_file = '/miRNAselector/result_preprocessing.html')\n");
         $ile_krokow = $ile_krokow + 1;
 
         // Najwazniejszy raport
-        fwrite($file, "source('/root/miRNAselector/miRNAselector/templetes/featureselection.R')\n");
+        fwrite($file, "source('/miRNAselector/miRNAselector/templetes/featureselection.R')\n");
         $ile_krokow = $ile_krokow + 1;
 
-        fwrite($file, "source('/root/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
+        fwrite($file, "source('/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
         $ile_krokow = $ile_krokow + 1;
 
-        fwrite($file, "render('/root/miRNAselector/miRNAselector/templetes/result_raport.Rmd', output_format = 'html_output', output_file = '/root/miRNAselector/result_raport.html')\n");
+        fwrite($file, "render('/miRNAselector/miRNAselector/templetes/result_raport.Rmd', output_format = 'html_output', output_file = '/miRNAselector/result_raport.html')\n");
         $ile_krokow = $ile_krokow + 1;
         
-        file_put_contents('/root/miRNAselector/var_maxsteps.txt', $ile_krokow);
+        file_put_contents('/miRNAselector/var_maxsteps.txt', $ile_krokow);
         
         fclose($file);
-        //$msg .= file_get_contents("/root/miRNAselector/pipeline.R");
-        //file_put_contents('/root/miRNAselector/var_status.txt', "[2] PROCESSING");
+        //$msg .= file_get_contents("/miRNAselector/pipeline.R");
+        //file_put_contents('/miRNAselector/var_status.txt', "[2] PROCESSING");
         break;
     
     

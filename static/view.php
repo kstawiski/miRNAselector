@@ -3,7 +3,7 @@
     //------------------------------------------------
     //Configuration
     //
-    $fileName = "/root/miRNAselector/" . $_GET['f']; //CSV file location
+    $fileName = "/miRNAselector/" . $_GET['f']; //CSV file location
     $delimiter = ","; //CSV delimiter character: , ; /t
     $enclosure = '"'; //CSV enclosure character: " ' 
     $password = ''; //Optional to prevent abuse. If set to [your_password] will require the &Password=[your_password] GET parameter to open the file
