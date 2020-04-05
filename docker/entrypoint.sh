@@ -8,5 +8,6 @@ mkdir -p /run/
 mkdir -p /run/php/
 php-fpm7.3 -R -F &
 Rscript /update.R
+chown -R mirnaselector /miRNAselector
 jupyter serverextension enable jupytext
 jupyter notebook --no-browser

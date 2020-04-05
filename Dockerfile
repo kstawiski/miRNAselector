@@ -94,7 +94,7 @@ RUN cd / && git clone https://github.com/grst/rstudio-server-conda.git && chmod 
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV CRAN_URL https://cloud.r-project.org/
-RUN chmod 777 -R /miRNAselector && useradd -d /miRNAselector/ -g rstudio-server mirnaselector \
+RUN useradd -d /miRNAselector/ -s /bin/bash -g rstudio-server mirnaselector && cp -rT /etc/skel /miRNAselector && chown mirnaselector -R /miRNAselector && chmod 777 -R /miRNAselector \
       && echo mirnaselector:mirnaselector | chpasswd && adduser mirnaselector sudo \
       && echo "r-cran-repos=${CRAN_URL}" >> /etc/rstudio/rsession.conf \
       && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers

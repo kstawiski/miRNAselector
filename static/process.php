@@ -36,6 +36,30 @@ function tabify($num_tabs)
 	return $return;
 }
 
+/* co jesli bedzie matematyczny */
+function matematyczny_input($ma) {
+    if(preg_match('/(\d+)(?:\s*)([\+\-\*\/])(?:\s*)(\d+)/', $ma, $matches) !== FALSE){
+        $operator = $matches[2];
+    
+        switch($operator){
+            case '+':
+                $p = $matches[1] + $matches[3];
+                break;
+            case '-':
+                $p = $matches[1] - $matches[3];
+                break;
+            case '*':
+                $p = $matches[1] * $matches[3];
+                break;
+            case '/':
+                $p = $matches[1] / $matches[3];
+                break;
+        }
+    
+        return $p;
+    } else {  return $ma; }
+}
+
 switch($_GET['type'])
 {
     case "upload":
@@ -68,7 +92,14 @@ if ($uploadOk == 0) {
 
         
     case "cleandata":
-        unlink("/miRNAselector/data.csv");
+        if(file_exists("/miRNAselector/data.csv")) { unlink("/miRNAselector/data.csv"); }
+        if(file_exists("/miRNAselector/data_start.csv")) { unlink("/miRNAselector/data_start.csv"); }
+        if(file_exists("/miRNAselector/initial_check.txt")) { unlink("/miRNAselector/initial_check.txt"); }
+        if(file_exists("/miRNAselector/config.xml")) { unlink("/miRNAselector/config.xml"); }
+        $mask = '/miRNAselector/var_*.*';
+        array_map('unlink', glob($mask));
+        $mask = '/miRNAselector/result_*.*';
+        array_map('unlink', glob($mask));
         $msg .= "Data file deleted. Please upload new file.";
         file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
         break;
@@ -90,6 +121,10 @@ if ($uploadOk == 0) {
             die();
         }
         // Zapis do XML
+        
+        
+        
+        
         $msg .= print_r_xml($_POST);
         file_put_contents('/miRNAselector/config.xml', print_r_xml($_POST));
 

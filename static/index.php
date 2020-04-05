@@ -1,4 +1,5 @@
 <?php
+exec("chown -R mirnaselector /miRNAselector");
 require_once 'class.formr.php';
 if (!file_exists('/miRNAselector/var_status.txt')) { file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); } // Wyjściowy status.
 $status = file_get_contents('/miRNAselector/var_status.txt');
@@ -66,19 +67,21 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
                     <form action="process.php?type=upload" method="post" enctype="multipart/form-data">
                         <p>Select <code>.csv</code> file to upload:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
-                        <input type="submit" class="btn btn-primary" value="Upload Image" name="submit">
+                        <input type="submit" class="btn btn-primary" value="Upload" name="submit">
                     </form>
 
                     <?php } else { ?>
 
-                    <pre><?php system("Rscript /miRNAselector/miRNAselector/docker/1_formalcheckcsv.R"); ?></pre>
+                    <pre><?php 
+                        if(!file_exists("/miRNAselector/initial_check.txt")) {
+                        system("Rscript /miRNAselector/miRNAselector/docker/1_formalcheckcsv.R > /miRNAselector/initial_check.txt"); echo file_get_contents("/miRNAselector/initial_check.txt"); } else { echo file_get_contents("/miRNAselector/initial_check.txt"); }?></pre>
                     <p>Initial check status:
                         <code><b><?php $var_initcheck = file_get_contents('/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code>
                     </p>
                     <p><a href="view.php?f=data.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('view.php?f=data.csv','popup','width=600,height=600'); return false;">View
-                        data</a> <a href="process.php?type=cleandata" class="btn btn-danger" role="button">Delete data
-                        and reupload</a></p>
+                        data</a> <a href="process.php?type=cleandata" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data, configuration files and results. If you did not save them, click cancel and do it in the first place!')">Delete data
+                        and restart the pipeline!</a></p>
 <p><font size="1">Notes: <i>The viewer is limited to 100 columns and 1000 rows.</i></font></p>
                     <?php } ?>
 
@@ -97,20 +100,33 @@ echo $form->form_open('','','process.php?type=configure');
 
 echo $form->input_text('project_name','Project name (will be printed on analysis reports):');
 
-// Co na wejsciu
-$options = array(
-  'counts'    => 'Read counts (require transformation to log10(TPM) and filtration)',
-  'countswithoutfilter'    => 'Read counts (require transformation to log10(TPM) but no filtration)',
-  'transformed'    => 'Already normalized and filtered values (e.g. log(TPM), deltaCt)',
-);
-echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
+echo "<hr><h3>Preprocessing:</h3>";
 
 // Korekcja
 $options = array(
     'yes'    => 'Yes (correct column names to latest version of miRbase)',
     'no'    => 'No (do not correct names)'
   );
-echo $form->input_select('correct_names', 'Correct miRNA names (correct aliases using latest version of miRbase; ignored for non-miRNA features):','','','','','yes',$options);
+echo $form->input_select('correct_names', 'Correct human miRNA names (correct aliases using latest version of miRbase; ignored for non-miRNA features):','','','','','yes',$options);
+
+// Co na wejsciu
+$options = array(
+  'counts'    => 'Read counts (require transformation to log10(TPM))',
+  'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)',
+);
+echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
+echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized library sizes are not used). The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";
+
+// Korekcja
+$options = array(
+    'yes'    => 'Yes',
+    'no'    => 'No'
+  );
+echo $form->input_select('filtration', 'Simple feature filtration prior to analysis:','','','','','yes',$options);
+echo "<p>Prior to analysis, the variables can be selected based on arbitrary filter. For example, the researcher may assume that the miRNAs of interest have to be present in the quantitity of more than 100 counts in more than 1/3 of cases. Tweak the options below if you want to use filtration.</p>";
+
+echo $form->input_text('filtration_mincounts', '(Optional) Minimal number of counts: [values: >=0]','100');
+echo $form->input_text('filtration_propotion', '(Optional) Minimal proportion of cases: [values: 0-1]','0.5');
 
 // Jeśli missing
 if(file_get_contents('/miRNAselector/var_missing.txt') == "TRUE") {
@@ -133,6 +149,15 @@ if(file_get_contents('/miRNAselector/var_batch.txt') == "TRUE") {
   echo $form->input_select('correct_batch', 'Batch effect correction:','','','','','no',$options);
 }
 
+// Split
+echo $form->input_text('training_split', 'Proportion of training set cases: [values: 0-1]','0.6');
+echo "<p>The pipeline splits dataset into training, testing and validation sets. This value allows to set the proportion of dataset (by default 60%) that will remain in training set. The rest of cases will be evenly splitted to testing and validation set. E.g. 0.6 = 60% of cases in training set, 20% in testing and 20% in validation set.</p>";
+
+echo "<hr><h3>Feature selection:</h3>";
+
+echo "<p><b>Select feature selection methods & sets:</b></p>";
+echo $form->input_checkbox('method1','1. [all] All features','yes','','','','checked');
+echo $form->input_checkbox('method2','2. [sig] Significiance filter','yes','','','','checked');
 
 echo $form->input_submit('', '', 'Save configuration and start the pipeline', 'submit', 'class="btn btn-success"');
 echo $form->form_close();
