@@ -7,8 +7,8 @@ ks.download_tissue_miRNA_data_from_TCGA = function(data_folder = getwd())
 {
   oldwd = getwd()
   setwd(data_folder)
-  library(GDCRNATools)
-  library(data.table)
+  suppressMessages(library(GDCRNATools))
+  suppressMessages(library(data.table))
 
   zacznij_od_projektu = 1
 

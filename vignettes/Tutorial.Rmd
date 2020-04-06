@@ -25,8 +25,8 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=150),tidy=TRUE)
 ```
 
 ```{r setup, echo = F}
-library(miRNAselector)
-library(dplyr)
+suppressMessages(library(miRNAselector))
+suppressMessages(library(dplyr))
 set.seed(1)
 ```
 
@@ -65,8 +65,8 @@ First of those files contains metadata and raw counts as declared in TCGA. The s
 Let's load counts files and see what sample do we have.
 
 ```{r}
-suppressWarnings(library(data.table))
-suppressWarnings(library(knitr))
+suppressWarnings(suppressMessages(library(data.table)))
+suppressWarnings(suppressMessages(library(knitr)))
 orginal_TCGA_data = fread("tissue_miRNA_counts.csv.gz")
 orginal_TCGA_data[orginal_TCGA_data == ""] = NA
 kable(table(orginal_TCGA_data$primary_site, orginal_TCGA_data$sample_type))
@@ -77,7 +77,7 @@ Let's consider a following exemplary problem..
 We want to find the set of miRNAs the most specific to pancreatic cancer. We see that there are 178 cases of pancreatic cancer miRNA-seq results and only 4 solid tissue normal cases. However, we have multiple other normal miRNA-seq results that could be incorporated in the analysis. Let's filter and label the samples of interest.
 
 ```{r}
-suppressWarnings(library(dplyr))
+suppressWarnings(suppressMessages(library(dplyr)))
 
 cancer_cases = filter(orginal_TCGA_data, primary_site == "Pancreas" & sample_type == "PrimaryTumor")
 control_cases = filter(orginal_TCGA_data, sample_type == "SolidTissueNormal")
@@ -112,8 +112,8 @@ dataset = dataset[grepl("Adenocarcinomas", dataset$disease_type),]
 match_by = c("age_at_diagnosis","gender.x")
 tempdane = dplyr::select(dataset, match_by)
 tempdane$Class = ifelse(dataset$Class == "Cancer", TRUE, FALSE)
-library(mice)
-library(MatchIt)
+suppressMessages(library(mice))
+suppressMessages(library(MatchIt))
 temp1 = mice(tempdane, m=1)
 temp2 = temp1$data
 temp3 = mice::complete(temp1)
@@ -396,8 +396,8 @@ Let's assess the over/underfitting of selected methods for top 2 signatures. The
 ```{r}
 for(i in 1:length(metody))
   {
-library(PairedData)
-library(profileR)
+suppressMessages(library(PairedData))
+suppressMessages(library(profileR))
 pd = paired(as.numeric(acc[1:5,paste0(metody[i],"_train_Accuracy")]),as.numeric(acc[1:5,paste0(metody[i],"_test_Accuracy")]))
 colnames(pd) = c("Train Acc","Test Acc")
 plot2 = profileplot(pd, person.id = acc$method[1:5], standardize = F)

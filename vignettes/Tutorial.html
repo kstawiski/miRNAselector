@@ -35,7 +35,7 @@ What should be done?
 readLines("setup.R") %>% paste0(collapse = "\n") %>% cat
 #> install.packages("devtools",repos = "http://cran.r-project.org")
 #> install.packages("BiocManager",repos = "http://cran.r-project.org")
-#> library(BiocManager)
+#> suppressMessages(library(BiocManager))
 #> BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
 #>                        "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
 #>                        "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow",
@@ -45,7 +45,7 @@ readLines("setup.R") %>% paste0(collapse = "\n") %>% cat
 #> devtools::install_github("STATWORX/bounceR", force = T)
 #> #devtools::install_github("rstudio/reticulate")
 #> devtools::install_github("vqv/ggbiplot", force = T)
-#> library(keras)
+#> suppressMessages(library(keras))
 #> install_keras()
 #> 
 #> 
@@ -73,8 +73,8 @@ Let's load counts files and see what sample do we have.
 
 
 ```r
-suppressWarnings(library(data.table))
-suppressWarnings(library(knitr))
+suppressWarnings(suppressMessages(library(data.table)))
+suppressWarnings(suppressMessages(library(knitr)))
 orginal_TCGA_data = fread("tissue_miRNA_counts.csv.gz")
 orginal_TCGA_data[orginal_TCGA_data == ""] = NA
 kable(table(orginal_TCGA_data$primary_site, orginal_TCGA_data$sample_type))
@@ -238,7 +238,7 @@ We want to find the set of miRNAs the most specific to pancreatic cancer. We see
 
 
 ```r
-suppressWarnings(library(dplyr))
+suppressWarnings(suppressMessages(library(dplyr)))
 
 cancer_cases = filter(orginal_TCGA_data, primary_site == "Pancreas" & sample_type == "PrimaryTumor")
 control_cases = filter(orginal_TCGA_data, sample_type == "SolidTissueNormal")
@@ -341,8 +341,8 @@ dataset = dataset[grepl("Adenocarcinomas", dataset$disease_type), ]
 match_by = c("age_at_diagnosis", "gender.x")
 tempdane = dplyr::select(dataset, match_by)
 tempdane$Class = ifelse(dataset$Class == "Cancer", TRUE, FALSE)
-library(mice)
-library(MatchIt)
+suppressMessages(library(mice))
+suppressMessages(library(MatchIt))
 temp1 = mice(tempdane, m = 1)
 #> 
 #>  iter imp variable
@@ -3286,10 +3286,10 @@ But, for largers projects we suggest using the following wrapper wich will perfo
 ```r
 readLines("Tutorial_miRNAselector.R") %>% paste0(collapse = "\n") %>% cat
 #> #options(warn = -1)
-#> library(foreach)
-#> library(doParallel)
-#> library(parallel)
-#> library(doSNOW)
+#> suppressMessages(library(foreach))
+#> suppressMessages(library(doParallel))
+#> suppressMessages(library(parallel))
+#> suppressMessages(library(doSNOW))
 #> 
 #> m = 1:56 # which methods to check?
 #> 
@@ -3301,7 +3301,7 @@ readLines("Tutorial_miRNAselector.R") %>% paste0(collapse = "\n") %>% cat
 #> opts <- list(progress = progress)
 #> foreach(i = m, .options.snow = opts) %dopar%
 #> {
-#>   library(miRNAselector)
+#>   suppressMessages(library(miRNAselector))
 #>   setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
 #>   ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = F, # we set debug to false (to make the package smaller), you may also want to change stamp to something meaningful, max_iterations was set to 1 to recude the computational time.. in real life scenarios it is resonable to use at least 10 iterations.
 #>                   prefer_no_features = 11, # Few methods are filter rather than wrapper methods, thus requires the maximum number of maximum features.
@@ -3579,7 +3579,7 @@ In the next step of looking for the best signature, we perform benchmarking. Thi
 
 ```r
 readLines("Tutorial_benchmark.R") %>% paste0(collapse = "\n") %>% cat
-#> library(miRNAselector)
+#> suppressMessages(library(miRNAselector))
 #> ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more
 #>              algorithms = c("mlp", "mlpML", "svmRadial", "svmLinear", "rf", "C5.0", "rpart",
 #>                             "rpart2", "ctree"), # default set of methods, note that logistic regression (glm) is always included
@@ -8385,8 +8385,8 @@ Let's assess the over/underfitting of selected methods for top 2 signatures. The
 
 ```r
 for (i in 1:length(metody)) {
-    library(PairedData)
-    library(profileR)
+    suppressMessages(library(PairedData))
+    suppressMessages(library(profileR))
     pd = paired(as.numeric(acc[1:5, paste0(metody[i], "_train_Accuracy")]), as.numeric(acc[1:5, paste0(metody[i], "_test_Accuracy")]))
     colnames(pd) = c("Train Acc", "Test Acc")
     plot2 = profileplot(pd, person.id = acc$method[1:5], standardize = F)
@@ -8877,10 +8877,10 @@ session_info()
 #>  yaml               2.2.1      2020-02-01 [1] CRAN (R 3.6.2)                   
 #>  zoo                1.8-7      2020-01-10 [1] CRAN (R 3.6.1)                   
 #> 
-#> [1] /home/konrad/R/x86_64-pc-linux-gnu-library/3.6
-#> [2] /usr/local/lib/R/site-library
-#> [3] /usr/lib/R/site-library
-#> [4] /usr/lib/R/library
+#> [1] /home/konrad/R/x86_64-pc-linux-gnu-suppressMessages(library/3.6)
+#> [2] /usr/local/lib/R/site-suppressMessages(library)
+#> [3] /usr/lib/R/site-suppressMessages(library)
+#> [4] /usr/lib/R/suppressMessages(library)
 ```
 
 To render this tutorial we used:

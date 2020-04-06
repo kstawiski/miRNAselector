@@ -329,7 +329,7 @@ ks.heatmap.3 <- function(x,
     retval$colDendrogram <- ddc
   retval$breaks <- breaks
   retval$col <- col
-  if (!invalid(na.color) & any(is.na(x))) { # load library(gplots)
+  if (!invalid(na.color) & any(is.na(x))) { # load suppressMessages(library(gplots))
     mmat <- ifelse(is.na(x), 1, NA)
     image(1:nc, 1:nr, mmat, axes = FALSE, xlab = "", ylab = "",
           col = na.color, add = TRUE)

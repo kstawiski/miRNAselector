@@ -1,7 +1,7 @@
 #install.packages("devtools",repos = "http://cran.r-project.org")
 #install.packages("roxygen2")
 #install.packages("BiocManager",repos = "http://cran.r-project.org")
-#library(BiocManager)
+#suppressMessages(library(BiocManager))
 #BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
 #                       "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
 #                       "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow",
@@ -11,7 +11,7 @@
 #devtools::install_github("STATWORX/bounceR", force = T)
 #devtools::install_github("rstudio/reticulate")
 #devtools::install_github("vqv/ggbiplot", force = T)
-#library(keras)
+#suppressMessages(library(keras))
 #install_keras()
 
 devtools::install_github("kstawiski/miRNAselector", force = T) # Install our package.

@@ -70,10 +70,10 @@ Pearls about the methods:
 For more detailed defitions please see the tutorial vignette.
 }
 \examples{
-library(foreach)
-library(doParallel)
-library(parallel)
-library(doSNOW)
+suppressMessages(library(foreach))
+suppressMessages(library(doParallel))
+suppressMessages(library(parallel))
+suppressMessages(library(doSNOW))
 m = 1:70 # which methods to check?
 cl <- makeCluster(5) # 5 threds by default
 doSNOW::registerDoSNOW(cl)
@@ -83,7 +83,7 @@ progress <- function(n) setTxtProgressBar(pb, n)
 opts <- list(progress = progress)
 foreach(i = m, .verbose = T, .options.snow = opts) \%dopar\%
 {
-library(miRNAselector)
+suppressMessages(library(miRNAselector))
 setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
 ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
 }

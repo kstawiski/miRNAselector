@@ -94,7 +94,7 @@ c.NotebookApp.base_url = '/e/'
 
 ## Specify what command to use to invoke a web browser when opening the notebook.
 #  If not specified, the default browser will be determined by the `webbrowser`
-#  standard library module, which allows setting of the BROWSER environment
+#  standard suppressMessages(library module, which allows setting of the BROWSER environment)
 #  variable to override it.
 #c.NotebookApp.browser = ''
 
@@ -157,7 +157,7 @@ c.NotebookApp.disable_check_xsrf = True
 
 ## Whether to enable MathJax for typesetting math/TeX
 #  
-#  MathJax is the javascript library Jupyter uses to render math/LaTeX. It is
+#  MathJax is the javascript suppressMessages(library Jupyter uses to render math/LaTeX. It is)
 #  very large, so you may want to disable it if you have a slow internet
 #  connection, or for offline use of the notebook.
 #  
@@ -261,7 +261,7 @@ c.NotebookApp.ip = '0.0.0.0'
 c.NotebookApp.notebook_dir = '/miRNAselector/'
 
 ## Whether to open in a browser after starting. The specific browser used is
-#  platform dependent and determined by the python standard library `webbrowser`
+#  platform dependent and determined by the python standard suppressMessages(library `webbrowser`)
 #  module, unless it is overridden using the --browser (NotebookApp.browser)
 #  configuration option.
 #c.NotebookApp.open_browser = True
@@ -352,7 +352,7 @@ c.NotebookApp.token = ''
 #c.NotebookApp.webapp_settings = {}
 
 ## Specify Where to open the notebook on startup. This is the `new` argument
-#  passed to the standard library method `webbrowser.open`. The behaviour is not
+#  passed to the standard suppressMessages(library method `webbrowser.open`. The behaviour is not)
 #  guaranteed, but depends on browser support. Valid values are:
 #  
 #   - 2 opens a new tab,

@@ -8,13 +8,13 @@
 #' @param distance Passed to `matchit()`.
 #'
 ks.propensity_score_matching = function(dataset, match_by = c("age_at_diagnosis","gender.x"), method = "nearest", distance = "logit"){
-  library(MatchIt)
-  library(mice)
+  suppressMessages(library(MatchIt))
+  suppressMessages(library(mice))
 
   #tempdane = dataset
   tempdane = dplyr::select(dataset, match_by)
   tempdane$Class = ifelse(dataset$Class == "Cancer", TRUE, FALSE)
-  library(mice)
+  suppressMessages(library(mice))
   temp1 = mice(tempdane, m=1)
   temp2 = temp1$data
   temp3 = mice::complete(temp1)

@@ -19,7 +19,7 @@ ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x
   #                                   {layer_dense(units = hyperparameters[i,3], activation = hyperparameters[i,6])} } else { . } } %>%
   #   { if(hyperparameters[i,9]>0) { layer_dropout(rate = hyperparameters[i,9]) } else { . } } %>%
   #   layer_dense(units = 1, activation = 'sigmoid')
-  library(keras)
+  suppressMessages(library(keras))
   tempmodel <- keras_model_sequential()
   if(hyperparameters[i,10]==T) { layer_dense(tempmodel , units = hyperparameters[i,1], kernel_regularizer = regularizer_l2(l = 0.001),
                                              activation = hyperparameters[i,4], input_shape = c(how_many_features)) } else

@@ -6,9 +6,9 @@
 #' @param hight High (default: 400px)
 ks.table = function(table, height = "400px")
 {
-  library(knitr)
-  library(rmarkdown)
-  library(kableExtra)
+  suppressMessages(library(knitr))
+  suppressMessages(library(rmarkdown))
+  suppressMessages(library(kableExtra))
   kable(table, "html") %>%
     kable_styling() %>%
     scroll_box(width = "100%", height = height)

@@ -51,7 +51,7 @@
 #' fieldsList <- FieldsList("")
 FieldsList <- function(arch = "legacy",
 											 endp = "files") {
-	library(rjson)
+	suppressMessages(library(rjson))
 	url <- paste("https://gdc-api.nci.nih.gov/",
 							 arch,
 							 ifelse(arch == "", "", "/"),
@@ -98,7 +98,7 @@ FieldsMeta <- function() {
 #' entityCount <- EntityCount("")
 EntityCount <- function(arch = "legacy",
 												endp = "files") {
-	library(rjson)
+	suppressMessages(library(rjson))
 	url <- paste("https://gdc-api.nci.nih.gov/",
 							 arch,
 							 ifelse(arch == "", "", "/"),
@@ -621,7 +621,7 @@ MetaDataClin <- function(tmpDir = ".",
 												 fieldsMeta = "",
 												 entityCount = (-1),
 												 endp = "files") {
-	library(rjson)
+	suppressMessages(library(rjson))
 	if (entityCount == (-1)) {
 		entityCount <- EntityCount(arch, endp)
 	}
@@ -713,7 +713,7 @@ MetaDataSoma <- function(vCancer = "BRCA",
 												 fieldsMeta = "",
 												 entityCount = (-1),
 												 endp = "files") {
-	library(rjson)
+	suppressMessages(library(rjson))
 	if (entityCount == (-1)) {
 		entityCount <- EntityCount(arch, endp)
 	}
@@ -848,7 +848,7 @@ MetaData <- function(vCancer = "BRCA",
 										 fieldsMeta = "",
 										 entityCount = (-1),
 										 endp = "files") {
-	library(rjson)
+	suppressMessages(library(rjson))
 	if (entityCount == (-1)) {
 		entityCount <- EntityCount(arch, endp)
 	}
@@ -983,7 +983,7 @@ FileNameById <- function(fileId2Bar,
 		fileNameById <- NULL
 	} else {
 		stopifnot(length(fileId2Bar) > 0)  # no files available for this filter
-		library(rjson)
+		suppressMessages(library(rjson))
 		tmpTar <- paste(tmpDir, "/gdc_download_", TimeNow(), ".tar.gz", sep = "")
 		url <- paste("https://gdc-api.nci.nih.gov/",
 								 arch,
@@ -3282,8 +3282,8 @@ DownloadBiospecimenClinicalData <- function(cancerType = NULL,
 #  Check whether this is the most updated version of TCGA-Assembler
 #  =============================================================================
 
-library(httr)
-library(stringr)
+suppressMessages(library(httr))
+suppressMessages(library(stringr))
 
 VCwebContent <- try(content(GET("http://www.compgenome.org/TCGA-Assembler/"), as = "text"), silent = TRUE)
 if (class(VCwebContent) == "try-error") {

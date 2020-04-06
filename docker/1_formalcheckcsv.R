@@ -1,6 +1,6 @@
 setwd("/miRNAselector/")
-suppressMessages(library(data.table))
-suppressMessages(library(dplyr))
+suppressMessages(suppressMessages(library(data.table)))
+suppressMessages(suppressMessages(library(dplyr)))
 dane = fread("data.csv")
 dane[dane == ""] = NA
 

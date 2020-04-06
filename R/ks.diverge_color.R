@@ -2,7 +2,7 @@
 #'
 #' Helper for plotting.
 ks.diverge_color <- function(data,centeredOn=0){
-  library(classInt)
+  suppressMessages(library(classInt))
   nHalf=50
   Min <- min(data,na.rm=TRUE)
   Max <- max(data,na.rm=TRUE)

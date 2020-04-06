@@ -37,10 +37,10 @@
 #'
 #' @return The list of selected formulas. Note that, due to purpose of this package `ks.merge_formulas` may be a better option to get the output of processes run by this function.
 #' @examples
-#' library(foreach)
-#' library(doParallel)
-#' library(parallel)
-#' library(doSNOW)
+#' suppressMessages(library(foreach))
+#' suppressMessages(library(doParallel))
+#' suppressMessages(library(parallel))
+#' suppressMessages(library(doSNOW))
 #' m = 1:70 # which methods to check?
 #' cl <- makeCluster(5) # 5 threds by default
 #' doSNOW::registerDoSNOW(cl)
@@ -50,7 +50,7 @@
 #' opts <- list(progress = progress)
 #' foreach(i = m, .verbose = T, .options.snow = opts) %dopar%
 #' {
-#' library(miRNAselector)
+#' suppressMessages(library(miRNAselector))
 #' setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
 #' ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
 #' }
@@ -63,27 +63,27 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
   oldwd = getwd()
   setwd(wd)
-  library(plyr)
-  library(dplyr)
-  library(edgeR)
-  library(epiDisplay)
-  library(rsq)
-  library(MASS)
-  library(Biocomb)
-  library(caret)
-  library(dplyr)
-  library(epiDisplay)
-  library(pROC)
-  library(ggplot2)
-  library(DMwR)
-  library(ROSE)
-  library(gridExtra)
-  library(gplots)
-  library(devtools)
-  library(stringr)
-  library(data.table)
-  library(tidyverse)
-  library(R.utils)
+  suppressMessages(library(plyr))
+  suppressMessages(library(dplyr))
+  suppressMessages(library(edgeR))
+  suppressMessages(library(epiDisplay))
+  suppressMessages(library(rsq))
+  suppressMessages(library(MASS))
+  suppressMessages(library(Biocomb))
+  suppressMessages(library(caret))
+  suppressMessages(library(dplyr))
+  suppressMessages(library(epiDisplay))
+  suppressMessages(library(pROC))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(DMwR))
+  suppressMessages(library(ROSE))
+  suppressMessages(library(gridExtra))
+  suppressMessages(library(gplots))
+  suppressMessages(library(devtools))
+  suppressMessages(library(stringr))
+  suppressMessages(library(data.table))
+  suppressMessages(library(tidyverse))
+  suppressMessages(library(R.utils))
 
 
   if(!dir.exists("temp")) { dir.create("temp") }
@@ -143,7 +143,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   if (register_parallel) {
     ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting subcluster ready...")
     if(is.null(clx)) {
-      library(doParallel)
+      suppressMessages(library(doParallel))
       cl <- makePSOCKcluster(detectCores() - 2)
       registerDoParallel(cl) }
     else { registerDoParallel(clx) }
@@ -425,7 +425,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   # 9. bounceR - genetic
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting bounceR..")
-  library(bounceR)
+  suppressMessages(library(bounceR))
   mrmr <- bounceR::featureSelection(data = train,
                                     target = "Class",
                                     max_time = "15 mins",
@@ -446,7 +446,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
   # n = 30
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
-  library(bounceR)
+  suppressMessages(library(bounceR))
   mrmr <- bounceR::featureSelection(data = train_smoted,
                            target = "Class",
                            max_time = "15 mins",
@@ -467,7 +467,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
   # n = 31
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
-  library(bounceR)
+  suppressMessages(library(bounceR))
   mrmr <- bounceR::featureSelection(data = train_sig,
                            target = "Class",
                            max_time = "15 mins",
@@ -488,7 +488,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
   # n = 32
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
-  library(bounceR)
+  suppressMessages(library(bounceR))
   mrmr <- bounceR::featureSelection(data = train_sig_smoted,
                            target = "Class",
                            max_time = "15 mins",
@@ -680,7 +680,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   # n = 45
   # 14. Boruta (https://www.jstatsoft.org/article/view/v036i11)
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
-  library(Boruta)
+  suppressMessages(library(Boruta))
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting Boruta")
   bor = Boruta(trainx, train$Class)
   formulas[["Boruta"]] = ks.create_miRNA_formula(names(bor$finalDecision)[as.character(bor$finalDecision) == "Confirmed"])
@@ -702,7 +702,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   # 15. spFSR - feature selection and ranking by simultaneous perturbation stochastic approximation
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting spFSR")
-  library(spFSR)
+  suppressMessages(library(spFSR))
   knnWrapper    <- makeLearner("classif.knn", k = 5)
   classifTask   <- makeClassifTask(data = train, target = "Class")
   perf.measure  <- acc
@@ -740,7 +740,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
   # varSelRF
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting varSelRF")
-  library(varSelRF)
+  suppressMessages(library(varSelRF))
   var.sel <- varSelRF(trainx, train$Class, ntree = 500, ntreeIterat = max_iterations, vars.drop.frac = 0.05, whole.range = T, keep.forest = T)
   formulas[["varSelRF"]] = ks.create_miRNA_formula(var.sel$selected.vars)
 
@@ -755,12 +755,12 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
   # 13. WxNet (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6642261/)
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting WxNet")
-  library(plyr)
-  library(dplyr)
-  library(reticulate)
-  library(tidyverse)
-  library(data.table)
-  library(DMwR)
+  suppressMessages(library(plyr))
+  suppressMessages(library(dplyr))
+  suppressMessages(library(reticulate))
+  suppressMessages(library(tidyverse))
+  suppressMessages(library(data.table))
+  suppressMessages(library(DMwR))
 
 
 
@@ -1008,7 +1008,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
     dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
 
-    library(My.stepwise)
+    suppressMessages(library(My.stepwise))
     temp = capture.output(My.stepwise.glm(Y = "Class", colnames(trainx), data = train, sle = 0.05, sls = 0.05, myfamily = "binomial"))
     # temp2 = temp[length(temp)-1]
     # temp3 = temp[length(temp)-3]
@@ -1052,7 +1052,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
     dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
 
-    library(My.stepwise)
+    suppressMessages(library(My.stepwise))
     temp = capture.output(My.stepwise.glm(Y = "Class", colnames(trainx_smoted), data = train_smoted, sle = 0.05, sls = 0.05, myfamily = "binomial"))
     # temp2 = temp[length(temp)-1]
     # temp3 = temp[length(temp)-3]

@@ -5,16 +5,16 @@
 #' @param data_folder Directory where TCGA data were downloaded.
 #' @param remove_miRNAs_with_null_var Wheter to remove the miRNAs without any expression? Default: True
 ks.process_tissue_miRNA_TCGA = function(data_folder = getwd(), remove_miRNAs_with_null_var = T) {
-  library(plyr)
-  library(data.table)
-  library(dplyr)
-  library(edgeR)
-  library(naniar)
-  library(visdat)
-  library(stringr)
-  library(foreach)
-  library(doParallel)
-  library(imputeMissings)
+  suppressMessages(library(plyr))
+  suppressMessages(library(data.table))
+  suppressMessages(library(dplyr))
+  suppressMessages(library(edgeR))
+  suppressMessages(library(naniar))
+  suppressMessages(library(visdat))
+  suppressMessages(library(stringr))
+  suppressMessages(library(foreach))
+  suppressMessages(library(doParallel))
+  suppressMessages(library(imputeMissings))
   pliki = list.files(data_folder, "*.csv", all.files = T, full.names = T)[startsWith(list.files(data_folder, "*.csv"), "miRNA_")]
 
 
@@ -53,7 +53,7 @@ ks.process_tissue_miRNA_TCGA = function(data_folder = getwd(), remove_miRNAs_wit
   #dane_counts = dane_counts[ , colSums(is.na(dane_counts)) == 0]
 
   # imputujemy resztę
-  #library(mice)
+  #suppressMessages(library(mice))
   #temp1 = parlmice(dane_counts, m=1, n.core = detectCores()-1, seed = 1, n.imp.core = 50, cl.type = "FORK")
   #temp2 = temp1$data
   #dane_counts_missing = dane_counts
