@@ -5,7 +5,7 @@
 #' Usage of the filter like that can assure that the miRNAs selected will be detectable in qPCR.
 #'
 #' @param danex Matrix with miRNA counts with miRNAs in columns and cases in rows.
-#' @param metadane Metadata with `Class` variables.
+#' @param metadane Metadata with `Class` variable.
 #' @param  ids Unique identifier of samples.
 #' @param filtr If expression filter should be used.
 #' @param filtr_minimalcounts How many counts?
@@ -35,6 +35,22 @@ ks.counts_to_log10tpm = function(danex, metadane = metadane, ids = metadane$ID, 
   suppressMessages(library(stringr))
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
+  
+  #data check 
+  
+  #check if all columns are numerical and with names starting as hsa 
+  for(i in colnames(danex)) {
+    if(!is.numeric(danex[, i])) {
+      stop("Please provide a dataframe with only numeric variables")
+    }
+    if(!startsWith(i, "hsa")){
+      stop("Please provide only microRNA expression data (column names starting with hsa)")
+    }
+  }
+  if(table(colnames(metadane))["Class"] != 1 || length(unique(metadane$Class)) != 2) {
+    stop("Metadata dataframe must contain exactly one binary 'Class' variable")
+  }
+  
   danex = as.matrix(danex)
 
   dane_counts = t(danex)

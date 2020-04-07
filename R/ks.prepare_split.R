@@ -34,6 +34,26 @@ ks.prepare_split = function(metadane = metadane, ttpm = ttpm_pofiltrze, train_pr
   suppressMessages(library(tidyverse))
   tempp = cbind(metadane, ttpm)
   # Podzial - http://topepo.github.io/caret/data-splitting.html#simple-splitting-based-on-the-outcome
+  
+  #data check
+  
+  #check if all columns are numerical and with names starting as hsa 
+  for(i in colnames(ttpm)) {
+    if(!is.numeric(ttpm[, i])) {
+      stop("Please provide a dataframe with only numeric variables")
+    }
+    if(!startsWith(i, "hsa")){
+      stop("Please provide only microRNA expression data (column names starting with hsa)")
+    }
+  }
+  
+  metadane <- data.frame(metadane)
+  
+  if(table(colnames(metadane))["Class"] != 1 || length(unique(metadane$Class)) != 2) {
+    stop("Metadata dataframe must contain exactly one binary 'Class' variable")
+  }
+  
+  
   set.seed(1)
   mix = rep("unasign", nrow(tempp))
   suppressMessages(library(caret))
