@@ -115,7 +115,7 @@ $options = array(
   'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)',
 );
 echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
-echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized suppressMessages(library sizes are not used). The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";)
+echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized suppressMessages(library sizes are not used). The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";
 
 // Korekcja
 $options = array(

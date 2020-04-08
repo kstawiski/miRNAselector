@@ -129,9 +129,9 @@ if ($uploadOk == 0) {
         file_put_contents('/miRNAselector/config.xml', print_r_xml($_POST));
 
         $file = fopen('/miRNAselector/pipeline.R', 'w');
-        fwrite($file, "suppressMessages(library(miRNAselector)\n");)
-        fwrite($file, "suppressMessages(library(knitr)\n");)
-        fwrite($file, "suppressMessages(library(rmarkdown)\n");)
+        fwrite($file, "suppressMessages(library(miRNAselector)\n");
+        fwrite($file, "suppressMessages(library(knitr)\n");
+        fwrite($file, "suppressMessages(library(rmarkdown)\n");
         // Najpierw czy braki
         $ile_krokow = 0;
 
