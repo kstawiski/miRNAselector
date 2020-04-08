@@ -170,7 +170,47 @@ echo $form->form_close();
 
         </div>
 
+<?php 
+// if($status == "[2] PROCESSING") {
+    $max_analysis_steps = exec("grep -o \"ks.docker.update_progress\" /miRNAselector/miRNAselector/templetes/*.* | wc -l");
+    $current_steps = file_get_contents("/miRNAselector/var_progress.txt");
+?>
 
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Processing progress</div>
+        <div class="panel-body">
+            <p>Progress: <?php echo(file_get_contents("/miRNAselector/var_progress.txt") . "out of " . $max_analysis_steps . " steps"); ?></p>
+        </div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Heading 1</th>
+                </tr>
+                <tr>
+                    <th>Heading 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Content 1</td>
+                </tr>
+                <tr>
+                    <td>Content 2</td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+
+
+
+
+<?php
+// }
+?>
 
 
         <div class="panel panel-default">

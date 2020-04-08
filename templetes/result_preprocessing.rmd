@@ -22,7 +22,7 @@ suppressMessages(library(kableExtra))
 suppressMessages(library(naniar))
 suppressMessages(library(VIM))
 setwd("/miRNAselector/")
-
+set.seed(1)
 require(XML)
 config <- xmlParse("config.xml")
 config <- xmlToList(config)
@@ -33,13 +33,28 @@ metadane = dplyr::select(dataset, -starts_with("hsa"))
 ```
 # Exploratory analysis
 
-## Class frequences
+Initial data check:
+
+```{r}
+readLines("initial_check.txt") %>% paste0(collapse="\n") %>% cat
+barplot(table(dataset$Class), horiz=TRUE)
+```
+
+Class frequences:
 
 ```{r}
 kable(table(dataset$Class), col.names = c("Class","Number of cases"))
 ```
 
-## Features
+Check if dataset is balanced using binominal test (vs. p=0.5):
+
+```{r}
+cancer_cases = sum(dataset$Class == "Cancer")
+all_cases = length(dataset$Class)
+binom.test(n = all_cases, x = cancer_cases, p = 0.5, alternative = "two.sided")
+```
+
+## Features 
 
 ```{r}
 ks.table(psych::describe(datasetx))
@@ -48,7 +63,38 @@ fwrite(psych::describe(datasetx), "result_preprocessing_descriptivestats.csv")
 
 [Download result_preprocessing_descriptivestats.csv](/e/files/result_preprocessing_descriptivestats.csv)
 
-## Missing values
+Correlations:
+
+```{r}
+suppressMessages(library(ComplexHeatmap))
+suppressMessages(library(circlize))
+correlations = cor(datasetx, method = "pearson")
+correlations[lower.tri(correlations)] = 0
+col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"), transparency = 0.5)
+Heatmap(correlations, name = "corr", col = col_fun, cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, show_column_names = TRUE)
+```
+
+## Metadata
+
+```{r}
+ks.table(psych::describe(metadane))
+fwrite(psych::describe(metadane), "result_preprocessing_metadata.csv")
+```
+[Download result_preprocessing_metadata.csv](/e/files/result_preprocessing_metadata.csv)
+
+# Names correction
+
+Correction of mature miRNA aliases:
+
+```{r}
+ks.table(psych::describe(metadane))
+fwrite(psych::describe(metadane), "result_preprocessing_metadata.csv")
+```
+
+
+# Missing values
+
+Initial pattern of missing values:
 
 ```{r}
 vis_miss(datasetx)
@@ -56,12 +102,46 @@ gg_miss_var(datasetx)
 if (n_var_miss(datasetx) > 2) { gg_miss_upset(datasetx) }
 ```
 
-# Missing data imputation
+## Missing data imputation
 
 ```{r}
 if(is.null(config[["missing_imput"]])) {
     cat("No missing data imputation was performed.")
 } else if(config[["missing_imput"]] == "pmm") {
-    
-}
+    suppressMessages(library(mice))
+    temp1 = mice(datasetx, m=1, maxit = 50)
+    datasetx = complete(temp1)
+    fwrite(cbind(metadane, datasetx), "data_start.csv")
+    # Sprawdzanie
+    cat("\nAfter imputation:")
+    vis_miss(datasetx)
+    gg_miss_var(datasetx)
+    if (n_var_miss(datasetx) > 2) { gg_miss_upset(datasetx) }
+} else if(config[["missing_imput"]] == "median") {
+    suppressMessages(library(imputeMissings))
+    datasetx = impute(datasetx, method = "median/mode")
+    fwrite(cbind(metadane, datasetx), "data_start.csv")
+    # Sprawdzanie
+    cat("\nAfter imputation:")
+    vis_miss(datasetx)
+    gg_miss_var(datasetx)
+    if (n_var_miss(datasetx) > 2) { gg_miss_upset(datasetx) }
+} else if(config[["missing_imput"]] == "mean") {
+    for(i in 1:ncol(datasetx)) {
+    datasetx[ , i][is.na(datasetx[ , i])] <- mean(datasetx[ , i], na.rm = TRUE)
+    }
+    fwrite(cbind(metadane, datasetx), "data_start.csv")
+    # Sprawdzanie
+    cat("\nAfter imputation:")
+    vis_miss(datasetx)
+    gg_miss_var(datasetx)
+    if (n_var_miss(datasetx) > 2) { gg_miss_upset(datasetx) }
+} else if(config[["missing_imput"]] == "mean") {
+    do_zostawienia = complete.cases(datasetx)
+    datasetx = datasetx[do_zostawienia,]
+    metadane = datasetx[metadane,]
+    fwrite(cbind(metadane, datasetx), "data_start.csv")
+    table(do_zostawienia)
+    cat("Cases with NAs were deleted. FALSE cases were deleted.")
+  }
 ```
