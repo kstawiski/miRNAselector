@@ -61,12 +61,36 @@ if(config[["correct_names"]] == "yes") {
 } else { cat("No names correction was performed.") }
 ```
 
+Normalization:
+
+```{r}
+if(config[["input_format"]] == "counts") {
+    # Czy filtracja
+if(config[["filtration"]] == "yes") { 
+  ttpm = ks.counts_to_log10tpm(danex, metadane, ids = metadane$sample, filtr = T, filtr_minimalcounts = config[["filtration_mincounts"]], filtr_howmany = config[["filtration_propotion"]]) 
+  fwrite(cbind(metadane, ttpm), "data_start.csv")
+  dataset = fread("data_start.csv")
+  datasetx = dplyr::select(dataset, starts_with("hsa"))
+  metadane = dplyr::select(dataset, -starts_with("hsa"))
+} else { 
+  ttpm = ks.counts_to_log10tpm(danex, metadane, ids = metadane$sample, filtr = F) 
+  fwrite(cbind(metadane, ttpm), "data_start.csv")
+  dataset = fread("data_start.csv")
+  datasetx = dplyr::select(dataset, starts_with("hsa"))
+  metadane = dplyr::select(dataset, -starts_with("hsa"))
+}  
+    } else { 
+cat("No normalization was performed (per pipeline config).")
+    }
+```
+
+Download starting (normalized) dataset: [data_start.csv](/e/files/data_start.csv)
 
 # Exploratory analysis
 
 Class frequences:
 
-```{r fig.height = 5}
+```{r fig.height = 4}
 barplot(table(dataset$Class), horiz=TRUE)
 kable(table(dataset$Class), col.names = c("Class","Number of cases")) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -181,4 +205,11 @@ if(is.null(config[["missing_imput"]])) {
     kable(table(do_zostawienia), col.names = c("Remaining","Number of features")) %>% kable_styling(bootstrap_options = c("striped", "hover")) 
     cat("Cases with NAs were deleted. FALSE cases were deleted.")
   }
+```
+## Prepare split
+
+Splitting the dataset to training, testing and validation datasets.
+
+```{r}
+mixed = ks.prepare_split(metadane = metadane, ttpm = datasetx, train_proc = config[["training_split"]])
 ```
