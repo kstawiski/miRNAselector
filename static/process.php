@@ -137,7 +137,9 @@ if ($uploadOk == 0) {
 
         // Preprocessing
         file_put_contents('/miRNAselector/var_input_format.txt', $form->post('input_format'));
-        fwrite($file, "render('/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html_output', output_file = '/miRNAselector/result_preprocessing.html')\n");
+
+        if(!file.exists("/miRNAselector/result_preprocessing.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_preprocessing.rmd","/miRNAselector/result_preprocessing.Rmd"); }
+        fwrite($file, "render('/miRNAselector/result_preprocessing.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_preprocessing.html')\n");
         $ile_krokow = $ile_krokow + 1;
 
         // Najwazniejszy raport
@@ -147,7 +149,8 @@ if ($uploadOk == 0) {
         fwrite($file, "source('/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
         $ile_krokow = $ile_krokow + 1;
 
-        fwrite($file, "render('/miRNAselector/miRNAselector/templetes/result_raport.Rmd', output_format = 'html_output', output_file = '/miRNAselector/result_raport.html')\n");
+        if(!file.exists("/miRNAselector/result_raport.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_report.rmd","/miRNAselector/result_raport.Rmd"); }
+        fwrite($file, "render('/miRNAselector/result_raport.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_raport.html')\n");
         $ile_krokow = $ile_krokow + 1;
         
         file_put_contents('/miRNAselector/var_maxsteps.txt', $ile_krokow);
