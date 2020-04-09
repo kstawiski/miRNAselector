@@ -206,7 +206,11 @@ if(is.null(config[["missing_imput"]])) {
     cat("Cases with NAs were deleted. FALSE cases were deleted.")
   }
 ```
-## Prepare split
+# Analysis (whole dataset)
+
+
+
+# Prepare split
 
 Splitting the dataset to training, testing and validation datasets.
 
