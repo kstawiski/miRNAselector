@@ -67,13 +67,13 @@ Normalization:
 if(config[["input_format"]] == "counts") {
     # Czy filtracja
 if(config[["filtration"]] == "yes") { 
-  ttpm = ks.counts_to_log10tpm(danex, metadane, ids = metadane$sample, filtr = T, filtr_minimalcounts = config[["filtration_mincounts"]], filtr_howmany = config[["filtration_propotion"]]) 
+  ttpm = ks.counts_to_log10tpm(datasetx, metadane, ids = metadane$sample, filtr = T, filtr_minimalcounts = config[["filtration_mincounts"]], filtr_howmany = config[["filtration_propotion"]]) 
   fwrite(cbind(metadane, ttpm), "data_start.csv")
   dataset = fread("data_start.csv")
   datasetx = dplyr::select(dataset, starts_with("hsa"))
   metadane = dplyr::select(dataset, -starts_with("hsa"))
 } else { 
-  ttpm = ks.counts_to_log10tpm(danex, metadane, ids = metadane$sample, filtr = F) 
+  ttpm = ks.counts_to_log10tpm(datasetx, metadane, ids = metadane$sample, filtr = F) 
   fwrite(cbind(metadane, ttpm), "data_start.csv")
   dataset = fread("data_start.csv")
   datasetx = dplyr::select(dataset, starts_with("hsa"))

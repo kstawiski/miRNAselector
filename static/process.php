@@ -138,7 +138,7 @@ if ($uploadOk == 0) {
         // Preprocessing
         file_put_contents('/miRNAselector/var_input_format.txt', $form->post('input_format'));
 
-        if(!file.exists("/miRNAselector/result_preprocessing.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_preprocessing.rmd","/miRNAselector/result_preprocessing.Rmd"); }
+        if(!file_exists("/miRNAselector/result_preprocessing.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_preprocessing.rmd","/miRNAselector/result_preprocessing.Rmd"); }
         fwrite($file, "render('/miRNAselector/result_preprocessing.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_preprocessing.html')\n");
         $ile_krokow = $ile_krokow + 1;
 
@@ -149,19 +149,21 @@ if ($uploadOk == 0) {
         fwrite($file, "source('/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
         $ile_krokow = $ile_krokow + 1;
 
-        if(!file.exists("/miRNAselector/result_raport.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_report.rmd","/miRNAselector/result_raport.Rmd"); }
+        if(!file_exists("/miRNAselector/result_raport.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_raport.rmd","/miRNAselector/result_raport.Rmd"); }
         fwrite($file, "render('/miRNAselector/result_raport.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_raport.html')\n");
         $ile_krokow = $ile_krokow + 1;
         
         file_put_contents('/miRNAselector/var_maxsteps.txt', $ile_krokow);
         
+// 2>&1 | tee log.txt
+
         fclose($file);
         //$msg .= file_get_contents("/miRNAselector/pipeline.R");
         //file_put_contents('/miRNAselector/var_status.txt', "[2] PROCESSING");
         break;
     
     
-    
+
     
     
     
