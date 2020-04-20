@@ -34,7 +34,8 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   kolor_i = 1
   for (i in 1:ncol(rlab)){
     o_ile = as.numeric(length(unique(rlab[,i])))
-    assigcode = c(assigcode, as.character(unique(rlab[,i])))
+    #assigcode = c(assigcode, as.character(unique(rlab[,i]))) -> bug 
+    assigcode = c(assigcode, as.character(levels(rlab[, i])))
     assigcolor = c(assigcolor, kolory[kolor_i:(kolor_i+o_ile-1)])
     #levels(rlab[,i]) = topo.colors(length(unique(rlab[,i])))
     levels(rlab[,i]) = kolory[kolor_i:(kolor_i+o_ile-1)]
@@ -45,7 +46,7 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   #levels(rlab$Class) = c("red","green") # red - cancer, green - control
   x2 = as.matrix(x)
   colnames(x2) = gsub("\\.","-", colnames(x2))
-
+  
   if(zscore == F) {
     brks<-ks.diverge_color(x2, centeredOn = median(x2))
 
