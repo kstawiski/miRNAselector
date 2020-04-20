@@ -110,14 +110,23 @@ $options = array(
 echo $form->input_select('correct_names', 'Correct human miRNA names (correct aliases using latest version of miRbase; ignored for non-miRNA features):','','','','','yes',$options);
 
 // Co na wejsciu
-$options = array(
-  'counts'    => 'Read counts (require transformation to log10(TPM))',
-  'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)',
-);
-echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
-echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized suppressMessages(library sizes are not used). The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";)
+if(file_get_contents('/miRNAselector/var_seemslikecounts.txt') == "TRUE") {
+    $options = array(
+        'counts'    => 'Read counts (require transformation to log10(TPM))',
+        'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)',
+      );
+      echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
+} else {
+    $options = array(
+        'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)'
+      );
+      echo $form->input_select('input_format', 'Input features format:','','','','','transformed',$options);
+}
+
+echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized suppressMessages(library sizes are not used). The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";
 
 // Korekcja
+if(file_get_contents('/miRNAselector/var_seemslikecounts.txt') == "TRUE") {
 $options = array(
     'yes'    => 'Yes',
     'no'    => 'No'
@@ -127,6 +136,7 @@ echo "<p>Prior to analysis, the variables can be selected based on arbitrary fil
 
 echo $form->input_text('filtration_mincounts', '(Optional) Minimal number of counts: [values: >=0]','100');
 echo $form->input_text('filtration_propotion', '(Optional) Minimal proportion of cases: [values: 0-1]','0.5');
+}
 
 // Jeśli missing
 if(file_get_contents('/miRNAselector/var_missing.txt') == "TRUE") {
@@ -155,12 +165,25 @@ echo "<p>The pipeline splits dataset into training, testing and validation sets.
 
 echo "<hr><h3>Feature selection:</h3>";
 
-echo "<p><b>Select feature selection methods & sets:</b></p>";
-echo $form->input_checkbox('method1','1. [all] All features','yes','','','','checked');
-echo $form->input_checkbox('method2','2. [sig] Significiance filter','yes','','','','checked');
+echo "<table class=\"table\"><thead><tr><th>Method:</th><th>Description:</th></tr></thead><tbody>";
+
+echo "<tr><td>";
+echo $form->input_checkbox('method1','[all] All features','yes','','','','checked');
+echo "<td>". "All features (e.g. miRNAs) in dataset." . "</td>";
+echo "</td><tr>";
+
+echo "<tr><td>";
+echo $form->input_checkbox('method2','[sig] Significiance filter','yes','','','','checked');
+echo "<td>". "Features that differ significantly (p<0.05) between groups, verifed by Welch two samples t-test. P-values are adjusted using Benjamini and Hochberg method." . "</td>";
+echo "</td><tr>";
+
+
+
+echo "</tbody></table>";
 
 echo $form->input_submit('', '', 'Save configuration and start the pipeline', 'submit', 'class="btn btn-success"');
 echo $form->form_close();
+
 ?>
 
 
@@ -170,7 +193,47 @@ echo $form->form_close();
 
         </div>
 
+<?php 
+// if($status == "[2] PROCESSING") {
+    $max_analysis_steps = exec("grep -o \"ks.docker.update_progress\" /miRNAselector/miRNAselector/templetes/*.* | wc -l");
+    $current_steps = file_get_contents("/miRNAselector/var_progress.txt");
+?>
 
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Processing progress</div>
+        <div class="panel-body">
+            <p>Progress: <?php echo(file_get_contents("/miRNAselector/var_progress.txt") . "out of " . $max_analysis_steps . " steps"); ?></p>
+        </div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Heading 1</th>
+                </tr>
+                <tr>
+                    <th>Heading 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Content 1</td>
+                </tr>
+                <tr>
+                    <td>Content 2</td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+
+
+
+
+<?php
+// }
+?>
 
 
         <div class="panel panel-default">

@@ -129,15 +129,17 @@ if ($uploadOk == 0) {
         file_put_contents('/miRNAselector/config.xml', print_r_xml($_POST));
 
         $file = fopen('/miRNAselector/pipeline.R', 'w');
-        fwrite($file, "suppressMessages(library(miRNAselector)\n");)
-        fwrite($file, "suppressMessages(library(knitr)\n");)
-        fwrite($file, "suppressMessages(library(rmarkdown)\n");)
+        fwrite($file, "suppressMessages(library(miRNAselector)\n");
+        fwrite($file, "suppressMessages(library(knitr)\n");
+        fwrite($file, "suppressMessages(library(rmarkdown)\n");
         // Najpierw czy braki
         $ile_krokow = 0;
 
         // Preprocessing
         file_put_contents('/miRNAselector/var_input_format.txt', $form->post('input_format'));
-        fwrite($file, "render('/miRNAselector/miRNAselector/templetes/result_preprocessing.Rmd', output_format = 'html_output', output_file = '/miRNAselector/result_preprocessing.html')\n");
+
+        if(!file_exists("/miRNAselector/result_preprocessing.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_preprocessing.rmd","/miRNAselector/result_preprocessing.Rmd"); }
+        fwrite($file, "render('/miRNAselector/result_preprocessing.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_preprocessing.html')\n");
         $ile_krokow = $ile_krokow + 1;
 
         // Najwazniejszy raport
@@ -147,18 +149,21 @@ if ($uploadOk == 0) {
         fwrite($file, "source('/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
         $ile_krokow = $ile_krokow + 1;
 
-        fwrite($file, "render('/miRNAselector/miRNAselector/templetes/result_raport.Rmd', output_format = 'html_output', output_file = '/miRNAselector/result_raport.html')\n");
+        if(!file_exists("/miRNAselector/result_raport.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_raport.rmd","/miRNAselector/result_raport.Rmd"); }
+        fwrite($file, "render('/miRNAselector/result_raport.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_raport.html')\n");
         $ile_krokow = $ile_krokow + 1;
         
         file_put_contents('/miRNAselector/var_maxsteps.txt', $ile_krokow);
         
+// 2>&1 | tee log.txt
+
         fclose($file);
         //$msg .= file_get_contents("/miRNAselector/pipeline.R");
         //file_put_contents('/miRNAselector/var_status.txt', "[2] PROCESSING");
         break;
     
     
-    
+
     
     
     

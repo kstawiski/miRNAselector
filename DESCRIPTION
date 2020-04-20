@@ -68,5 +68,7 @@ Imports:
     profileR,
     xgboost,
     kableExtra,
-    VIM
+    VIM,
+    sva,
+    Biobase
 RoxygenNote: 7.0.2

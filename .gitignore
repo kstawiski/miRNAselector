@@ -6,4 +6,5 @@ inst/doc
 **/temp
 **/models
 inst/extdata/wx/DearWXpub/GSE_DATA/Total_hg38.txt
-workDir/
+workDir
+Rplots.pdf
