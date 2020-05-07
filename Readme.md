@@ -10,7 +10,7 @@ Authors: Konrad Stawiski (konrad@konsta.com.pl), Marcin Kaszkowiak
 
 Docker image: https://hub.docker.com/r/kstawiski/mirnaselector
 
-Starting command: `docker run --name mirnaselector-dev -p 28888:80 -p 28889:8888 mirnaselector`
+Starting command: `docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector`. Please change `28888` to the port you desire.
 
 Pearls:
 
