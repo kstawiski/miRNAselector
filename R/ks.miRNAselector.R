@@ -144,7 +144,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting subcluster ready...")
     if(is.null(clx)) {
       suppressMessages(library(doParallel))
-      cl <- makePSOCKcluster(detectCores() - 2)
+      cl <- makePSOCKcluster(detectCores() - 1)
       registerDoParallel(cl) }
     else { registerDoParallel(clx) }
   }
@@ -729,7 +729,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     measure = perf.measure ,
     num.features.selected = prefer_no_features,
     iters.max = max_iterations,
-    num.cores = detectCores() - 2)
+    num.cores = detectCores() - 1)
   formulas[["spFSRSMOTE"]] = ks.create_miRNA_formula(spsaMod$features)
 
   end_time <- Sys.time(); saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS")); saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))

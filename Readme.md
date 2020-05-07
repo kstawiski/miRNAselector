@@ -8,14 +8,17 @@ Authors: Konrad Stawiski (konrad@konsta.com.pl), Marcin Kaszkowiak
 
 **[OPTION 1] Docker version (recommended):**
 
-Docker image: https://hub.docker.com/r/kstawiski/mirnaselector
+If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
-Starting command: `docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector`. Please change `28888` to the port you desire.
+Our public docker image: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector).
+
+Quick-start command: `docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector` and go to `http://127.0.0.1:28888` for GUI. You can change `28888` to the port you desire.
 
 Pearls:
 
-- Docker version contains GUI allowing for easy implementation of the pipeline. If you use to run this docker image on your own comupter with command above - go to http://127.0.0.1:28888 for GUI.
+- Docker version contains web-based GUI allowing for easy implementation of the pipeline.
 - We assure the correct functionality only on docker version.
+- Docker container is based on configured ubuntu
 
 **[OPTION 2] Installation in your local R enviorment:**
 
