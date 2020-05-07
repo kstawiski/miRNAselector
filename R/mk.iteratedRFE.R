@@ -2,10 +2,10 @@
 #'
 #' Helper for Marcin Kaszkowiak propritary method.
 #' Very longs.. needs optimizing.
-mk.iteratedRFE <- function(trainSet, testSet = NULL, initFeatures = colnames(trainSet), classLab, checkNFeatures = 25, votingIterations = 100000, useCV = F, nfolds = 10, initRandomState = 42 ) {
+mk.iteratedRFE <- function(trainSet, testSet = NULL, initFeatures = colnames(trainSet), classLab, checkNFeatures = 25, votingIterations = 1000, useCV = F, nfolds = 10, initRandomState = 42 ) {
 
   set.seed(initRandomState)
-
+  initFeatures <- initFeatures[initFeatures != classLab]
   #prepare output data structures
   resAcc <- c(rep(0, checkNFeatures))
   resVotes <- data.frame(matrix(0, nrow = length(initFeatures), ncol = checkNFeatures), row.names = initFeatures)
@@ -15,6 +15,8 @@ mk.iteratedRFE <- function(trainSet, testSet = NULL, initFeatures = colnames(tra
 
   for (i in 1:votingIterations) {
 
+    print(paste0("iteration ", i))
+    
     if(useCV == F) {
       params <- rfeControl(functions = rfFuncs, saveDetails = T)
       iter <- rfeIter(x = trainSet[, initFeatures], y = as.factor(trainSet[, classLab]), testX = testSet[, initFeatures], testY = as.factor(testSet[, classLab]), sizes = 1:checkNFeatures,
