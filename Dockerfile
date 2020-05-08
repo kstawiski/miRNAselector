@@ -1,12 +1,7 @@
 FROM ubuntu
 
 ENV TZ=Europe/Warsaw
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt update
-RUN apt dist-upgrade -y
-
-RUN apt-get install -y \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && apt update &&apt dist-upgrade -y && apt-get install -y \
     apt-transport-https screen \
     build-essential libxml2-dev \
     ca-certificates \
@@ -25,18 +20,7 @@ RUN apt-get install -y \
     sudo \
     unzip \
     virtualenv \
-    wget
-
-
-RUN apt install -y build-essential libbz2-dev libpcre2-16-0 libpcre2-32-0 libpcre2-8-0 libpcre2-dev fort77 xorg-dev liblzma-dev  libblas-dev gfortran gcc-multilib gobjc++ libreadline-dev
-
-RUN apt install -y texinfo texlive-fonts-extra texlive libcairo2-dev freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev libglfw3-dev libgles2-mesa-dev libopenblas-dev liblapack-dev libopencv-dev build-essential git gcc cmake r-base-dev r-cran-devtools libcairo2-dev libxml2-dev
-
-RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran35/" && apt update && apt -y dist-upgrade && apt install -y r-base-core r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages('devtools')"
-
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add - && add-apt-repository -y "deb https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" && apt update && apt -y dist-upgrade
-
-RUN cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git && cd /incubator-mxnet && mkdir build && cd build && cmake -DUSE_CUDA=OFF -DUSE_MKL_IF_AVAILABLE=ON -DUSE_MKLDNN=OFF -DUSE_OPENMP=ON -DUSE_OPENCV=ON .. && make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas && make install && cp -a . .. && cp -a . ../lib && pwd
+    wget && apt install -y build-essential libbz2-dev libpcre2-16-0 libpcre2-32-0 libpcre2-8-0 libpcre2-dev fort77 xorg-dev liblzma-dev  libblas-dev gfortran gcc-multilib gobjc++ libreadline-dev && apt install -y texinfo texlive-fonts-extra texlive libcairo2-dev freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev libglfw3-dev libgles2-mesa-dev libopenblas-dev liblapack-dev libopencv-dev build-essential git gcc cmake r-base-dev r-cran-devtools libcairo2-dev libxml2-dev && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran35/" && apt update && apt -y dist-upgrade && apt install -y r-base-core r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages('devtools')" && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add - && add-apt-repository -y "deb https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" && apt update && apt -y dist-upgrade && cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git && cd /incubator-mxnet && mkdir build && cd build && cmake -DUSE_CUDA=OFF -DUSE_MKL_IF_AVAILABLE=ON -DUSE_MKLDNN=OFF -DUSE_OPENMP=ON -DUSE_OPENCV=ON .. && make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas && make install && cp -a . .. && cp -a . ../lib && pwd
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
@@ -56,11 +40,7 @@ RUN apt-get update --fix-missing && \
 
 COPY vignettes/setup.R /
 
-RUN Rscript /setup.R
-
-RUN cd /incubator-mxnet/ && make -f R-package/Makefile rpkg
-
-RUN echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter
+RUN Rscript /setup.R && cd /incubator-mxnet/ && make -f R-package/Makefile rpkg && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter
 
 COPY docker/register_jupyter.R /
 
@@ -88,9 +68,7 @@ COPY docker/default /etc/nginx/sites-available/default
 
 COPY docker/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
-RUN apt-get install -y gdebi-core apt-utils uuid && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5033-amd64.deb && gdebi --non-interactive rstudio-server-1.2.5033-amd64.deb && apt -f install && apt autoremove -y --purge
-
-RUN cd / && git clone https://github.com/grst/rstudio-server-conda.git && chmod -R 777 /rstudio-server-conda/ 
+RUN apt-get install -y gdebi-core apt-utils uuid && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5033-amd64.deb && gdebi --non-interactive rstudio-server-1.2.5033-amd64.deb && apt -f install && apt autoremove -y --purge && cd / && git clone https://github.com/grst/rstudio-server-conda.git && chmod -R 777 /rstudio-server-conda/ 
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV CRAN_URL https://cloud.r-project.org/
