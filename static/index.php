@@ -12,10 +12,12 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
 
 <head>
     <title>miRNAselector</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
         integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -29,15 +31,67 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
     <link rel="stylesheet" href="css/starter-template.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $( "body" ).prepend( '<div id="preloader"><div class="spinner-sm spinner-sm-1" id="status"> </div></div>' );
-        $(window).on('load', function() { // makes sure the whole site is loaded 
-        $('#status').fadeOut(); // will first fade out the loading animation 
-        $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website. 
-        $('body').delay(350).css({'overflow':'visible'});
-        })
+        var waitingDialog = waitingDialog || (function ($) { 'use strict';
+
+	// Creating modal dialog's DOM
+	var $dialog = $(
+		'<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+		'<div class="modal-dialog modal-m">' +
+		'<div class="modal-content">' +
+			'<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
+			'<div class="modal-body">' +
+				'<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
+			'</div>' +
+		'</div></div></div>');
+
+	return {
+		/**
+		 * Opens our dialog
+		 * @param message Custom message
+		 * @param options Custom options:
+		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+		 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
+		 */
+		show: function (message, options) {
+			// Assigning defaults
+			if (typeof options === 'undefined') {
+				options = {};
+			}
+			if (typeof message === 'undefined') {
+				message = 'Loading';
+			}
+			var settings = $.extend({
+				dialogSize: 'm',
+				progressType: '',
+				onHide: null // This callback runs after the dialog was hidden
+			}, options);
+
+			// Configuring dialog
+			$dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
+			$dialog.find('.progress-bar').attr('class', 'progress-bar');
+			if (settings.progressType) {
+				$dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
+			}
+			$dialog.find('h3').text(message);
+			// Adding callbacks
+			if (typeof settings.onHide === 'function') {
+				$dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+					settings.onHide.call($dialog);
+				});
+			}
+			// Opening dialog
+			$dialog.modal();
+		},
+		/**
+		 * Closes dialog
+		 */
+		hide: function () {
+			$dialog.modal('hide');
+		}
+	};
+
+})(jQuery);
     </script>
 </head>
 
@@ -75,7 +129,10 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
                     <form action="process.php?type=upload" method="post" enctype="multipart/form-data">
                         <p>Select <code>.csv</code> file to upload:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
-                        <input type="submit" class="btn btn-primary" value="Upload" name="submit">
+
+                        <button type="submit" class="btn btn-success" onclick="waitingDialog.show('Uploading...');" value="Upload" name="submit">
+                        <i class="fas fa-upload"></i>&emsp;Upload
+                        </button>
                     </form>
 
                     <?php } else { ?>
@@ -248,9 +305,7 @@ echo $form->form_close();
                 <div class="panel-heading"><i class="fas fa-bars"></i>&emsp;&emsp;Additional tools</div>
                 <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
                         data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;
-                    <a href="e" target="_blank" role="button" class="btn btn-danger"><i
-                            class="fas fa-lock-open"></i>&emsp;Advanced features</a>&emsp;<button type="button" class="btn btn-info" data-toggle="modal"
-                        data-target="#modalYT2"><i class="fas fa-arrow-up"></i></i>&emsp;Update</button></div>
+                    <a href="e" target="_blank" role="button" class="btn btn-primary"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a>&emsp;<a href="software_update.php" role="button" onclick="waitingDialog.show('Updating... Please wait...');" class="btn btn-primary"><i class="fas fa-arrow-up"></i></i>&emsp;Update</a></div>
             </div>
 
     </div>
@@ -266,37 +321,6 @@ echo $form->form_close();
 
                     <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
                         <iframe class="embed-responsive-item" src="top.php" allowfullscreen></iframe>
-                    </div>
-
-                </div>
-
-                <!--Footer-->
-                <div class="modal-footer justify-content-center">
-                    <span class="mr-4">Running <code>top</code> every 2 seconds...</span>
-
-                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
-                        data-dismiss="modal">Close</button>
-
-                </div>
-
-            </div>
-            <!--/.Content-->
-
-        </div>
-    </div>
-    <!--Modal: Name-->
-        <!--Modal: Name-->
-        <div class="modal fade" id="modalYT2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-
-            <!--Content-->
-            <div class="modal-content">
-
-                <!--Body-->
-                <div class="modal-body mb-0 p-0">
-
-                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                        <iframe class="embed-responsive-item" src="software_update.php" allowfullscreen></iframe>
                     </div>
 
                 </div>
