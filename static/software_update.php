@@ -85,9 +85,18 @@
 </head>
 <body>
     <div class="container">
-    <p>Update application:
-    <pre><?php $output = shell_exec('cd /miRNAselector/miRNAselector && git reset --hard && git clean -df && git pull 2>&1'); echo $output; ?></pre></p>
-    <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show();" class="btn btn-info"> Go back</a>
+    <div class="starter-template">
+            <p>
+                <center><img src="logo.png" width="70%" />
+            </p>
+            <p><br></p>
+        </div>
+    <p>Application update:
+    <pre><?php $output = shell_exec('cd /miRNAselector/miRNAselector && git reset --hard && git clean -df && git pull 2>&1'); echo $output; ob_end_flush(); flush(); ?></pre></p>
+    <p>R package update:
+    <pre><?php $output = shell_exec('Rscript /miRNAselector/miRNAselector/docker/update.R 2>&1'); echo $output; ?></pre></p>
+    <p>The update is finished. Please go back to the app.</p>
+    <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-upload"></i>&emsp;Go back</a>
     </div>
   </body>
 </html>

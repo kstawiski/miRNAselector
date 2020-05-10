@@ -130,7 +130,7 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
                         <p>Select <code>.csv</code> file to upload:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
 
-                        <button type="submit" class="btn btn-success" onclick="waitingDialog.show('Uploading...');" value="Upload" name="submit">
+                        <button type="submit" class="btn btn-success" onclick="waitingDialog.show('Uploading & performing initial check...');" value="Upload" name="submit">
                         <i class="fas fa-upload"></i>&emsp;Upload
                         </button>
                     </form>

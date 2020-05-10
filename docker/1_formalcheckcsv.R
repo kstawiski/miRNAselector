@@ -24,7 +24,7 @@ cat(paste0("\n✓ All features are numeric."))
 missing = FALSE
 czy_brakna = sapply(temp, is.na)
 if(sum(colSums(czy_brakna)) != 0) 
-{ cat("\n✓ Some of the features contain missing data. That's ok. We will complete them using predictive mean matching. With missing values: ", paste0(colnames(temp)[colSums(czy_brakna) > 0], collapse = ", "))
+{ cat("\n✓ Some of the features contain missing data. That's ok. We will complete them using predictive mean matching.\nWith missing values:\n  -", paste0(colnames(temp)[colSums(czy_brakna) > 0], collapse = "\n  - "))
 missing = T } else 
 { cat(paste0("\n✓ There are no missing data in features.")) }
 
@@ -34,8 +34,9 @@ print(table(dane$Class, dane$Batch))
 batch = T } else { cat("\n✓ The file does not contain `Batch` variable that can be used for batch-effect correction. Batch correction will be omitted.") }
 
 x = dplyr::select(dane, starts_with("hsa"))
+like_counts = sapply(x, function(x2) (sum(unlist(na.omit(x2))%%1 == 0) + sum(unlist(na.omit(x2)) >= 0))/(2*length(unlist(na.omit(x2)))) == 1)
 positive = F
-if(sum(x>=0) == length(x) && is.integer(unlist(x))) { cat("\n✓ Feature values are positive integers. The file could represent read counts (the normalization functions can be applied)."); positive = T; } else {
+if(like_counts) { cat("\n✓ Feature values are positive integers. The file could represent read counts (the normalization functions can be applied)."); positive = T; } else {
     cat("\n✓ Feature values are not positive integers. The functions for normalization of the read counts will be disabled.");
 }
 writeLines(as.character(positive), "var_seemslikecounts.txt", sep="")
