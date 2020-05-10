@@ -24,16 +24,24 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="miRNAselector - a tool for selecting great miRNA biomarkers." />
+    <meta name="author" content="Konrad Stawiski (konrad@konsta.com.pl)" />
+    <link rel="stylesheet" href="css/starter-template.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $( "body" ).prepend( '<div id="preloader"><div class="spinner-sm spinner-sm-1" id="status"> </div></div>' );
+        $(window).on('load', function() { // makes sure the whole site is loaded 
+        $('#status').fadeOut(); // will first fade out the loading animation 
+        $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website. 
+        $('body').delay(350).css({'overflow':'visible'});
+        })
+    </script>
 </head>
 
 <body>
-
     <div class="container">
         <div class="starter-template">
             <p>
@@ -241,12 +249,44 @@ echo $form->form_close();
                 <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
                         data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;
                     <a href="e" target="_blank" role="button" class="btn btn-danger"><i
-                            class="fas fa-lock-open"></i>&emsp;Advanced features</a></div>
+                            class="fas fa-lock-open"></i>&emsp;Advanced features</a>&emsp;<button type="button" class="btn btn-info" data-toggle="modal"
+                        data-target="#modalYT2"><i class="fas fa-arrow-up"></i></i>&emsp;Update</button></div>
             </div>
 
     </div>
     <!--Modal: Name-->
     <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Body-->
+                <div class="modal-body mb-0 p-0">
+
+                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                        <iframe class="embed-responsive-item" src="top.php" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <span class="mr-4">Running <code>top</code> every 2 seconds...</span>
+
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+            <!--/.Content-->
+
+        </div>
+    </div>
+    <!--Modal: Name-->
+        <!--Modal: Name-->
+        <div class="modal fade" id="modalYT2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
 
             <!--Content-->

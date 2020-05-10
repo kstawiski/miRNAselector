@@ -18,13 +18,13 @@ if(ncol(temp)==0) { writeLines(as.character("FAIL"), "var_initcheck.txt", sep=""
 cat(paste0("\n✓ The data contains ", ncol(temp), " features (e.g. miRNAs) for selection."))
 
 czy_numeryczne = sapply(temp, is.numeric)
-if(sum(czy_numeryczne) != ncol(temp)) { writeLines(as.character("FAIL", "var_initcheck.txt", sep = ""); stop("Some of the features are not numeric. Please remove them. Not numeric: ", paste0(colnames(temp)[czy_numeryczne == F], collapse = ", "))}
+if(sum(czy_numeryczne) != ncol(temp)) { writeLines(as.character("FAIL", "var_initcheck.txt", sep = "")); stop("Some of the features are not numeric. Please remove them. Not numeric: ", paste0(colnames(temp)[czy_numeryczne == F], collapse = ", "))}
 cat(paste0("\n✓ All features are numeric."))
 
 missing = FALSE
 czy_brakna = sapply(temp, is.na)
 if(sum(colSums(czy_brakna)) != 0) 
-{ cat("\n Some of the features contain missing data. That's ok. We will complete them using predictive mean matching. With missing values: ", paste0(colnames(temp)[colSums(czy_brakna) > 0], collapse = ", "))
+{ cat("\n✓ Some of the features contain missing data. That's ok. We will complete them using predictive mean matching. With missing values: ", paste0(colnames(temp)[colSums(czy_brakna) > 0], collapse = ", "))
 missing = T } else 
 { cat(paste0("\n✓ There are no missing data in features.")) }
 
