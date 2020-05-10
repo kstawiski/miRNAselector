@@ -296,7 +296,7 @@ echo $form->form_close();
                 <div class="modal-body mb-0 p-0">
 
                     <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                        <iframe class="embed-responsive-item" src="top.php" allowfullscreen></iframe>
+                        <iframe class="embed-responsive-item" src="software_update.php" allowfullscreen></iframe>
                     </div>
 
                 </div>
