@@ -143,8 +143,8 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
                     <p>Initial check status:
                         <code><b><?php $var_initcheck = file_get_contents('/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code>
                     </p>
-                    <p><a href="view.php?f=data.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=data.csv','popup','width=600,height=600'); return false;">View
+                    <p><a href="view.php?f=data_start.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=data_start.csv','popup','width=600,height=600'); return false;">View
                         data</a> <a href="process.php?type=cleandata" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data, configuration files and results. If you did not save them, click cancel and do it in the first place!')">Delete data
                         and restart the pipeline!</a></p>
 <p><font size="1">Notes: <i>The viewer is limited to 100 columns and 1000 rows.</i></font></p>
@@ -230,16 +230,16 @@ echo "<p>The pipeline splits dataset into training, testing and validation sets.
 
 echo "<hr><h3>Feature selection:</h3>";
 
-echo "<table class=\"table\"><thead><tr><th>Method:</th><th>Description:</th></tr></thead><tbody>";
+echo "<table class=\"table\"><thead><tr><th> </th><th>Method:</th><th>Description:</th></tr></thead><tbody>";
 
 echo "<tr><td>";
-echo $form->input_checkbox('method1','[all] All features','yes','','','','checked');
+echo $form->input_checkbox('method1','</td><td style="white-space: nowrap"><code>1</code>&emsp;<code>[all]</code>','yes','','','','checked');
 echo "<td>". "All features (e.g. miRNAs) in dataset." . "</td>";
 echo "</td><tr>";
 
 echo "<tr><td>";
-echo $form->input_checkbox('method2','[sig] Significiance filter','yes','','','','checked');
-echo "<td>". "Features that differ significantly (p<0.05) between groups, verifed by Welch two samples t-test. P-values are adjusted using Benjamini and Hochberg method." . "</td>";
+echo $form->input_checkbox('method2','</td><td style="white-space: nowrap"><code>2</code>&emsp;<code>[sig]</code>','yes','','','','checked');
+echo "<td>". "Significiance filter. Features that differ significantly (p<0.05) between groups, verifed by Welch two samples t-test. P-values are adjusted using Benjamini and Hochberg method." . "</td>";
 echo "</td><tr>";
 
 

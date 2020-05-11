@@ -2,6 +2,7 @@ setwd("/miRNAselector/")
 suppressMessages(suppressMessages(library(data.table)))
 suppressMessages(suppressMessages(library(dplyr)))
 dane = fread("data.csv")
+colnames(dane) = make.names(colnames(dane), unique = T)
 dane[dane == ""] = NA
 
 error = FALSE
@@ -24,7 +25,7 @@ cat(paste0("\n✓ All features are numeric."))
 missing = FALSE
 czy_brakna = sapply(temp, is.na)
 if(sum(colSums(czy_brakna)) != 0) 
-{ cat("\n✓ Some of the features contain missing data. That's ok. We will complete them using predictive mean matching.\nWith missing values:\n  -", paste0(colnames(temp)[colSums(czy_brakna) > 0], collapse = "\n  - "))
+{ cat("\n✓ Some of the features contain missing data. That's ok. We will impute missing values.\nWith missing values:\n  -", paste0(colnames(temp)[colSums(czy_brakna) > 0], collapse = "\n  - "))
 missing = T } else 
 { cat(paste0("\n✓ There are no missing data in features.")) }
 

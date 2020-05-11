@@ -38,11 +38,29 @@ set.seed(1)
 
 The package miRNAselector has a lot of requirements that are nessesary to run all the experiments. The script below will allow to install most of them. It is highly recommended to install those packages using the code below.
 
-What should be done?
-- If you have Nvidia GPU - install CUDA and set `gpu=T` in the setup script below.
 
-```{r}
-readLines("setup.R") %>% paste0(collapse="\n") %>% cat
+```{r, eval=F}
+install.packages("devtools",repos = "http://cran.r-project.org")
+install.packages(c("roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra"))
+install.packages("BiocManager",repos = "http://cran.r-project.org")
+install.packages("plotly")
+install.packages("reticulate")
+library(BiocManager)
+BiocManager::install(c("devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
+                       "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
+                       "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow",
+                       "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
+                       "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr", "rpart", "party", "mgcv", "GDCRNATools",
+                       "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools"))
+devtools::install_github("STATWORX/bounceR", force = T)
+#devtools::install_github("rstudio/reticulate")
+devtools::install_github("Thie1e/cutpointr", force = T)
+devtools::install_github("vqv/ggbiplot", force = T)
+library(keras)
+install_keras()
+
+
+devtools::install_github("kstawiski/miRNAselector", force = T) # Install our package.
 ```
 
 
@@ -51,30 +69,29 @@ This code does not cover the installation of mxnet, which can be used for benchm
 
 # Getting the data
 
-In this showcase we will use TCGA-derived data.
+To present the package functionality, we will use the pan-cancer data from TCGA (https://portal.gdc.cancer.gov/repository). These two commands below will download and store all the necessary data in your working directory. 
+Please note, that this process may take some time (depending on your network connection), but has to be performed only once. 
 
-miRNAselecter has built-it functions for downloading of miRNA-seq data from TCGA. By default all projects are downloaded and processed using 2 functions as shown below.
-
-```
+```{r, eval = F}
 ks.download_tissue_miRNA_data_from_TCGA()
 ks.process_tissue_miRNA_TCGA(remove_miRNAs_with_null_var = T)
 ```
 
 Both of those function produce 2 files: `tissue_miRNA_counts.csv` and `tissue_miRNA_logtpm.csv`.
 First of those files contains metadata and raw counts as declared in TCGA. The second is are log-transformed transcripts-per-million (TPM) counts.
-Let's load counts files and see what sample do we have.
+Let's load counts files and see its summary.
 
 ```{r}
 suppressWarnings(suppressMessages(library(data.table)))
 suppressWarnings(suppressMessages(library(knitr)))
-orginal_TCGA_data = fread("tissue_miRNA_counts.csv.gz")
+orginal_TCGA_data = fread("tissue_miRNA_counts.csv")
 orginal_TCGA_data[orginal_TCGA_data == ""] = NA
 kable(table(orginal_TCGA_data$primary_site, orginal_TCGA_data$sample_type))
 ```
 
 Let's consider a following exemplary problem..
 
-We want to find the set of miRNAs the most specific to pancreatic cancer. We see that there are 178 cases of pancreatic cancer miRNA-seq results and only 4 solid tissue normal cases. However, we have multiple other normal miRNA-seq results that could be incorporated in the analysis. Let's filter and label the samples of interest.
+We want to find the set of miRNAs the most specific to pancreatic cancer. We see that there are 178 cases of pancreatic cancer miRNA-seq results and only 4 solid tissue normal cases. However, we have multiple normal tissue miRNA-seq results from other projects that could be incorporated in the analysis. Let's filter and label the samples of interest.
 
 ```{r}
 suppressWarnings(suppressMessages(library(dplyr)))
@@ -84,7 +101,7 @@ control_cases = filter(orginal_TCGA_data, sample_type == "SolidTissueNormal")
 ```
 
 
-The pipeline requires the variable `Class` to be present in the dataset. This variable has to be present and have only 2 levels: `Cancer` and `Control`.
+The pipeline requires the variable `Class` with two levels (`Cancer` and `Control`) to be present in the dataset. 
 
 ```{r}
 cancer_cases$Class = "Cancer"
@@ -95,7 +112,7 @@ dataset = rbind(cancer_cases, control_cases)
 kable(table(dataset$Class), col.names = c("Class","Number of cases"))
 ```
 
-Let's explore some of the associations between the group.
+
 
 ```{r}
 boxplot(dataset$age_at_diagnosis ~ dataset$Class)
@@ -104,7 +121,7 @@ kable(table(dataset$gender.x, dataset$Class))
 chisq.test(dataset$gender.x, dataset$Class)
 ```
 
-There is the stistically significant difference in age between classess. The gender was not associated with class. Let's do propensity score matching to balance the sets.
+There is a stistically significant difference in age between classess. The gender was not associated with class. In order to increase feature selection performance, we will try to balance the sets by performing propensity score matching.
 
 ```{r}
 old_dataset = dataset # backup
@@ -123,6 +140,11 @@ mod_match <- matchit(tempform, data = temp3)
 newdata = match.data(mod_match)
 dataset = dataset[as.numeric(rownames(newdata)),]
 
+```
+
+Let's check if there is any imbalance in the new, transformed dataset.
+
+```{r}
 boxplot(dataset$age_at_diagnosis ~ dataset$Class)
 t.test(dataset$age_at_diagnosis ~ dataset$Class)
 kable(table(dataset$gender.x, dataset$Class))
@@ -130,9 +152,11 @@ chisq.test(dataset$gender.x, dataset$Class)
 fwrite(dataset, "balanced_dataset.csv.gz")
 ```
 
-Dataset is a bit better balanced now. In the next steps we will:
-1. In order to stay consistent between different datasets we will use `ks.correct_miRNA_names()` to unify the miRNA names between different versions of miRbase.
-2. We will perform standard filtering, log-transormation and TPM-normalization.
+There are no significant differences in age or gender composition between classes now. We can proceed to standard filtering, log-transormation and TPM-normalization.
+
+However, first, in order to stay consistent between different datasets, we need to standardise microRNA names.
+`ks.correct_miRNA_names()` unify the miRNA names between different versions of miRbase.
+
 
 ```{r}
 dataset = ks.correct_miRNA_names(dataset)
@@ -143,12 +167,13 @@ ttpm = ks.counts_to_log10tpm(danex, metadane, ids = metadane$sample,
                                  filtr = T, filtr_minimalcounts = 100, filtr_howmany = 1/3) # We will leave only the miRNAs which apeared with at least 100 counts in 1/3 of cases.
 ```
 
-After application of filter there are still 166 miRNAs left. The filter was applied to ensure our potential diagnostic test may not relay strictly on miRNA-seq data, but the creation of much cheaper qPCR test will be possible.
+You might have noticed, that we have filtered out microRNAs not having at least 100 counts in 1/3 of samples. It was done to ensure that microRNAs selected as features for classifier (possibly used in clinic) would be detectable in other, cheaper methods, such as qPCR. 
+After filtering there are 166 miRNAs left.
 
-In the next step we will devide the dataset into training, testing and validation datasets. We strongly belive that hold-out validation is the most redundant validation method and although miRNAselector supports cross-validation, the hold-out validation is set by default in most cases. Thus, the rest of the analysis is dependent of existance of 3 seperate datasets:
+In the next step we will devide the dataset into training, testing and validation datasets. We strongly belive that hold-out validation is the most redundant validation method and although miRNAselector supports cross-validation, the hold-out validation is set by default in most cases. Thus, the rest of the analysis is dependent on existance of 3 seperate datasets:
 
-- Training dataset (`mixed_train.csv`): By default 60%, used for differential expression, used for feature selection, used for model training.
-- Testing dataset (`mixed_test.csv`): By default 20%, used for hyperparameter selection (in `holdout=T` mode), used for performance assessment.
+- Training dataset (`mixed_train.csv`): By default 60%, used for differential expression, feature selection and model training.
+- Testing dataset (`mixed_test.csv`): By default 20%, used for hyperparameter selection (in `holdout=T` mode)and for performance assessment.
 - Validation dataset (`mixed_valid.csv`): By default 20%, used only for performance assessment.
 
 The best signiture (best set of miRNAs for diagnostic test) can be selected based on all 3 datasets, 2 datasets or only validation set. The process of best signiture selection will be discussed below.
@@ -159,6 +184,7 @@ The split can be prepared manually by user (the pipeline expects to find `mixed_
 mixed = ks.prepare_split(metadane = metadane, ttpm = ttpm, train_proc = 0.6)
 ```
 
+Let's see a split summary. 
 
 ```{r}
 mixed = fread("mixed.csv")
@@ -170,7 +196,7 @@ We can see that the dataset was devided in balanced way. Now we are ready to mov
 
 # Basic exploratory analysis
 
-In biomarker studies we relay on validation. We perform hold-out validation, but the signature has to be selected based on trainin dataset only. Including testing and validation dataset in the exploratory analysis could lead to bias. In the following section we show how to use our package to perform quick exploratory analysis of miRNA-seq data.
+In biomarker studies we relay on validation. We perform hold-out validation, so the signature selection has to be  based on training dataset only. Including testing and validation dataset in the exploratory analysis could lead to bias ('data leakage'). In the following section we show how to use our package to perform quick exploratory analysis of miRNA-seq data.
 
 
 ```{r warning=FALSE}
@@ -178,12 +204,13 @@ dane = ks.load_datamix(use_smote_not_rose = T) # load mixed_*.csv files
 train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]] # get the objects from list to make the code more readable.
 ```
 
-`ks_load_datamix()` function loads the data created in preparation phase. It requires the output constructed by `ks.prepare_split()` function to be placed in working directory ('wd'), thus files 'mixed_train.csv', 'mixed_test.csv' and 'mixed_valid.csv' have to exist in the directory. For imbalanced data, the fuction can perform balancing using: 
+`ks_load_datamix()` function loads the data created in preparation phase. It requires the output constructed by `ks.prepare_split()` function to be placed in working directory ('wd'), thus files 'mixed_train.csv', 'mixed_test.csv' and 'mixed_valid.csv' have to exist in the directory. 
+If you have split the data manually, there may be some imbalance of classes in train, test or validation datasets. If so, `ks.prepare_split()` perform balancing using: 
 
 1. ROSE (default): https://journal.r-project.org/archive/2014/RJ-2014-008/RJ-2014-008.pdf - by default we generate 10 * number of cases in orginal dataset. 
 2. SMOTE: https://arxiv.org/abs/1106.1813 - by defult we use 'perc.under=100' and 'k=10'.
 
-At the beging of the analysis we usually perform **principal component analysis** (PCA) to assess for any batch effect, possible outliers and get a general understanding of miRNA profile. This package can construct 2-dimentional biplot and 3-dimentional scatterplot based on the computed components to handle this issue.
+At the beging of the analysis we usually perform **principal component analysis** (PCA) to assess for any batch effect, possible outliers and get a general understanding of miRNA profile. The package can construct 2-dimentional biplot and 3-dimentional interactive scatterplot based on the computed components.
 
 ```{r}
 pca = ks.PCA(trainx, train$Class)
@@ -195,9 +222,9 @@ pca3d = ks.PCA_3D(trainx, train$Class)
 pca3d
 ```
 
-In the next step we can correct the batch effect for example using `ks.combat()`. The correction of batch effect is out of the scope of this tutorial.
+Now we can also correct the batch effect, if there is any. For example, you can use `ks.combat()` to do so. However, detailed demonstration is out of scope of this tutorial.
 
-Usually, the next step in the exploratory analysis is to perform the differential expression analysis. Differential expression in our package focuces of biomarker discovery thus uses t-test with the correction for multiple comparisons. The following table shows signifiant miRNAs after BH correction.
+Usually, the next step in the exploratory analysis is to perform the differential expression analysis. Differential expression in our package is biomarker-discovery oriented, thus it uses t-test with the correction for multiple comparisons. The following table shows signifiantly differently expressed miRNAs after Benjamini-Hochberg correction.
 
 ```{r}
 de = ks.miRNA_differential_expression(trainx, train$Class)
@@ -205,7 +232,7 @@ sig_de = de %>% dplyr::filter(`p-value BH` <= 0.05) %>% dplyr::arrange(`p-value 
 ks.table(sig_de) 
 ```
 
-We may want to futher visualize the results of differential expression using heatmap and vulcano plot.
+Let's visualize the results of differential expression using heatmap and vulcano plot.
 
 ```{r}
 ks.heatmap(x = dplyr::select(trainx, sig_de$miR),
@@ -213,7 +240,7 @@ ks.heatmap(x = dplyr::select(trainx, sig_de$miR),
            zscore = F, margins = c(10,10))
 ```
 
-Z-scoring the values before clustering and plotting and help to gain more insights.
+Z-scoring the values before clustering and plotting will help us to gain more insight.
 
 ```{r}
 ks.heatmap(x = dplyr::select(trainx, sig_de$miR),
@@ -221,7 +248,7 @@ ks.heatmap(x = dplyr::select(trainx, sig_de$miR),
            zscore = T, margins = c(10,10))
 ```
 
-Let's plot the vulcano plot and label top 10 most significant miRNAs:
+We will also create a vulcano plot and label top 10 most significant miRNAs:
 
 ```{r}
 ks.vulcano_plot(selected_miRNAs = de$miR, DE = de, only_label = sig_de$miR[1:10])
@@ -245,16 +272,41 @@ The main feature of this package is the shotgun-like feature selection evaluatio
 selected_features = ks.miRNAselector(wd = getwd(), m = 1:70, max_iterations = 10, stamp = "tutorial")
 ```
 
-But, for largers projects we suggest using the following wrapper wich will perform the feature selection in parallel, significantly reducing computational time. We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing. 
+But, for largers projects we suggest using the following wrapper wich will perform the feature selection in parallel, significantly reducing computational time. We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing:
 
-```{r}
-readLines("Tutorial_miRNAselector.R") %>% paste0(collapse="\n") %>% cat
+```{r, eval=F}
+#options(warn = -1)
+suppressMessages(library(foreach))
+suppressMessages(library(doParallel))
+suppressMessages(library(parallel))
+suppressMessages(library(doSNOW))
+
+m = 1:56 # which methods to check?
+
+cl <- makeCluster(5) # 5 threds by default
+doSNOW::registerDoSNOW(cl)
+iterations = length(m)
+pb <- txtProgressBar(max = iterations, style = 3)
+progress <- function(n) setTxtProgressBar(pb, n)
+opts <- list(progress = progress)
+foreach(i = m, .options.snow = opts) %dopar%
+{
+  suppressMessages(library(miRNAselector))
+  setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
+  ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = F, # we set debug to false (to make the package smaller), you may also want to change stamp to something meaningful, max_iterations was set to 1 to recude the computational time.. in real life scenarios it is resonable to use at least 10 iterations.
+                  prefer_no_features = 11, # Few methods are filter rather than wrapper methods, thus requires the maximum number of maximum features.
+                  conda_path = "/home/konrad/anaconda3/bin/conda", # Methods line WxNet requires usage of python. In setup script we create conda enviorment. Providing conda_path makes it easier to activate env. We prefer this apporach over use_condaenv.
+                  timeout = 600) # We don't want to wait eternity in this tutorial, just 10 minutes. Timeout is useful for complicated methods. Depending on your CPU 2 days may be reasonable for larger projects.
+                   }
+
+stopCluster(cl)
+#options(warn = 0)
 ```
 
-Few notes about what is does:
+A few notes about what is does:
 
-- This function iterates though available methods which are described by desired `m` parameter. The aim of this function is to perform feature selection using multiple methods and to create formulas for benchmarking.
-- It loads the data from working directory. The output is mainly created in files in working directory. Log and temporary files are placed in created `temp` subfolder.
+- This function iterates though available methods which are described by `m` parameter. The aim of this function is to perform feature selection using multiple methods and to create formulas for benchmarking.
+- It loads the data from working directory. The output is mainly put in files in the working directory. Log and temporary files are placed in a created `temp` subfolder.
 
 Files created for each method (e.g. for `stamp=tutorial` and `m=1`): 
 
@@ -283,22 +335,21 @@ Pearls about the methods:
 
 Notes about methods:
 
--- TO DO --
+Comming soon...
 
-The `miRNA.selector` functions saves all output files to `temp/` directory. As users may want to run multiple selection methods in different configurations we do not recommend using the return of this function in the next steps. Instead, we provide `ks.merge_formulas()` which conviniently summerizes the results of feature selection. We do:
+The `miRNA.selector` functions saves all output files to `temp/` directory. As users may want to run multiple selection methods in different configurations, we do not recommend using the return of this function in the following steps. Instead, we provide `ks.merge_formulas()` which conviniently summerizes the results of feature selection. We can do:
 
 ```{r}
 selected_sets_of_miRNAs = ks.merge_formulas(max_miRNAs = 11) # we filter out sets with more than 11 miRNAs.
 selected_sets_of_miRNAs_with_own = ks.merge_formulas(max_miRNAs = 11, 
-                                                     add = list("my_own_signature" = c("hsa.miR.192.5p","hsa.let.7g.5p","hsa.let.7a.5p","hsa.let.7d.5p","hsa.miR.194.5p",
-                                                                                 "hsa.miR.98.5p", "hsa.let.7f.5p", "hsa.miR.26b.5p"))) # you can also add your own signature (for example selected from literature)
+                                                     add = list("my_own_signature" = c("hsa.miR.192.5p","hsa.let.7g.5p","hsa.let.7a.5p","hsa.let.7d.5p","hsa.miR.194.5p", "hsa.miR.98.5p", "hsa.let.7f.5p", "hsa.miR.26b.5p"))) # you can also add your own signature (for example selected from literature)
 ```
 
 Note that:
 
-- The methods `fcsig` and `cfs_sig` are always retained in the final `formulas` set (ignoring `max_miRNA` parameter). This is because those methods are usually used as benchmark comparator in discussing the final set of miRNAs. We find more easy to remove those sets (if needed) from final selection than to look for them in `temp` files or in `featureselection_formulas_all.RDS`.
+- Two files are created in working directory: (1) `featureselection_formulas_all.RDS` - contains the formulas for all selection methods, (2) `featureselection_formulas_final.RDS` - contains methods that selected smaller or equal number of microRNAs than specified in `max_miRNA` parameter, as well as `fcsig` and `cfs_sig`.
+- The results of `fcsig` and `cfs_sig` methods are always retained in the final `formulas` set (ignoring `max_miRNA` parameter) - they are commonly used as benchmark comparator for the final set of miRNAs. Those sets can be manually removed (if needed) from final selection.
 - Readable tables are written in corresponding `*.csv` files.
-- Two files are created in working directory: (1) `featureselection_formulas_all.RDS` - contains the formulas for all selection methods, (2) `featureselection_formulas_final.RDS` - contains methods that yelded in less or equal than `max_miRNA` miRNAs and `fcsig` and `cfs_sig`.
 
 Let's analyze the process of feature selection:
 
@@ -311,24 +362,35 @@ featureselection_formulas_final = fread("featureselection_formulas_final.csv")
 ks.table(featureselection_formulas_final) # show information about selected formulas
 ```
 
-Note that `my_own_signture` has `0` miRNAs according to the table. This trick is done to make sure that every sigure added manually will survive filtering.
+Note that `my_own_signture` has `0` miRNAs according to the table. This trick is done to make sure that signatures added manually will not be filtered out based on `max_miRNA` parameter.
 
-Summary:
+Now, we will summarize number of microRNAs selected by methods implemented in `ks.miRNAselector` by creating histogram and calculating some descriptive statistics.
 
 ```{r}
-hist(featureselection_formulas_final$ile_miRNA[-which(featureselection_formulas_final$ile_miRNA == 0)], breaks = ncol(train)) # Histogram showing how many miRNAs were selected in final set.
+hist(featureselection_formulas_final$ile_miRNA[-which(featureselection_formulas_final$ile_miRNA == 0)], 
+     breaks = ncol(train),
+     main = "Number of selected microRNAs distribution",
+     xlab = "Number of selected microRNAs"
+     ) # Histogram showing how many miRNAs were selected in final set.
 psych::describe(featureselection_formulas_final$ile_miRNA[-which(featureselection_formulas_final$ile_miRNA == 0)]) # Descriptive statistics of how many features where selected in the final set.
 ```
 
 # Benchmarking
 
-In the next step of looking for the best signature, we perform benchmarking. This tests all the signatures using different data mining methods. Here is the example of benchmark with default parameters:
+In the next step of looking for the best microRNA signature, we perform benchmarking. This tests all the signatures using different classifier architectures. Here is the example of benchmark with default parameters:
 
-```{r}
-readLines("Tutorial_benchmark.R") %>% paste0(collapse="\n") %>% cat
+
+
+```{r, eval=F}
+suppressMessages(library(miRNAselector))
+ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more
+  algorithms = c("mlp", "mlpML", "svmRadial", "svmLinear", "rf", "C5.0", "rpart", "rpart2", "ctree"), # default set of methods, note that logistic regression (glm) is always included
+  output_file = paste0("benchmark.csv") # the main output
+) 
+      
 ```
 
-As benchmarking is done the main result file is saved as declared in `output_file` parameter. This file contains the performance metrics of the selected signiture across different methods of data mining modelling. Let's take a look:
+As benchmarking is done, the main result file is saved in file specified in `output_file` parameter. It contains the performance metrics of signatures satisfying initial criteria (e.g. `max_miRNA`) across different methods of modelling. Let's take a quick look:
 
 ```{r}
 ks.table(fread("benchmark.csv"))
@@ -358,16 +420,16 @@ for(i in 1:length(metody)){
     temp = ks.get_benchmark("benchmark.csv") # loads benchmark
     temp2 = dplyr::select(temp, starts_with(paste0(metody[i],"_")))
     boxplot(temp[,paste0(metody[i],"_train_Accuracy")], temp[,paste0(metody[i],"_test_Accuracy")], temp[,paste0(metody[i],"_valid_Accuracy")],
-            main = metody[i], names = c("Training","Testing","Validation"), ylab = "Accuracy", ylim = c(0.5,1))
+            main = paste0("Method: ", metody[i]), names = c("Training","Testing","Validation"), ylab = "Accuracy", ylim = c(0.5,1))
     tempids = c(match(paste0(metody[i],"_train_Accuracy"), colnames(temp)), match(paste0(metody[i],"_test_Accuracy"), colnames(temp)), match(paste0(metody[i],"_valid_Accuracy"), colnames(temp)))
   }
 par(mfrow = c(1,1))
 ```
 
 
-In this package, the best signature can be selected using 3 methods:
+With `miRNAselector` package, the final optimal feature signature can be selected in 3 ways:
 
-**1. The signture which achived the best accuracy in training, testing and validation:** (metaindex = mean of all 3 accuracy metrics)
+**1. Picking the signture which achived the best accuracy in training, testing and validation:** (metaindex = mean of all 3 accuracy metrics)
 
 ```{r}
 acc1 = ks.best_signiture_proposals(benchmark_csv = "benchmark.csv", without_train = F) # generates the benchmark sorted by metaindex
@@ -375,7 +437,7 @@ best_signatures = acc1[1:3,] # get top 3 methods
 knitr::kable(best_signatures[,31:33])
 ```
 
-**2. The signture which achived the best accuracy in testing and validation:** (metaindex = mean of 2 accuracy metrics)
+**2. Picking the signture which achived the best accuracy in testing and validation:** (metaindex = mean of 2 accuracy metrics)
 
 ```{r}
 acc1 = ks.best_signiture_proposals(benchmark_csv = "benchmark.csv", without_train = T) # generates the benchmark sorted by metaindex
@@ -391,9 +453,9 @@ best_signatures = acc[1:3,] # get top 3 methods
 knitr::kable(best_signatures[,c(2:4, 135)])
 ```
 
-Let's assess the over/underfitting of selected methods for top 2 signatures. The plots show the change of accuracy between datasets across top 5 methods of feature selection.
+It is a good practice to assess learning performance for considered signatures across different classification methods. Here, we  visualize the over/underfitting of selected methods by comparing accuracy score between testing and validation sets for 5 top scoring signatures across selection of model architectures. 
 
-```{r}
+```{r fig.height=9, fig.width=16}
 for(i in 1:length(metody))
   {
 suppressMessages(library(PairedData))
@@ -416,7 +478,7 @@ grid.arrange(arrangeGrob(plot4, ncol=1, nrow = 1, top=metody[i]))
 }
 ```
 
-The relationship betweend accuracy on testin and training set can be further visualized as follows:
+The relationship betweend accuracy on testing and validation sets can also be pictured as scatterplot:
 
 ```{r}
 acc2 = acc[1:6,] # get top 6 methods
@@ -437,7 +499,7 @@ grid.arrange(arrangeGrob(plot5, ncol=1, nrow = 1))
 
 # Best signture analysis
 
-Suppose we chose to select the best signitures based on the best sensitivity and specificity in validation. Let's see 3 best signutures:
+Suppose we decide to use sensitivity and specificity in validation set (e.g. in the model architectures we plan to use in our research) as decisive scoring metric for feature signature. The three best signatures may be:
 
 ```{r}
 kable(best_signatures[1:3,2:4])
@@ -450,7 +512,7 @@ selected_miRNAs = ks.get_miRNAs_from_benchmark(benchmark_csv = "benchmark.csv", 
 selected_miRNAs
 ```
 
-Let's check the differential expression metric of selected miRNAs:
+As a double check, we can inspect the differential expression of miRNAs constituating selected signature:
 
 ```{r}
 best_de = ks.best_signiture_de(selected_miRNAs)
@@ -459,7 +521,7 @@ ks.table(best_de)
 
 Let's visualize the performance of those methods using barplots:
 
-```{r}
+```{r fig.height=9, fig.width=16}
 for(i in 1:3){
   cat(paste0("\n\n## ", acc$method[i],"\n\n"))
   par(mfrow = c(1,2))
@@ -505,7 +567,7 @@ attr(overlap,"intersections")$`topFCSMOTE:Mystepwise_sig_glm_binomial:AUC_MDL`
 
 Let's draw vulcano plot and mark the miRNAs selected in best signature:
 
-```{r}
+```{r warning=FALSE}
 ks.vulcano_plot(selected_miRNAs = de$miR, DE = de, only_label = selected_miRNAs)
 ```
 
@@ -538,6 +600,6 @@ session_info()
 To render this tutorial we used:
 
 ```{r, eval = FALSE}
-render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "/home/konrad/public/Projekty/KS/miRNAselector/static/")
+render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "../static/")
 ```
 
