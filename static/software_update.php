@@ -27,7 +27,13 @@ if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/mi
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script type="text/javascript">
-        var waitingDialog = waitingDialog || (function ($) { 'use strict';
+    function fun()
+	{
+		 $("div").scrollTop(50);
+		 window.scrollTo(0, document.body.scrollHeight);
+	}
+
+	var waitingDialog = waitingDialog || (function ($) { 'use strict';
 
 	// Creating modal dialog's DOM
 	var $dialog = $(
@@ -87,11 +93,9 @@ if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/mi
 	};
 
 })(jQuery);
-
-	window.onload=toBottom; function toBottom(){window.scrollTo(0, document.body.scrollHeight); }
     </script>
 </head>
-<body>
+<body onload="fun">
     <div class="container">
     <div class="starter-template">
             <p>
