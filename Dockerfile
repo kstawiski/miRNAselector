@@ -41,7 +41,7 @@ RUN apt-get update --fix-missing && \
 COPY vignettes/setup.R /
 COPY docker/register_jupyter.R /
 
-RUN Rscript /setup.R && cd /incubator-mxnet/ && make -f R-package/Makefile rpkg && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-generic-recommended pandoc
+RUN Rscript /setup.R && cd /incubator-mxnet/ && make -f R-package/Makefile rpkg && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc
 
 COPY docker/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 COPY docker/logo.png /opt/conda/lib/python3.7/site-packages/notebook/static/base/images/logo.png
