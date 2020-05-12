@@ -14,4 +14,5 @@
 #suppressMessages(library(keras))
 #install_keras()
 
+#system("cd /miRNAselector/miRNAselector && git reset --hard && git clean -df && git pull")
 devtools::install_github("kstawiski/miRNAselector") # Install our package.

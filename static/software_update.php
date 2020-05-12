@@ -1,4 +1,8 @@
 <html>
+<?php 
+$czy_dziala = shell_exec('ps -ef | grep -v grep | grep updater | wc -l');
+if($czy_dziala == 0) { exec('screen -dmS updater /miRNAselector/miRNAselector/docker/software_update.sh | tee /update.log'); } ?>
+
 <head>
     <title>miRNAselector</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -91,10 +95,9 @@
             </p>
             <p><br></p>
         </div>
-    <p>Application update:
-    <pre><?php $output = shell_exec('cd /miRNAselector/miRNAselector && git reset --hard && git clean -df && git pull 2>&1'); echo $output; ob_end_flush(); flush(); ?></pre></p>
-    <p>R package update:
-    <pre><?php $output = shell_exec('Rscript /miRNAselector/miRNAselector/docker/update.R 2>&1'); echo $output; ?></pre></p>
+    <p>Update log:
+    <pre><?php echo file_get_contents('/update.log'); ?></pre></p>
+    
     <p>The update is finished. Please go back to the app.</p>
     <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a>
     </div>
