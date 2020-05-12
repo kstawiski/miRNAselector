@@ -1,6 +1,6 @@
 # Introduction
 
-- `miRNAselector` package is the environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
+`miRNAselector` package is the environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
 # Installation
 
@@ -38,17 +38,17 @@ or run `vignettes/setup.R` script to install nessesary libraries.
 
 # Tutorials
 
-- (Get started with basic functions of the package in local R enviorment.)[https://htmlpreview.github.io/?https://github.com/kstawiski/miRNAselector/blob/master/static/Tutorial.html]
+- [Get started with basic functions of the package in local R enviorment.](https://htmlpreview.github.io/?https://github.com/kstawiski/miRNAselector/blob/master/static/Tutorial.html)
 
 Examplary files for the analysis:
 
-- (TCGA-based tissue expression of miRNAs: `tissue_miRNA_counts.csv`)[http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts.csv]
-- (TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation): `tissue_miRNA_counts_withmissing.csv`)[http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing.csv]
-- (TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation) and with batch variable (for testing of batch-effect correction): `tissue_miRNA_counts_withmissing_wthbatcheffect.csv`)[http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing_wthbatcheffect.csv]
+- [TCGA-based tissue expression of miRNAs: `tissue_miRNA_counts.csv`](http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts.csv)
+- [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation): `tissue_miRNA_counts_withmissing.csv`](http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing.csv)
+- [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation) and with batch variable (for testing of batch-effect correction): `tissue_miRNA_counts_withmissing_wthbatcheffect.csv`](http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing_wthbatcheffect.csv)
 
 # Development
 
 ![Docker Image CI](https://github.com/kstawiski/miRNAselector/workflows/Docker%20Image%20CI/badge.svg) ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg)
 
-- Bugs and issues: (https://github.com/kstawiski/miRNAselector/issues)[https://github.com/kstawiski/miRNAselector/issues]
-- Contact with developers: (Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl))[https://konsta.com.pl]
+- Bugs and issues: [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues)
+- Contact with developers: [Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl)](https://konsta.com.pl)
