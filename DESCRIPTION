@@ -42,7 +42,6 @@ Imports:
     nnet,
     reticulate,
     stargazer,
-    limma,
     ggrepel,
     classInt,
     plotly,
