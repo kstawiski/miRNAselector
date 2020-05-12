@@ -1,29 +1,54 @@
-![](vignettes/logo.png)
+# Introduction
 
-# miRNAselector package
+- `miRNAselector` package is the environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
-Authors: Konrad Stawiski (konrad@konsta.com.pl), Marcin Kaszkowiak
+# Installation
 
-## Installation
-
-**[OPTION 1] Docker version (recommended):**
+## [OPTION 1] Docker version (recommended):
 
 If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
 Our public docker image: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector).
 
-Quick-start command: `docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector` and go to `http://127.0.0.1:28888` for GUI. You can change `28888` to the port you desire.
+Quick-start command: 
+
+```
+docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector
+```
+
+and go to `http://127.0.0.1:28888` for GUI. You can change `28888` to the port you desire.
 
 Pearls:
 
 - Docker version contains web-based GUI allowing for easy implementation of the pipeline.
-- We assure the correct functionality only on docker version.
-- Docker container is based on configured ubuntu
+- Advanced features allow to run Jupyter-based notebooks, allowing for modification 
+- Contains Jupyter-notebook-based tutorial for learning and easy implementation of R package.
+- For docker-based version we assure the correct functionality. Docker container is based on configured ubuntu.
 
-**[OPTION 2] Installation in your local R enviorment:**
+## [OPTION 2] Installation in your local R enviorment:
 
-Run `vignettes/setup.R` script to install nessesary libraries.
+Run following commands in your local R:
 
-## Tutorial
+```
+require("devtools")
+install_github("kstawiski/miRNAselector", force = T)
+library(miRNAselector)
+```
+or run `vignettes/setup.R` script to install nessesary libraries.
 
-- Basic functionality: https://htmlpreview.github.io/?https://github.com/kstawiski/miRNAselector/blob/master/static/Tutorial.html
+# Tutorials
+
+- (Get started with basic functions of the package in local R enviorment.)[https://htmlpreview.github.io/?https://github.com/kstawiski/miRNAselector/blob/master/static/Tutorial.html]
+
+Examplary files for the analysis:
+
+- (TCGA-based tissue expression of miRNAs: `tissue_miRNA_counts.csv`)[http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts.csv]
+- (TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation): `tissue_miRNA_counts_withmissing.csv`)[http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing.csv]
+- (TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation) and with batch variable (for testing of batch-effect correction): `tissue_miRNA_counts_withmissing_wthbatcheffect.csv`)[http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing_wthbatcheffect.csv]
+
+# Development
+
+![Docker Image CI](https://github.com/kstawiski/miRNAselector/workflows/Docker%20Image%20CI/badge.svg) ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg)
+
+- Bugs and issues: (https://github.com/kstawiski/miRNAselector/issues)[https://github.com/kstawiski/miRNAselector/issues]
+- Contact with developers: (Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl))[https://konsta.com.pl]
