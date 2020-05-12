@@ -1,7 +1,7 @@
 <html>
 <?php 
-$czy_dziala = shell_exec('ps -ef | grep -v grep | grep updater | wc -l');
-if($czy_dziala == 0) { exec('screen -dmS updater /miRNAselector/miRNAselector/docker/software_update.sh | tee /update.log'); } ?>
+$czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-updater | wc -l');
+if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh'); } ?>
 
 <head>
     <title>miRNAselector</title>
