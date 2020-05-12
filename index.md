@@ -8,7 +8,10 @@
 
 If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
-Our public docker image: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector).
+Our public docker images: 
+
+- Docker Hub: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector)
+- GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector`](https://docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector)
 
 Quick-start command: 
 
