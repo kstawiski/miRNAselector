@@ -305,7 +305,9 @@ echo $form->form_close();
                 <div class="panel-heading"><i class="fas fa-bars"></i>&emsp;&emsp;Additional tools</div>
                 <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
                         data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;
-                    <a href="e" target="_blank" role="button" class="btn btn-primary"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a>&emsp;<a href="software_update.php" role="button" onclick="waitingDialog.show('Updating... Please wait...');" class="btn btn-primary"><i class="fas fa-arrow-up"></i></i>&emsp;Update</a></div>
+                    <a href="e" target="_blank" role="button" class="btn btn-primary"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a>
+                    &emsp;<a href="software_update.php" role="button" onclick="waitingDialog.show('Updating... Please wait...');" class="btn btn-primary"><i class="fas fa-arrow-up"></i></i>&emsp;Update</a>
+                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a></div>
             </div>
 
     </div>

@@ -260,7 +260,9 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
       # }, finally={
       #   stargazer(wyniki, type = 'html', out = paste0("temp/wyniki",stamp,".html"), summary = F)
       # })
-      stargazer(wyniki, type = 'html', out = paste0("temp/wyniki",stamp,".html"), summary = F)
+      wyniki2 = wyniki
+      colnames(wyniki2) = make.names(colnames(wyniki2), unique = TRUE, allow_ = FALSE)
+      stargazer(wyniki2, type = 'html', out = paste0("temp/wyniki",stamp,".html"), summary = F)
       write.csv(wyniki,paste0("temp/",output_file))
     }
 
@@ -268,7 +270,9 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
 
   }
 
-  stargazer(wyniki, type = 'html', out = paste0("temp/wyniki",stamp,".html"), summary = F)
+wyniki2 = wyniki
+colnames(wyniki2) = make.names(colnames(wyniki2), unique = TRUE, allow_ = FALSE)
+stargazer(wyniki2, type = 'html', out = paste0("temp/wyniki",stamp,".html"), summary = F)
 
   write.csv(wyniki,output_file)
   setwd(oldwd)

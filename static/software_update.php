@@ -96,7 +96,7 @@
     <p>R package update:
     <pre><?php $output = shell_exec('Rscript /miRNAselector/miRNAselector/docker/update.R 2>&1'); echo $output; ?></pre></p>
     <p>The update is finished. Please go back to the app.</p>
-    <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-upload"></i>&emsp;Go back</a>
+    <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a>
     </div>
   </body>
 </html>
