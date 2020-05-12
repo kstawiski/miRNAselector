@@ -101,10 +101,18 @@ if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/mi
     <pre><?php echo $zawartosc_logu; ?></pre></p>
     
     <?php if($skonczone == 1) { ?>
-	<p>The update is finished. Please go back to the app.</p>
+	<p>The update is finished. Please go back to the app. If you have any active notebooks running, you may need to restart kernel for new features. More details: <a href="https://github.com/kstawiski/miRNAselector" target="_blank">https://github.com/kstawiski/miRNAselector</a>.</p>
     <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a>
 	<?php } else { ?>
 		<meta http-equiv="refresh" content="3">
+		<script>
+// Warning before leaving the page (back button, or outgoinglink)
+window.onbeforeunload = function() {
+   return "The update is in progress. Do you want to leave updater page?";
+   //if we return nothing here (just calling return;) then there will be no pop-up question at all
+   //return;
+};
+</script>
 	<?php } ?>
     </div>
   </body>
