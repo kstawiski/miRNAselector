@@ -1,9 +1,9 @@
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Welcome to miRNAselector! For more details go to https://kstawiski.github.io/miRNAselector/")
+  packageStartupMessage("Welcome to miRNAselector!\n\nAuthors: Konrad Stawiski M.D. (konrad@konsta.com.pl) and Marcin Kaszkowiak.\n\nFor more details go to https://kstawiski.github.io/miRNAselector/")
 }
 
 .onLoad <- function(libname, pkgname) {
-  require("BiocManager")
+  suppressWarnings(suppressMessages(require("BiocManager", character.only = TRUE)))
   
   # Normalne paczki
   packages <- c("devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr", "roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra", "reticulate",
@@ -16,7 +16,7 @@
   BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
 
   # Paczki z githuba
-  library(devtools)
+  suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
   if("bounceR" %in% rownames(installed.packages()) == FALSE) { devtools::install_github("STATWORX/bounceR") }
   if("cutpointr" %in% rownames(installed.packages()) == FALSE) { devtools::install_github("Thie1e/cutpointr") }
   if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { devtools::install_github("vqv/ggbiplot") }
