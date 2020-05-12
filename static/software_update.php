@@ -1,7 +1,9 @@
 <html>
 <?php 
 $czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-updater | wc -l');
-if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh'); } else { 
+if($czy_dziala == 0) { 
+	exec('chmod 777 /miRNAselector/miRNAselector/docker/software_update.sh');
+	exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh'); } else { 
 	$zawartosc_logu = file_get_contents('/update.log'); $skonczone = 0; if (strpos($zawartosc_logu, 'update is finished') !== false) { $skonczone = 1; } }
 ?>
 
