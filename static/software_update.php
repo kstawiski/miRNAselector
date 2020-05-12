@@ -1,7 +1,9 @@
 <html>
 <?php 
 $czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-updater | wc -l');
-if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh'); } ?>
+if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh'); } else { 
+	$zawartosc_logu = file_get_contents('/update.log'); $skonczone = 0; if (strpos($zawartosc_logu, 'update is finished') !== false) { $skonczone = 1; } }
+?>
 
 <head>
     <title>miRNAselector</title>
@@ -96,10 +98,14 @@ if($czy_dziala == 0) { exec('screen -dmS mirnaselector-updater /miRNAselector/mi
             <p><br></p>
         </div>
     <p>Update log:
-    <pre><?php echo file_get_contents('/update.log'); ?></pre></p>
+    <pre><?php echo $zawartosc_logu; ?></pre></p>
     
-    <p>The update is finished. Please go back to the app.</p>
+    <?php if($skonczone == 1) { ?>
+	<p>The update is finished. Please go back to the app.</p>
     <a href="/" onclick="myApp.showPleaseWaitDiv()" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a>
+	<?php } else { ?>
+		<meta http-equiv="refresh" content="3">
+	<?php } ?>
     </div>
   </body>
 </html>
