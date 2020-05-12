@@ -17,7 +17,6 @@ VignetteBuilder: knitr
 Imports: 
     dplyr,
     plyr,
-    edgeR,
     epiDisplay,
     rsq,
     MASS,
@@ -33,7 +32,6 @@ Imports:
     stringr,
     data.table,
     doParallel,
-    bounceR,
     Boruta,
     spFSR,
     varSelRF,
@@ -47,11 +45,9 @@ Imports:
     limma,
     ggrepel,
     classInt,
-    ggbiplot,
     plotly,
     keras,
     cutpointr,
-    GDCRNATools,
     naniar,
     visdat,
     imputeMissings,
@@ -68,7 +64,5 @@ Imports:
     profileR,
     xgboost,
     kableExtra,
-    VIM,
-    sva,
-    Biobase
+    VIM
 RoxygenNote: 7.0.2
