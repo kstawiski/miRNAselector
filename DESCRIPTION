@@ -11,11 +11,11 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown,
-    mxnet
+    rmarkdown
 VignetteBuilder: knitr
 Imports: 
     dplyr,
+    BiocManager,
     plyr,
     epiDisplay,
     rsq,
