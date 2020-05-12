@@ -1,3 +1,5 @@
+![Docker Image CI](https://github.com/kstawiski/miRNAselector/workflows/Docker%20Image%20CI/badge.svg) ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg)
+
 Go to https://kstawiski.github.io/miRNAselector/ for more details.
 
 ------
