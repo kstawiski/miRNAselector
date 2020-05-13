@@ -26,6 +26,11 @@ selected_miRNAs = c("hsa.miR.192.5p",
                     "hsa.miR.92a.3p"
 ),
 balanced = F, ...) {
+
+  # Keras
+  suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
+  if (!is_keras_available()) { install_keras() }
+
   ile = nrow(hyperparameters)
   ile_w_batchu = 1000
   ile_batchy = ceiling(nrow(hyperparameters)/ile_w_batchu)
