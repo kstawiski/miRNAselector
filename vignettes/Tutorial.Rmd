@@ -45,6 +45,13 @@ readLines("setup.R") %>% paste0(collapse="\n") %>% cat
 ```
 This code does not cover the installation of mxnet, which can be used for benchmarking of the selected miRNA sets. The mxnet is however built and installed in our docker enviorment.
 
+You can run this code directly from GitHub:
+
+```{r, eval = F}
+library(devtools)
+source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
+```
+
 As the `miRNAselector` package is installed we can load it easly.
 
 ```{r setup}
