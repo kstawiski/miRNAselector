@@ -11,7 +11,7 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
 VignetteBuilder: knitr
 StagedInstall: no
 Imports: 
@@ -23,7 +23,6 @@ Imports:
     epiDisplay,
     rsq,
     MASS,
-    Biocomb,
     caret,
     pROC,
     ggplot2,
