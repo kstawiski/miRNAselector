@@ -48,15 +48,6 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-2-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-2-
 
-       - name: Clean out old builds from disk
-         run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          sudo apt autoremove -y --purge
-          docker rmi $(docker image ls -aq)
-          df -h
-
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:

@@ -46,6 +46,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Clean out old builds from disk
+          run: |
+            sudo swapoff -a
+            sudo rm -f /swapfile
+            sudo apt clean
+            sudo apt autoremove -y --purge
+            docker rmi $(docker image ls -aq)
+            df -h
+
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 

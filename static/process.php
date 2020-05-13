@@ -166,7 +166,7 @@ if ($uploadOk == 0) {
         if (file_exists("/update.log")) { unlink('/update.log'); }
         exec('chmod 777 /miRNAselector/miRNAselector/docker/software_update.sh');
         exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh');
-        sleep(5);
+        sleep(3); // Czas, zeby zaczal pisac log.
         header("Location: /software_update.php");
         die();
     break;
