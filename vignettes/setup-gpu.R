@@ -8,13 +8,13 @@ BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDispla
                        "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
                        "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr", "rpart", "party", "mgcv", "GDCRNATools",
                        "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils"))
-devtools::install_github("STATWORX/bounceR", force = T)
-#devtools::install_github("rstudio/reticulate")
-devtools::install_github("vqv/ggbiplot")
+remotes::install_github("STATWORX/bounceR", force = T)
+#remotes::install_github("rstudio/reticulate")
+remotes::install_github("vqv/ggbiplot")
 suppressMessages(library(keras))
 install_keras(tensorflow = "gpu")
 
 
 
 
-devtools::install_github("kstawiski/miRNAselector") # Install our package.
+remotes::install_github("kstawiski/miRNAselector") # Install our package.

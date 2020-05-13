@@ -1,5 +1,5 @@
 install.packages("devtools",repos = "http://cran.r-project.org")
-install.packages(c("rlang","ps"), type = "source")
+install.packages(c("rlang","ps","remotes"), type = "source")
 install.packages(c("roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra"))
 install.packages("BiocManager",repos = "http://cran.r-project.org")
 install.packages("plotly")
@@ -11,12 +11,12 @@ BiocManager::install(c("devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MAS
                        "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
                        "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr", "rpart", "party", "mgcv", "GDCRNATools",
                        "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools", "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize"))
-devtools::install_github("STATWORX/bounceR", force = T)
-#devtools::install_github("rstudio/reticulate")
-devtools::install_github("Thie1e/cutpointr", force = T)
-devtools::install_github("vqv/ggbiplot", force = T)
+remotes::install_github("STATWORX/bounceR", force = T)
+#remotes::install_github("rstudio/reticulate")
+remotes::install_github("Thie1e/cutpointr", force = T)
+remotes::install_github("vqv/ggbiplot", force = T)
 library(keras)
 install_keras()
 
 
-#devtools::install_github("kstawiski/miRNAselector", force = T) # Install our package.
+#remotes::install_github("kstawiski/miRNAselector", force = T) # Install our package.

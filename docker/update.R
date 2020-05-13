@@ -8,11 +8,12 @@
 #                       "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
 #                       "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr", "rpart", "party", "mgcv", "GDCRNATools",
 #                       "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils"))
-#devtools::install_github("STATWORX/bounceR", force = T)
-#devtools::install_github("rstudio/reticulate")
-#devtools::install_github("vqv/ggbiplot", force = T)
+#remotes::install_github("STATWORX/bounceR", force = T)
+#remotes::install_github("rstudio/reticulate")
+#remotes::install_github("vqv/ggbiplot", force = T)
 #suppressMessages(library(keras))
 #install_keras()
 
 #system("cd /miRNAselector/miRNAselector && git reset --hard && git clean -df && git pull")
-devtools::install_github("kstawiski/miRNAselector") # Install our package.
+library(devtools)
+install_github("kstawiski/miRNAselector") # Install our package.

@@ -16,6 +16,7 @@ VignetteBuilder: knitr
 StagedInstall: no
 Imports: 
     dplyr,
+    remotes,
     BiocManager,
     plyr,
     epiDisplay,
