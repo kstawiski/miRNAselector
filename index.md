@@ -51,7 +51,7 @@ Examplary files for the analysis:
 
 # Development
 
-![Docker Image CI](https://github.com/kstawiski/miRNAselector/workflows/Docker%20Image%20CI/badge.svg) ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg)
+ ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg)
 
 - Bugs and issues: [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues)
 - Contact with developers: [Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl)](https://konsta.com.pl)
