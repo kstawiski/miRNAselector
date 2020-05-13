@@ -1,3 +1,16 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 workDir
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+^.*/temp$
+^.*/models$
+inst/extdata/wx/DearWXpub/GSE_DATA/Total_hg38.txt
+workDir
+Rplots.pdf
+^\.git$
+^\.github$
+^\.vs$
+^\.vscode$
