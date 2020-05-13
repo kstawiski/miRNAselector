@@ -16,7 +16,7 @@ remotes::install_github("STATWORX/bounceR", force = T)
 remotes::install_github("Thie1e/cutpointr", force = T)
 remotes::install_github("vqv/ggbiplot", force = T)
 library(keras)
-install_keras()
+install_keras(method = "conda") # must have anaconda installed first, if not just use: install_keras()
 
 
 #remotes::install_github("kstawiski/miRNAselector", force = T) # Install our package.
