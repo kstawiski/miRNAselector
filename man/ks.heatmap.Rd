@@ -7,7 +7,8 @@
 ks.heatmap(
   x = trainx[, 1:10],
   rlab = data.frame(Batch = dane$Batch, Class = dane$Class),
-  zscore = F
+  zscore = F,
+  margins = c(10, 10)
 )
 }
 \arguments{

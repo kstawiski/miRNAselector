@@ -10,10 +10,11 @@ License: License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
+    BiocStyle,
     knitr,
     rmarkdown,
+    magick,
 VignetteBuilder: knitr
-StagedInstall: no
 Imports: 
     dplyr,
     remotes,
@@ -63,5 +64,6 @@ Imports:
     PairedData,
     profileR,
     xgboost,
-    kableExtra
-RoxygenNote: 7.0.2
+    kableExtra,
+    doSNOW
+RoxygenNote: 7.1.0

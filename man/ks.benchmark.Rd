@@ -15,7 +15,7 @@ ks.benchmark(
   output_file = "benchmark.csv",
   mxnet = F,
   gpu = F,
-  algorithms = c("mlp", "mplML", "svmRadial", "svmLinear", "rf", "C5.0", "rpart",
+  algorithms = c("mlp", "mlpML", "svmRadial", "svmLinear", "rf", "C5.0", "rpart",
     "rpart2", "ctree"),
   holdout = T,
   stamp = as.character(as.numeric(Sys.time()))

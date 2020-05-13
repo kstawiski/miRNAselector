@@ -4,10 +4,12 @@
 \alias{ks.correct_miRNA_names}
 \title{ks.correct_miRNA_names}
 \usage{
-ks.correct_miRNA_names(temp, species = "hsa")
+ks.correct_miRNA_names(temp, species = "hsa", correct_dots = T)
 }
 \arguments{
 \item{temp}{Dataset with miRNA names in columns.}
+
+\item{correct_dots}{Boolean variable to correct the names after correction of dots to hyphens. This tries to compensate the effect of make.names() function.}
 }
 \value{
 Corrected dataset.

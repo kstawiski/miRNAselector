@@ -15,8 +15,8 @@ ks.deep_learning(
   keras_epochae = 5000,
   keras_epoch = 2000,
   keras_patience = 50,
-  hyperparameters = expand.grid(layer1 = seq(3, 11, by = 2), layer2 = c(0, seq(3, 11, by
-    = 2)), layer3 = c(0, seq(3, 11, by = 2)), activation_function_layer1 = c("relu",
+  hyperparameters = expand.grid(layer1 = seq(3, 11, by = 2), layer2 = c(0, seq(3, 11,
+    by = 2)), layer3 = c(0, seq(3, 11, by = 2)), activation_function_layer1 = c("relu",
     "sigmoid"), activation_function_layer2 = c("relu", "sigmoid"),
     activation_function_layer3 = c("relu", "sigmoid"), dropout_layer1 = c(0, 0.1),
     dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0), layer1_regularizer = c(T, F),

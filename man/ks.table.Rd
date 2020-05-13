@@ -4,7 +4,7 @@
 \alias{ks.table}
 \title{ks.table}
 \usage{
-ks.table(table, height = "400px")
+ks.table(table, height = "400px", ...)
 }
 \arguments{
 \item{table}{Table to draw.}

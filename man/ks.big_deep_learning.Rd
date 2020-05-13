@@ -5,8 +5,8 @@
 \title{ks.big_deep_learning}
 \usage{
 ks.big_deep_learning(
-  hyperparameters = expand.grid(layer1 = seq(3, 11, by = 2), layer2 = c(0, seq(3, 11, by
-    = 2)), layer3 = c(0, seq(3, 11, by = 2)), activation_function_layer1 = c("relu",
+  hyperparameters = expand.grid(layer1 = seq(3, 11, by = 2), layer2 = c(0, seq(3, 11,
+    by = 2)), layer3 = c(0, seq(3, 11, by = 2)), activation_function_layer1 = c("relu",
     "sigmoid"), activation_function_layer2 = c("relu", "sigmoid"),
     activation_function_layer3 = c("relu", "sigmoid"), dropout_layer1 = c(0, 0.1),
     dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0), layer1_regularizer = c(T, F),
@@ -16,8 +16,8 @@ ks.big_deep_learning(
     stringsAsFactors = F),
   nazwa_konfiguracji = "TCGA_wybraneprzezWF+normalizatory.csv",
   selected_miRNAs = c("hsa.miR.192.5p", "hsa.let.7g.5p", "hsa.let.7a.5p",
-    "hsa.let.7d.5p", "hsa.miR.194.5p", "hsa.miR.98.5p", "hsa.let.7f.5p", "hsa.miR.122.5p",
-    "hsa.miR.340.5p", "hsa.miR.26b.5p", "hsa.miR.17.5p",
+    "hsa.let.7d.5p", "hsa.miR.194.5p", "hsa.miR.98.5p", "hsa.let.7f.5p",
+    "hsa.miR.122.5p", "hsa.miR.340.5p", "hsa.miR.26b.5p", "hsa.miR.17.5p",
     "hsa.miR.199a.3p.hsa.miR.199b.3p.1", "hsa.miR.28.3p", "hsa.miR.92a.3p"),
   balanced = F,
   ...

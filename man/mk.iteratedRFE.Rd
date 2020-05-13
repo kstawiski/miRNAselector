@@ -10,7 +10,7 @@ mk.iteratedRFE(
   initFeatures = colnames(trainSet),
   classLab,
   checkNFeatures = 25,
-  votingIterations = 1e+05,
+  votingIterations = 1000,
   useCV = F,
   nfolds = 10,
   initRandomState = 42

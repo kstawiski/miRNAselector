@@ -16,7 +16,7 @@ ks.counts_to_log10tpm(
 \arguments{
 \item{danex}{Matrix with miRNA counts with miRNAs in columns and cases in rows.}
 
-\item{metadane}{Metadata with `Class` variables.}
+\item{metadane}{Metadata with `Class` variable.}
 
 \item{ids}{Unique identifier of samples.}
 
