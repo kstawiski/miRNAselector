@@ -62,6 +62,5 @@ Imports:
     PairedData,
     profileR,
     xgboost,
-    kableExtra,
-    VIM
+    kableExtra
 RoxygenNote: 7.0.2

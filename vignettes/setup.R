@@ -1,4 +1,5 @@
 install.packages("devtools",repos = "http://cran.r-project.org")
+install.packages(c("rlang","ps"), type = "source")
 install.packages(c("roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra"))
 install.packages("BiocManager",repos = "http://cran.r-project.org")
 install.packages("plotly")
