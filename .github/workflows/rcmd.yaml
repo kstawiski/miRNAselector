@@ -48,6 +48,15 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-2-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-2-
 
+       - name: Clean out old builds from disk
+         run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          sudo apt autoremove -y --purge
+          docker rmi $(docker image ls -aq)
+          df -h
+
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:
@@ -59,6 +68,9 @@ jobs:
           sudo -s eval "$sysreqs"
       - name: Install dependencies
         run: |
+          install.packages('devtools')
+          library(devtools)
+          source_url("https://raw.github.com/tonybreyal/Blog-Reference-Functions/master/R/bingSearchXScraper/bingSearchXScraper.R")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}

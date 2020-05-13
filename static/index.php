@@ -307,7 +307,8 @@ echo $form->form_close();
                         data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;
                     <a href="e" target="_blank" role="button" class="btn btn-primary"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a>
                     &emsp;<a href="process.php?type=init_update" role="button" onclick="waitingDialog.show('Starting update...');" class="btn btn-primary"><i class="fas fa-arrow-up"></i></i>&emsp;Update</a>
-                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a></div>
+                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a>
+                    &emsp;<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalYT2"><i class="fas fa-terminal"></i>&emsp;Shell</button></div>
             </div>
 
     </div>
@@ -330,6 +331,39 @@ echo $form->form_close();
                 <!--Footer-->
                 <div class="modal-footer justify-content-center">
                     <span class="mr-4">Running <code>top</code> every 2 seconds...</span>
+
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+            <!--/.Content-->
+
+        </div>
+    </div>
+    <!--Modal: Name-->
+
+
+        <!--Modal: Name-->
+        <div class="modal fade" id="modalYT2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Body-->
+                <div class="modal-body mb-0 p-0">
+
+                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                        <iframe class="embed-responsive-item" src="shell.php" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <span class="mr-4">More advanced terminal features are available via Jupyter-based advanced features.</span>
 
                     <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
                         data-dismiss="modal">Close</button>
