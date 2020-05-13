@@ -17,9 +17,9 @@
 
   # Paczki z githuba
   suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
-  if("bounceR" %in% rownames(installed.packages()) == FALSE) { devtools::install_github("STATWORX/bounceR") }
-  if("cutpointr" %in% rownames(installed.packages()) == FALSE) { devtools::install_github("Thie1e/cutpointr") }
-  if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { devtools::install_github("vqv/ggbiplot") }
+  if("bounceR" %in% rownames(installed.packages()) == FALSE) { install_github("STATWORX/bounceR") }
+  if("cutpointr" %in% rownames(installed.packages()) == FALSE) { install_github("Thie1e/cutpointr") }
+  if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { install_github("vqv/ggbiplot") }
 
   invisible(rownames(installed.packages()))
   }

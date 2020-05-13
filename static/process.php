@@ -161,6 +161,17 @@ if ($uploadOk == 0) {
         //$msg .= file_get_contents("/miRNAselector/pipeline.R");
         //file_put_contents('/miRNAselector/var_status.txt', "[2] PROCESSING");
         break;
+
+    case "init_update":
+        if (file_exists("/update.log")) { unlink('/update.log'); }
+        exec('chmod 777 /miRNAselector/miRNAselector/docker/software_update.sh');
+        exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh');
+        sleep(5);
+        header("Location: /software_update.php");
+        die();
+    break;
+
+    
     
     
 

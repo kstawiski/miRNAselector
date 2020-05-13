@@ -1,10 +1,9 @@
 <html>
 <?php 
-$czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-updater | wc -l');
-if($czy_dziala == 0) { 
-	exec('chmod 777 /miRNAselector/miRNAselector/docker/software_update.sh');
-	exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh'); } else { 
-	$zawartosc_logu = file_get_contents('/update.log'); $skonczone = 0; if (strpos($zawartosc_logu, 'update is finished') !== false) { $skonczone = 1; } }
+if(file_exists("/update.log")) { 
+	$zawartosc_logu = file_get_contents('/update.log');
+	$czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-updater | wc -l');
+	$skonczone = 0; if (strpos($zawartosc_logu, 'update is finished') !== false) { $skonczone = 1; } } else { $msg = urlencode("The update was not initialized. Please run it again."); header("Location: /?msg=" . $msg); die(); }
 ?>
 
 <head>
@@ -112,7 +111,7 @@ if($czy_dziala == 0) {
 	<p><b>The update is finished.</b> Please go back to the app. If you have any active notebooks running, you may need to restart kernel for new features. More details: <a href="https://github.com/kstawiski/miRNAselector" target="_blank">https://github.com/kstawiski/miRNAselector</a>.</p>
     <a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a>
 	<?php } else { ?>
-		<p><b>The update is still in progress...</b> Please do not use the app and don't leave this page.</p>
+		<p><b>The update is still in progress...</b> Please do not use the app and don't leave this page. [Running status: <code><?php echo $czy_dziala; ?></code>]</p>
 		<meta http-equiv="refresh" content="3">
 	<?php } ?>
     </div>
