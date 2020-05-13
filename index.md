@@ -11,7 +11,7 @@ If you do not know how docker works go to [https://docs.docker.com/get-docker/](
 Our public docker images: 
 
 - Docker Hub: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector)
-- GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector`](https://docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector)
+- GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/app`](https://docker.pkg.github.com/kstawiski/mirnaselector/app)
 
 Quick-start command: 
 
@@ -19,7 +19,7 @@ Quick-start command:
 docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector
 ```
 
-and go to `http://127.0.0.1:28888` for GUI. You can change `28888` to the port you desire.
+and go to [`http://127.0.0.1:28888`](http://127.0.0.1:28888) on your local machine for GUI. You can change `28888` to the port you desire.
 
 Pearls:
 
