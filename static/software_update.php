@@ -28,11 +28,9 @@ if(file_exists("/update.log")) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script type="text/javascript">
-    function fun()
-	{
-		 $("div").scrollTop(50);
-		 window.scrollTo(0, document.body.scrollHeight);
-	}
+    $( document ).ready(function() {
+		$('html, body').scrollTop($(document).height());
+    });
 
 	var waitingDialog = waitingDialog || (function ($) { 'use strict';
 
@@ -96,7 +94,7 @@ if(file_exists("/update.log")) {
 })(jQuery);
     </script>
 </head>
-<body onload="fun">
+<body>
     <div class="container">
     <div class="starter-template">
             <p>
@@ -108,12 +106,13 @@ if(file_exists("/update.log")) {
     <pre><?php echo $zawartosc_logu; ?></pre></p>
     
     <?php if($skonczone == 1) { ?>
-	<p><b>The update is finished.</b> Please go back to the app. If you have any active notebooks running, you may need to restart kernel for new features. More details: <a href="https://github.com/kstawiski/miRNAselector" target="_blank">https://github.com/kstawiski/miRNAselector</a>.</p>
-    <a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a>
+	<p id="msg"><b>The update is finished.</b> Please go back to the app. If you have any active notebooks running, you may need to restart kernel for new features.<br />More details on new features: <a href="https://github.com/kstawiski/miRNAselector" target="_blank">https://github.com/kstawiski/miRNAselector</a>.</p>
+    <p></p><a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a></p>
 	<?php } else { ?>
-		<p><b>The update is still in progress...</b> Please do not use the app and don't leave this page. [Running status: <code><?php echo $czy_dziala; ?></code>]</p>
+		<p id="msg"><b>The update is still in progress...</b> Please do not use the app and don't leave this page. Running status: <code><?php echo $czy_dziala; ?></code></p>
 		<meta http-equiv="refresh" content="3">
 	<?php } ?>
-    </div>
+    <p>&emsp;</p>
+	</div>
   </body>
 </html>
