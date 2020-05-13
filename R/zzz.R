@@ -1,4 +1,5 @@
 .onAttach <- function(libname, pkgname) {
+  options(rgl.useNULL = TRUE)
   suppressWarnings(suppressMessages(require("BiocManager", character.only = TRUE)))
   
   # Normalne paczki

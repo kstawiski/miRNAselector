@@ -22,10 +22,8 @@ knitr::opts_chunk$set(
 )
 knitr::opts_chunk$set(fig.width=12, fig.height=8)
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=150),tidy=TRUE)
-```
-
-```{r setup, echo = F}
-suppressMessages(library(miRNAselector))
+options(rgl.useNULL = TRUE)
+options(warn=-1)
 suppressMessages(library(dplyr))
 set.seed(1)
 ```
@@ -47,6 +45,11 @@ readLines("setup.R") %>% paste0(collapse="\n") %>% cat
 ```
 This code does not cover the installation of mxnet, which can be used for benchmarking of the selected miRNA sets. The mxnet is however built and installed in our docker enviorment.
 
+As the `miRNAselector` package is installed we can load it easly.
+
+```{r setup}
+library(miRNAselector)
+```
 
 # Getting the data
 
@@ -197,6 +200,8 @@ At the beging of the analysis we usually perform **principal component analysis*
 pca = ks.PCA(trainx, train$Class)
 pca
 ```
+
+3D PCA plot may not be shown correctly in Jupyter notebook, but you can check in e.g. R Studio that it works.
 
 ```{r}
 pca3d = ks.PCA_3D(trainx, train$Class)

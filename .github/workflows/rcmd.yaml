@@ -10,9 +10,9 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ubuntu-latest
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (R ${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
@@ -61,7 +61,7 @@ jobs:
         run: |
           install.packages('devtools')
           library(devtools)
-          source_url("https://raw.github.com/tonybreyal/Blog-Reference-Functions/master/R/bingSearchXScraper/bingSearchXScraper.R")
+          source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}

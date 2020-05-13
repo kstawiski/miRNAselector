@@ -16,6 +16,6 @@ kable(table, "html", ...) %>%
     scroll_box(width = "100%", height = height)
   } else { kable(table, ...) }
      } else {
-      table
+      as.data.frame(table)
     }
 }
