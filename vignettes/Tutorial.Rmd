@@ -38,33 +38,14 @@ set.seed(1)
 
 The package miRNAselector has a lot of requirements that are nessesary to run all the experiments. The script below will allow to install most of them. It is highly recommended to install those packages using the code below.
 
+If you are using our docker enviorment to learn this package you should not run this again. It would be a waste of time. [However, if you wish, you can play with the code in the notebook. Click here.]([If you are using our enviorment to learn this package you can tweak this code in the interactive notebook. Click here.](/e/notebooks/miRNAselector/vignettes/setup.R)
 
-```{r, eval=F}
-install.packages("devtools",repos = "http://cran.r-project.org")
-install.packages(c("roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra"))
-install.packages("BiocManager",repos = "http://cran.r-project.org")
-install.packages("plotly")
-install.packages("reticulate")
-library(BiocManager)
-BiocManager::install(c("devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
-                       "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
-                       "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow",
-                       "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
-                       "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr", "rpart", "party", "mgcv", "GDCRNATools",
-                       "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools"))
-devtools::install_github("STATWORX/bounceR", force = T)
-#devtools::install_github("rstudio/reticulate")
-devtools::install_github("Thie1e/cutpointr", force = T)
-devtools::install_github("vqv/ggbiplot", force = T)
-library(keras)
-install_keras()
+Setup script:
 
-
-devtools::install_github("kstawiski/miRNAselector", force = T) # Install our package.
+```{r}
+readLines("setup.R") %>% paste0(collapse="\n") %>% cat
 ```
-
-
-This code does not cover the installation of mxnet, which can be used for benchmarking of the selected miRNA sets.
+This code does not cover the installation of mxnet, which can be used for benchmarking of the selected miRNA sets. The mxnet is however built and installed in our docker enviorment.
 
 
 # Getting the data
@@ -84,7 +65,7 @@ Let's load counts files and see its summary.
 ```{r}
 suppressWarnings(suppressMessages(library(data.table)))
 suppressWarnings(suppressMessages(library(knitr)))
-orginal_TCGA_data = fread("tissue_miRNA_counts.csv")
+orginal_TCGA_data = fread("tissue_miRNA_counts.csv.gz")
 orginal_TCGA_data[orginal_TCGA_data == ""] = NA
 kable(table(orginal_TCGA_data$primary_site, orginal_TCGA_data$sample_type))
 ```
@@ -180,7 +161,7 @@ The best signiture (best set of miRNAs for diagnostic test) can be selected base
 
 The split can be prepared manually by user (the pipeline expects to find `mixed_*.csv` files in working directory) or in a convinient way using `ks.prepare_split()`. Let's do it now.
 
-```{r eval=FALSE}
+```{r}
 mixed = ks.prepare_split(metadane = metadane, ttpm = ttpm, train_proc = 0.6)
 ```
 
@@ -268,40 +249,17 @@ ks.correlation_plot(de_test$log2FC, de_valid$log2FC, "log2FC on test set", "log2
 
 The main feature of this package is the shotgun-like feature selection evaluation of possible miRNA signatures of biological processes. The function can be applied in a straightforward way, e.g.:
 
-```{r, eval=F}
-selected_features = ks.miRNAselector(wd = getwd(), m = 1:70, max_iterations = 10, stamp = "tutorial")
+```{r}
+selected_features = ks.miRNAselector(wd = getwd(), m = 1:10, max_iterations = 10, stamp = "tutorial") # we just run only first 10 methods for the sake of speed.
 ```
 
 But, for largers projects we suggest using the following wrapper wich will perform the feature selection in parallel, significantly reducing computational time. We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing:
 
-```{r, eval=F}
-#options(warn = -1)
-suppressMessages(library(foreach))
-suppressMessages(library(doParallel))
-suppressMessages(library(parallel))
-suppressMessages(library(doSNOW))
-
-m = 1:56 # which methods to check?
-
-cl <- makeCluster(5) # 5 threds by default
-doSNOW::registerDoSNOW(cl)
-iterations = length(m)
-pb <- txtProgressBar(max = iterations, style = 3)
-progress <- function(n) setTxtProgressBar(pb, n)
-opts <- list(progress = progress)
-foreach(i = m, .options.snow = opts) %dopar%
-{
-  suppressMessages(library(miRNAselector))
-  setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
-  ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = F, # we set debug to false (to make the package smaller), you may also want to change stamp to something meaningful, max_iterations was set to 1 to recude the computational time.. in real life scenarios it is resonable to use at least 10 iterations.
-                  prefer_no_features = 11, # Few methods are filter rather than wrapper methods, thus requires the maximum number of maximum features.
-                  conda_path = "/home/konrad/anaconda3/bin/conda", # Methods line WxNet requires usage of python. In setup script we create conda enviorment. Providing conda_path makes it easier to activate env. We prefer this apporach over use_condaenv.
-                  timeout = 600) # We don't want to wait eternity in this tutorial, just 10 minutes. Timeout is useful for complicated methods. Depending on your CPU 2 days may be reasonable for larger projects.
-                   }
-
-stopCluster(cl)
-#options(warn = 0)
+```{r}
+readLines("Tutorial_miRNAselector.R") %>% paste0(collapse="\n") %>% cat
 ```
+
+[If you are using our enviorment to learn this package you can tweak and run this code in the interactive notebook. Click here.](/e/notebooks/miRNAselector/vignettes/Tutorial_miRNAselector.R)
 
 A few notes about what is does:
 
@@ -337,7 +295,7 @@ Notes about methods:
 
 Comming soon...
 
-The `miRNA.selector` functions saves all output files to `temp/` directory. As users may want to run multiple selection methods in different configurations, we do not recommend using the return of this function in the following steps. Instead, we provide `ks.merge_formulas()` which conviniently summerizes the results of feature selection. We can do:
+The `miRNAselector` functions saves all output files to `temp/` directory. As users may want to run multiple selection methods in different configurations, we do not recommend using the return of this function in the following steps. Instead, we provide `ks.merge_formulas()` which conviniently summerizes the results of feature selection. We can do:
 
 ```{r}
 selected_sets_of_miRNAs = ks.merge_formulas(max_miRNAs = 11) # we filter out sets with more than 11 miRNAs.
@@ -379,15 +337,18 @@ psych::describe(featureselection_formulas_final$ile_miRNA[-which(featureselectio
 
 In the next step of looking for the best microRNA signature, we perform benchmarking. This tests all the signatures using different classifier architectures. Here is the example of benchmark with default parameters:
 
-
-
 ```{r, eval=F}
-suppressMessages(library(miRNAselector))
-ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more
-  algorithms = c("mlp", "mlpML", "svmRadial", "svmLinear", "rf", "C5.0", "rpart", "rpart2", "ctree"), # default set of methods, note that logistic regression (glm) is always included
-  output_file = paste0("benchmark.csv") # the main output
-) 
-      
+readLines("Tutorial_benchmark.R") %>% paste0(collapse="\n") %>% cat
+```
+
+[If you are using our enviorment to learn this package you can tweak and run this code in the interactive notebook. Click here.](/e/notebooks/miRNAselector/vignettes/Tutorial_benchmark.R)
+
+Just for rendering this tutorial we will use a very simple benchmark using only logistic regression and conditional trees.
+
+```{r}
+ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more, like 5000...
+            algorithms = c("ctree"), # just add ctree, note that logistic regression (glm) is always included
+            output_file = paste0("benchmark.csv")) # the main output
 ```
 
 As benchmarking is done, the main result file is saved in file specified in `output_file` parameter. It contains the performance metrics of signatures satisfying initial criteria (e.g. `max_miRNA`) across different methods of modelling. Let's take a quick look:
@@ -603,3 +564,8 @@ To render this tutorial we used:
 render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "../static/")
 ```
 
+Packages installed in our docker enviorment:
+
+```{r}
+ks.table(as.data.frame(installed.packages()))
+```
