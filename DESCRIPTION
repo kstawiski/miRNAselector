@@ -10,10 +10,8 @@ License: License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    BiocStyle,
     knitr,
     rmarkdown,
-    magick,
 VignetteBuilder: knitr
 Imports: 
     dplyr,
