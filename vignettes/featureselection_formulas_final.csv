@@ -12,6 +12,6 @@ sigtopSMOTE,Class ~ hsa.let.7c.5p + hsa.miR.16.5p + hsa.miR.20a.5p + hsa.miR.21.
 sigtopBonfSMOTE,Class ~ hsa.let.7c.5p + hsa.miR.16.5p + hsa.miR.20a.5p + hsa.miR.21.5p + hsa.miR.21.3p + hsa.miR.22.3p + hsa.miR.23a.3p + hsa.miR.26a.5p + hsa.miR.26b.5p + hsa.miR.27a.3p + hsa.miR.29a.3p,11
 sigtopHolmSMOTE,Class ~ hsa.let.7c.5p + hsa.miR.16.5p + hsa.miR.20a.5p + hsa.miR.21.5p + hsa.miR.21.3p + hsa.miR.22.3p + hsa.miR.23a.3p + hsa.miR.26a.5p + hsa.miR.26b.5p + hsa.miR.27a.3p + hsa.miR.29a.3p,11
 topFCSMOTE,Class ~ hsa.miR.217.5p + hsa.miR.375.3p + hsa.miR.192.5p + hsa.miR.194.5p + hsa.miR.21.5p + hsa.miR.30a.3p + hsa.miR.199b.5p + hsa.miR.144.5p + hsa.miR.30c.2.3p + hsa.miR.210.3p + hsa.miR.200a.3p,11
-cfsSMOTE,Class ~ hsa.miR.21.5p + hsa.miR.30a.3p + hsa.miR.136.5p + hsa.miR.30e.3p + hsa.miR.708.3p,5
-cfsSMOTE_sig,Class ~ hsa.miR.21.5p + hsa.miR.30e.3p + hsa.miR.30a.3p + hsa.miR.136.5p + hsa.miR.708.3p,5
-fcfsSMOTE,Class ~ hsa.miR.21.5p + hsa.miR.30a.3p + hsa.miR.708.3p + hsa.miR.30e.3p + hsa.miR.136.5p,5
+cfsSMOTE,Class ~ hsa.miR.21.5p + hsa.miR.30a.3p + hsa.miR.30e.3p + hsa.miR.375.3p + hsa.miR.708.3p,5
+cfsSMOTE_sig,Class ~ hsa.miR.21.5p + hsa.miR.30e.3p + hsa.miR.30a.3p + hsa.miR.375.3p + hsa.miR.708.3p,5
+fcfsSMOTE,Class ~ hsa.miR.21.5p + hsa.miR.30a.3p + hsa.miR.708.3p + hsa.miR.375.3p + hsa.miR.30e.3p,5

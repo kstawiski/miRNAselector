@@ -541,7 +541,7 @@ ks.heatmap(x = dplyr::select(mixed, gsub("\\.", "-", selected_miRNAs)),
 ```
 
 ```{r}
-ks.heatmap(x = dplyr::select(mixed, gsub("\\.", "-", selected_miRNAs))),
+ks.heatmap(x = dplyr::select(mixed, gsub("\\.", "-", selected_miRNAs)),
            rlab = data.frame(Class = mixed$Class, Mix = mixed$mix),
            zscore = T, margins = c(10,10))
 ```

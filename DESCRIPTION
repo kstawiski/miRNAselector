@@ -17,6 +17,7 @@ StagedInstall: no
 Imports: 
     dplyr,
     remotes,
+    devtools,
     BiocManager,
     plyr,
     epiDisplay,
