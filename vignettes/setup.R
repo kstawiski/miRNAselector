@@ -1,11 +1,11 @@
-install.packages("devtools",repos = "http://cran.r-project.org")
-install.packages(c("rlang","ps","remotes"), type = "source")
+install.packages("remotes",repos = "http://cran.r-project.org")
+install.packages(c("rlang","ps"), type = "source")
 install.packages(c("roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra"))
 install.packages("BiocManager",repos = "http://cran.r-project.org")
 install.packages("plotly")
 install.packages("reticulate")
 library(BiocManager)
-BiocManager::install(c("devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
+BiocManager::install(c("remotes","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
                        "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
                        "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow", "sva", "Biobase",
                        "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",

@@ -1,8 +1,8 @@
-#install.packages("devtools",repos = "http://cran.r-project.org")
+#install.packages("remotes",repos = "http://cran.r-project.org")
 #install.packages("roxygen2")
 #install.packages("BiocManager",repos = "http://cran.r-project.org")
 #suppressMessages(library(BiocManager))
-#BiocManager::install(c("reticulate","devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
+#BiocManager::install(c("reticulate","remotes","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
 #                       "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
 #                       "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow",
 #                       "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
@@ -15,5 +15,5 @@
 #install_keras()
 
 #system("cd /miRNAselector/miRNAselector && git reset --hard && git clean -df && git pull")
-library(devtools)
+library(remotes)
 install_github("kstawiski/miRNAselector") # Install our package.

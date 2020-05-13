@@ -63,7 +63,7 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
   suppressMessages(library(ROSE))
   suppressMessages(library(gridExtra))
   suppressMessages(library(gplots))
-  suppressMessages(library(devtools))
+  suppressMessages(library(remotes))
   suppressMessages(library(stringr))
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))

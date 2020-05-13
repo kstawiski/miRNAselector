@@ -30,7 +30,6 @@ Imports:
     ROSE,
     gridExtra,
     gplots,
-    devtools,
     stringr,
     data.table,
     doParallel,

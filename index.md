@@ -33,7 +33,7 @@ Pearls:
 Run following commands in your local R:
 
 ```
-require("devtools")
+require("remotes")
 install_github("kstawiski/miRNAselector", force = T)
 library(miRNAselector)
 ```

@@ -6,7 +6,7 @@
   suppressWarnings(suppressMessages(require("BiocManager", character.only = TRUE)))
   
   # Normalne paczki
-  packages <- c("devtools","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr", "roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra", "reticulate",
+  packages <- c("remotes","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr", "roxygen2", "plotly", "rJava", "mice", "MatchIt", "kableExtra", "reticulate",
                        "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest",
                        "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow", "sva", "Biobase",
                        "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
@@ -16,10 +16,13 @@
   BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
 
   # Paczki z githuba
-  suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
-  if("bounceR" %in% rownames(installed.packages()) == FALSE) { install_github("STATWORX/bounceR") }
-  if("cutpointr" %in% rownames(installed.packages()) == FALSE) { install_github("Thie1e/cutpointr") }
-  if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { install_github("vqv/ggbiplot") }
+  if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
+  if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
+  if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
+
+  # Keras
+  suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
+  if (!is_keras_available()) { install_keras() }
 
   invisible(rownames(installed.packages()))
   }
