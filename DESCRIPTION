@@ -65,5 +65,6 @@ Imports:
     xgboost,
     kableExtra,
     doSNOW,
-    curl
+    curl,
+    rJava
 RoxygenNote: 7.1.0
