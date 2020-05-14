@@ -58,7 +58,7 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
           sudo R CMD javareconf
-          sudo apt-get install -y r-cran-rjava libgdal-dev libproj-dev
+          sudo apt-get install -y r-cran-rjava libgdal-dev libproj-dev apt-utils
       - name: Install dependencies
         run: |
           install.packages('devtools')
