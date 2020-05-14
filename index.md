@@ -33,7 +33,8 @@ Pearls:
 Run following commands in your local R:
 
 ```
-require("remotes")
+libary("devtools")
+source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
 install_github("kstawiski/miRNAselector", force = T)
 library(miRNAselector)
 ```

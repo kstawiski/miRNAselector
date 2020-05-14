@@ -64,5 +64,6 @@ Imports:
     profileR,
     xgboost,
     kableExtra,
-    doSNOW
+    doSNOW,
+    curl
 RoxygenNote: 7.1.0
