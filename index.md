@@ -4,14 +4,20 @@
 
 # Installation
 
-## [OPTION 1] Docker version (recommended):
+## [OPTION 1][Easy] Use desktop application:
+
+
+## [OPTION 2][Intermediate] Docker version (recommended):
 
 If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
 Our public docker images: 
 
 - Docker Hub: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector)
-- GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/app`](https://docker.pkg.github.com/kstawiski/mirnaselector/app)
+
+Alternatives:
+
+- Version without MXNET, for build checking; GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/withoutmxnet`](https://docker.pkg.github.com/kstawiski/mirnaselector/withoutmxnet)
 
 Quick-start command: 
 
@@ -28,7 +34,7 @@ Pearls:
 - Contains Jupyter-notebook-based tutorial for learning and easy implementation of R package.
 - For docker-based version we assure the correct functionality. Docker container is based on configured ubuntu.
 
-## [OPTION 2] Installation in your local R enviorment:
+## [OPTION 3][Expert] Installation in your local R enviorment:
 
 Run following commands in your local R:
 
