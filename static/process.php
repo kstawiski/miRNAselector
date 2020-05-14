@@ -104,11 +104,22 @@ if ($uploadOk == 0) {
         file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)");
         break;
     
-    
-    case "configure":
-        // Walidacja
-        $weryfikacja = TRUE;
+
+    case "init_update":
+        if (file_exists("/update.log")) { unlink('/update.log'); }
+        exec('chmod 777 /miRNAselector/miRNAselector/docker/software_update.sh');
+        exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh');
+        sleep(3); // Czas, zeby zaczal pisac log.
+        header("Location: /software_update.php");
+        die();
+    break;
+
+    case "init_preprocessing":
+        $step_name = "1_preprocessing";
         
+        // Walidacja:
+        $weryfikacja = TRUE;
+            
         if (strlen($form->post('project_name'))<3)
         { $msg .= " Project name has to be longer than 2 characters."; $weryfikacja = FALSE; }
 
@@ -120,56 +131,27 @@ if ($uploadOk == 0) {
             header("Location: /?msg=" . $msg);
             die();
         }
-        // Zapis do XML
-        
-        
-        
-        
+        // Zapis do XML:
         $msg .= print_r_xml($_POST);
-        file_put_contents('/miRNAselector/config.xml', print_r_xml($_POST));
-
-        $file = fopen('/miRNAselector/pipeline.R', 'w');
-        fwrite($file, "suppressMessages(library(miRNAselector)\n");
-        fwrite($file, "suppressMessages(library(knitr)\n");
-        fwrite($file, "suppressMessages(library(rmarkdown)\n");
-        // Najpierw czy braki
-        $ile_krokow = 0;
-
-        // Preprocessing
-        file_put_contents('/miRNAselector/var_input_format.txt', $form->post('input_format'));
-
-        if(!file_exists("/miRNAselector/result_preprocessing.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_preprocessing.rmd","/miRNAselector/result_preprocessing.Rmd"); }
-        fwrite($file, "render('/miRNAselector/result_preprocessing.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_preprocessing.html')\n");
-        $ile_krokow = $ile_krokow + 1;
-
-        // Najwazniejszy raport
-        fwrite($file, "source('/miRNAselector/miRNAselector/templetes/featureselection.R')\n");
-        $ile_krokow = $ile_krokow + 1;
-
-        fwrite($file, "source('/miRNAselector/miRNAselector/templetes/benchmark.R')\n");
-        $ile_krokow = $ile_krokow + 1;
-
-        if(!file_exists("/miRNAselector/result_raport.Rmd")) { copy("/miRNAselector/miRNAselector/templetes/result_raport.rmd","/miRNAselector/result_raport.Rmd"); }
-        fwrite($file, "render('/miRNAselector/result_raport.Rmd', output_format = 'html_document', output_file = '/miRNAselector/result_raport.html')\n");
-        $ile_krokow = $ile_krokow + 1;
+        file_put_contents('/miRNAselector/'. $step_name . '.xml', print_r_xml($_POST));
         
-        file_put_contents('/miRNAselector/var_maxsteps.txt', $ile_krokow);
         
-// 2>&1 | tee log.txt
-
-        fclose($file);
-        //$msg .= file_get_contents("/miRNAselector/pipeline.R");
-        //file_put_contents('/miRNAselector/var_status.txt', "[2] PROCESSING");
-        break;
-
-    case "init_update":
-        if (file_exists("/update.log")) { unlink('/update.log'); }
-        exec('chmod 777 /miRNAselector/miRNAselector/docker/software_update.sh');
-        exec('screen -dmS mirnaselector-updater /miRNAselector/miRNAselector/docker/software_update.sh');
-        sleep(3); // Czas, zeby zaczal pisac log.
-        header("Location: /software_update.php");
+        
+        
+        
+        
+        if (file_exists("/miRNAselector/". $step_name .".log")) { unlink('/miRNAselector/'. $step_name . '.log'); }
+        exec('/bin/cp /miRNAselector/miRNAselector/templetes/'. $step_name .'.rmd /miRNAselector/' . $step_name . '.Rmd '); // PAMIETAC ZEBY ZMIENIEC TEMPLETE!!!
+        exec('screen -dmS mirnaselector-'.$step_name.' /miRNAselector/miRNAselector/docker/'. $step_name . '.sh');
+        sleep(2); // Czas, zeby zaczal pisac log.
+        if (shell_exec('ps -ef | grep -v grep | grep mirnaselector-'.$step_name.' | wc -l')>0) {
+        file_put_contents('/miRNAselector/var_status.txt', "[1] PREPROCESSING RUNNING"); $msg = "Step <code>".$step_name."</code> is running..."; } else {
+            $msg = "Something is wrong with <code>".$step_name."</code> :( Please check the logs in <code>/miRNAselector</code> directory for clarification.";        }
+        $msg = urlencode($msg);
+        header("Location: /?msg=" . $msg);
         die();
     break;
+
 
     
     

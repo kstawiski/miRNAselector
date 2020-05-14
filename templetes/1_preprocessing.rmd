@@ -24,7 +24,7 @@ suppressMessages(library(VIM))
 setwd("/miRNAselector")
 set.seed(1)
 require(XML)
-config <- xmlParse("config.xml")
+config <- xmlParse("1_preprocessing.xml")
 config <- xmlToList(config)
 
 knitr::opts_chunk$set(fig.width=13, fig.height=9) 
@@ -216,4 +216,17 @@ Splitting the dataset to training, testing and validation datasets.
 
 ```{r}
 mixed = ks.prepare_split(metadane = metadane, ttpm = datasetx, train_proc = config[["training_split"]])
+```
+
+## Comparison of splits
+
+
+# Closing credits 
+
+```{r}
+packageDescription("miRNAselector")
+```
+
+```{r}
+sessionInfo()
 ```

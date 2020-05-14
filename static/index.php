@@ -12,15 +12,14 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
 
 <head>
     <title>miRNAselector</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    <script src="jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    <script src="jquery-ui.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    <link rel="stylesheet" href="bootstrap-theme.min.css"
         integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    <script src="bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
     <meta charset="utf-8" />
@@ -29,10 +28,23 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
     <meta name="description" content="miRNAselector - a tool for selecting great miRNA biomarkers." />
     <meta name="author" content="Konrad Stawiski (konrad@konsta.com.pl)" />
     <link rel="stylesheet" href="css/starter-template.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
+    <script src="all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53584749-8"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-53584749-8');
+    </script>
     <script type="text/javascript">
-        var waitingDialog = waitingDialog || (function ($) { 'use strict';
+    $(".btn-success").click(function (event) {
+        waitingDialog.show('Processing.. Please wait...');
+            });
+    
+    var waitingDialog = waitingDialog || (function ($) { 'use strict';
 
 	// Creating modal dialog's DOM
 	var $dialog = $(
@@ -130,7 +142,7 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
                         <p>Select <code>.csv</code> file to upload:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
 
-                        <button type="submit" class="btn btn-success" onclick="waitingDialog.show('Uploading & performing initial check...');" value="Upload" name="submit">
+                        <button type="submit" class="btn btn-success" value="Upload" name="submit">
                         <i class="fas fa-upload"></i>&emsp;Upload
                         </button>
                     </form>
@@ -156,12 +168,12 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
 
 <?php if($status == "[1] DATA UPLOADED (UNCONFIGURED)" && $var_initcheck == "OK") { ?>
             <div class="panel panel-default">
-                <div class="panel-heading"><i class="fas fa-tools"></i>&emsp;&emsp;Configure the pipeline</div>
+                <div class="panel-heading"><i class="fas fa-tools"></i>&emsp;&emsp;[STEP 1] Preprocessing</div>
                 <div class="panel-body">
 
 <?php
 $form = new Formr('bootstrap');
-echo $form->form_open('','','process.php?type=configure');
+echo $form->form_open('','','process.php?type=init_preprocessing');
 
 echo $form->input_text('project_name','Project name (will be printed on analysis reports):');
 
@@ -228,25 +240,7 @@ if(file_get_contents('/miRNAselector/var_batch.txt') == "TRUE") {
 echo $form->input_text('training_split', 'Proportion of training set cases: [values: 0-1]','0.6');
 echo "<p>The pipeline splits dataset into training, testing and validation sets. This value allows to set the proportion of dataset (by default 60%) that will remain in training set. The rest of cases will be evenly splitted to testing and validation set. E.g. 0.6 = 60% of cases in training set, 20% in testing and 20% in validation set.</p>";
 
-echo "<hr><h3>Feature selection:</h3>";
-
-echo "<table class=\"table\"><thead><tr><th> </th><th>Method:</th><th>Description:</th></tr></thead><tbody>";
-
-echo "<tr><td>";
-echo $form->input_checkbox('method1','</td><td style="white-space: nowrap"><code>1</code>&emsp;<code>[all]</code>','yes','','','','checked');
-echo "<td>". "All features (e.g. miRNAs) in dataset." . "</td>";
-echo "</td><tr>";
-
-echo "<tr><td>";
-echo $form->input_checkbox('method2','</td><td style="white-space: nowrap"><code>2</code>&emsp;<code>[sig]</code>','yes','','','','checked');
-echo "<td>". "Significiance filter. Features that differ significantly (p<0.05) between groups, verifed by Welch two samples t-test. P-values are adjusted using Benjamini and Hochberg method." . "</td>";
-echo "</td><tr>";
-
-
-
-echo "</tbody></table>";
-
-echo $form->input_submit('', '', 'Save configuration and start the pipeline', 'submit', 'class="btn btn-success"');
+echo $form->input_submit('', '', '<i class="far fa-play-circle"></i>&emsp;Run preprocessing', 'submit', 'class="btn btn-success"');
 echo $form->form_close();
 
 ?>
@@ -256,46 +250,21 @@ echo $form->form_close();
             </div>
                     <?php } ?>
 
-        </div>
-
-<?php 
-// if($status == "[2] PROCESSING") {
-    $max_analysis_steps = exec("grep -o \"ks.docker.update_progress\" /miRNAselector/miRNAselector/templetes/*.* | wc -l");
-    $current_steps = file_get_contents("/miRNAselector/var_progress.txt");
-?>
 
 
-<div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">Processing progress</div>
-        <div class="panel-body">
-            <p>Progress: <?php echo(file_get_contents("/miRNAselector/var_progress.txt") . "out of " . $max_analysis_steps . " steps"); ?></p>
-        </div>
 
-        <!-- Table -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Heading 1</th>
-                </tr>
-                <tr>
-                    <th>Heading 2</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Content 1</td>
-                </tr>
-                <tr>
-                    <td>Content 2</td>
-                </tr>
-            </tbody>
-        </table>
+
+
+
+
+
+
+
+
+
+
+
 </div>
-
-
-
-
 <?php
 // }
 ?>
