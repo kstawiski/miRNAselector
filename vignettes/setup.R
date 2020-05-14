@@ -23,7 +23,8 @@ if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_g
 
 # Keras
 suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
-if (!is_keras_available()) { install_keras() }
+#if (!is_keras_available()) { install_keras() }
+install_keras()
 
 # miRNAselector
 remotes::install_github("kstawiski/miRNAselector") # Install our package.
