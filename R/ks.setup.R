@@ -26,6 +26,8 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
     if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
 
+    library(devtools)
+    library(remotes)
     # Paczki z githuba
     if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
     if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
@@ -35,7 +37,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
 
                 if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
                 # Keras
-                suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
+                library(keras)
                 if(!is_keras_available()) { install_keras() }
                 } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
