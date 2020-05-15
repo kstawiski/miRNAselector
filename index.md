@@ -6,6 +6,7 @@
 
 ## [OPTION 1][Easy] Use desktop application:
 
+Comming soon...
 
 ## [OPTION 2][Intermediate] Docker version (recommended):
 
@@ -17,7 +18,7 @@ Our public docker images:
 
 Alternatives:
 
-- Built by workflow on GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector`](https://docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector)
+- Built by workflow on GitHub (without `mxnet` package installed): [`docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector`](https://docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector)
 
 Quick-start command: 
 
