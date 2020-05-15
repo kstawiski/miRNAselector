@@ -46,7 +46,9 @@ COPY vignettes/setup.R /
 COPY docker/register_jupyter.R /
 
 
-RUN Rscript /setup.R && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && conda install -c conda-forge bash_kernel && conda install -c conda-forge jupyter_contrib_nbextensions && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc && R CMD javareconf && conda create -y -n tensorflow -c conda-forge -c anaconda tensorflow keras numpy scikit-learn pandas ipykernel && python -m ipykernel install --user --name=tensorflow
+RUN Rscript /setup.R && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && conda install -c conda-forge bash_kernel && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc && R CMD javareconf && conda create -y -n tensorflow -c conda-forge -c anaconda tensorflow keras numpy scikit-learn pandas ipykernel && python -m ipykernel install --user --name=tensorflow
+
+RUN Rscript -e "library(keras); install_keras();"
 
 COPY docker/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 COPY docker/logo.png /opt/conda/lib/python3.7/site-packages/notebook/static/base/images/logo.png

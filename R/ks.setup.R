@@ -26,8 +26,8 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
     if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
 
-    library(devtools)
-    library(remotes)
+    suppressMessages(library(devtools))
+    suppressMessages(library(remotes))
     # Paczki z githuba
     if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
     if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
