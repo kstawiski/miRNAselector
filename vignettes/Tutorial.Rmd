@@ -57,6 +57,7 @@ As the `miRNAselector` package is installed we can load it easly.
 
 ```{r setup}
 library(miRNAselector)
+ks.setup() # just to be sure that everything is properly installed
 ```
 
 # Getting the data
@@ -579,7 +580,7 @@ packageDescription("miRNAselector")
 To render this tutorial we used:
 
 ```{r, eval = FALSE}
-render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "../static/")
+render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "../inst/doc/")
 ```
 
 Packages installed in our docker enviorment:
