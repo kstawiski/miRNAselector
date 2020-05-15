@@ -25,8 +25,8 @@ if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
 # Keras
 suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
 #if (!is_keras_available()) { install_keras() }
-install_keras()
-} else { cat("\nmiRNAselector: You may not be running 64-bit based machine. You might expirance problems with keras and tensorflow that are unrelated to this package.\n") }
+ if(!keras::is_keras_available()) { install_keras() }
+} else { cat("\n\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n\n") }
 
 # miRNAselector
 remotes::install_github("kstawiski/miRNAselector") # Install our package.

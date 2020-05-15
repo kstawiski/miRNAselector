@@ -17,7 +17,7 @@ Our public docker images:
 
 Alternatives:
 
-- Version without MXNET, for build checking; GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/withoutmxnet`](https://docker.pkg.github.com/kstawiski/mirnaselector/withoutmxnet)
+- Built by workflow on GitHub: [`docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector`](https://docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector)
 
 Quick-start command: 
 
