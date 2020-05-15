@@ -2,13 +2,11 @@
 #' 
 #' Run this function to be sure that everything is installed properly for miRNAselector.
 #' 
-ks.setup = function() {
+ks.setup = function(keras = TRUE) {
     suppressWarnings(suppressMessages(require("curl", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("utils", character.only = TRUE)))
-    if(curl::has_internet()) {
-    source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
-  } else {
+    
 
     tylko_cran = c("BiocManager","devtools","reticulate","remotes")
     if (length(setdiff(tylko_cran, rownames(installed.packages()))) > 0) {
@@ -33,33 +31,18 @@ ks.setup = function() {
     if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
     if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 
-    tryCatch(
-            {
+    if(keras == TRUE) {
+
                 if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
                 # Keras
                 suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
                 if(!is_keras_available()) { install_keras() }
                 } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
-            },
-            error=function(cond) {
-                message(cond)
-                message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
-            },
-            warning=function(cond) {
-                message(cond)
-                message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
-            },
-            finally={
-                
             }
-        )
 
     # miRNAselector
     if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
     message("OK! miRNAselector is installed correctly!")
-
-}
-
 
 }

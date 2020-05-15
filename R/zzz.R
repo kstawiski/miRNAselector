@@ -5,5 +5,5 @@
 }
 
 .onLoad <- function(libname, pkgname) {
-  ks.setup()
+  ks.setup(keras = FALSE)
 }
