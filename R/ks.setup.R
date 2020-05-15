@@ -2,7 +2,7 @@
 #' 
 #' Run this function to be sure that everything is installed properly for miRNAselector.
 #' 
-ks.setup = function(keras = TRUE) {
+ks.setup = function(keras = TRUE, msg = TRUE) {
     suppressWarnings(suppressMessages(require("curl", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("utils", character.only = TRUE)))
@@ -43,6 +43,6 @@ ks.setup = function(keras = TRUE) {
 
     # miRNAselector
     if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
-    message("OK! miRNAselector is installed correctly!")
+    if (msg) { message("OK! miRNAselector is installed correctly!") }
 
 }

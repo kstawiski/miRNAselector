@@ -49,5 +49,5 @@ jobs:
           
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          docker tag image $IMAGE_ID
+          docker tag mirnaselector:latest $IMAGE_ID
           docker push $IMAGE_ID

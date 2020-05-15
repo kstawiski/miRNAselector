@@ -20,6 +20,7 @@ source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vig
 
 ## ----setup--------------------------------------------------------------------
 library(miRNAselector)
+ks.setup() # just to be sure that everything is properly installed
 
 ## ---- eval = F----------------------------------------------------------------
 #  ks.download_tissue_miRNA_data_from_TCGA()
@@ -302,7 +303,7 @@ session_info()
 packageDescription("miRNAselector")
 
 ## ---- eval = FALSE------------------------------------------------------------
-#  render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "../static/")
+#  render("Tutorial.Rmd", output_file = "Tutorial.html", output_dir = "../inst/doc/")
 
 ## -----------------------------------------------------------------------------
 ks.table(as.data.frame(installed.packages()))
