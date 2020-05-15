@@ -26,22 +26,17 @@ tryCatch(
             if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
             # Keras
             suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
-            #if (!is_keras_available()) { install_keras() }
-            if(!is_keras_available()) { install_keras(method = "conda") }
+            if(!is_keras_available()) { install_keras() }
             } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
         },
         error=function(cond) {
             message(cond)
             message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
-            # Choose a return value in case of error
-            return(NA)
         },
         warning=function(cond) {
             message(cond)
             message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
-            # Choose a return value in case of warning
-            return(NULL)
         },
         finally={
             

@@ -41,14 +41,14 @@
 #' suppressMessages(library(doParallel))
 #' suppressMessages(library(parallel))
 #' suppressMessages(library(doSNOW))
-#' m = 1:70 # which methods to check?
+#' m = 1:56 # which methods to check?
 #' cl <- makeCluster(5) # 5 threds by default
 #' doSNOW::registerDoSNOW(cl)
 #' iterations = length(m)
 #' pb <- txtProgressBar(max = iterations, style = 3)
 #' progress <- function(n) setTxtProgressBar(pb, n)
 #' opts <- list(progress = progress)
-#' foreach(i = m, .verbose = T, .options.snow = opts) %dopar%
+#' foreach(i = m, .verbose = TRUE, .options.snow = opts) %dopar%
 #' {
 #' suppressMessages(library(miRNAselector))
 #' setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
