@@ -21,10 +21,12 @@ if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_gi
 if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
 if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 
+if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
 # Keras
 suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
 #if (!is_keras_available()) { install_keras() }
 install_keras()
+} else { cat("\nmiRNAselector: You may not be running 64-bit based machine. You might expirance problems with keras and tensorflow that are unrelated to this package.\n") }
 
 # miRNAselector
 remotes::install_github("kstawiski/miRNAselector") # Install our package.

@@ -8,3 +8,5 @@ inst/extdata/wx/DearWXpub/GSE_DATA/Total_hg38.txt
 workDir
 Rplots.pdf
 ..Rcheck
+**/*.RDS
+**/*.rds
