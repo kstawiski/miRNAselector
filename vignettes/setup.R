@@ -28,7 +28,7 @@ tryCatch(
             suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
             #if (!is_keras_available()) { install_keras() }
             if(!is_keras_available()) { install_keras(method = "conda") }
-            } else { cat("\n\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n\n") }
+            } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
         },
         error=function(cond) {
@@ -48,4 +48,4 @@ tryCatch(
 
 # miRNAselector
 if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
-message("THE END. Now miRNAselector should be installed correctly.")
+message("OK! miRNAselector is installed correctly!")
