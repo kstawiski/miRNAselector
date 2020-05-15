@@ -37,24 +37,25 @@
 #'
 #' @return The list of selected formulas. Note that, due to purpose of this package `ks.merge_formulas` may be a better option to get the output of processes run by this function.
 #' @examples
-#' suppressMessages(library(foreach))
-#' suppressMessages(library(doParallel))
-#' suppressMessages(library(parallel))
-#' suppressMessages(library(doSNOW))
-#' m = 1:56 # which methods to check?
-#' cl <- makeCluster(5) # 5 threds by default
-#' doSNOW::registerDoSNOW(cl)
-#' iterations = length(m)
-#' pb <- txtProgressBar(max = iterations, style = 3)
-#' progress <- function(n) setTxtProgressBar(pb, n)
-#' opts <- list(progress = progress)
-#' foreach(i = m, .verbose = TRUE, .options.snow = opts) %dopar%
-#' {
-#' suppressMessages(library(miRNAselector))
-#' setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
-#' ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
-#' }
-#' stopCluster(cl)
+#' # NOT RUN: (to speed up check, but this is a valid example for your real time projects)
+#' # suppressMessages(library(foreach))
+#' # suppressMessages(library(doParallel))
+#' # suppressMessages(library(parallel))
+#' # suppressMessages(library(doSNOW))
+#' # m = 1:56 # which methods to check?
+#' # cl <- makeCluster(5) # 5 threds by default
+#' # doSNOW::registerDoSNOW(cl)
+#' # iterations = length(m)
+#' # pb <- txtProgressBar(max = iterations, style = 3)
+#' # progress <- function(n) setTxtProgressBar(pb, n)
+#' # opts <- list(progress = progress)
+#' # foreach(i = m, .verbose = TRUE, .options.snow = opts) %dopar%
+#' # {
+#' # suppressMessages(library(miRNAselector))
+#' # setwd("~/public/Projekty/KS/miRNAselector/vignettes") # change it you to your working directory
+#' # ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
+#' # }
+#' # stopCluster(cl)
 ks.miRNAselector = function(wd = getwd(), m = c(1:70),
                             max_iterations = 10, code_path = system.file("extdata", "", package = "miRNAselector"),
                             register_parallel = T, clx = NULL, stamp = as.numeric(Sys.time()),
