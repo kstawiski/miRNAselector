@@ -21,12 +21,39 @@ if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_gi
 if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
 if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 
-if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
-# Keras
-suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
-#if (!is_keras_available()) { install_keras() }
- if(!keras::is_keras_available()) { install_keras() }
-} else { cat("\n\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n\n") }
+tryCatch(
+        {
+            if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
+            # Keras
+            suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
+            #if (!is_keras_available()) { install_keras() }
+            if(!is_keras_available()) { install_keras(method = "conda") }
+            } else { cat("\n\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n\n") }
+
+        },
+        error=function(cond) {
+            message(cond)
+            install_keras()
+            # Choose a return value in case of error
+            return(NA)
+        },
+        warning=function(cond) {
+            message(paste("URL caused a warning:", url))
+            message("Here's the original warning message:")
+            message(cond)
+            # Choose a return value in case of warning
+            return(NULL)
+        },
+        finally={
+        # NOTE:
+        # Here goes everything that should be executed at the end,
+        # regardless of success or error.
+        # If you want more than one expression to be executed, then you 
+        # need to wrap them in curly brackets ({...}); otherwise you could
+        # just have written 'finally=<expression>' 
+            message("Keras installed.")
+        }
+    ) 
 
 # miRNAselector
 if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
