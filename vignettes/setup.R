@@ -38,11 +38,13 @@ tryCatch(
             return(NA)
         },
         warning=function(cond) {
+            message(cond)
+            message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
             # Choose a return value in case of warning
             return(NULL)
         },
         finally={
-            message("Keras installed.")
+            
         }
     )
 
