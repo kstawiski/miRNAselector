@@ -38,22 +38,14 @@ tryCatch(
             return(NA)
         },
         warning=function(cond) {
-            message(paste("URL caused a warning:", url))
-            message("Here's the original warning message:")
-            message(cond)
             # Choose a return value in case of warning
             return(NULL)
         },
         finally={
-        # NOTE:
-        # Here goes everything that should be executed at the end,
-        # regardless of success or error.
-        # If you want more than one expression to be executed, then you 
-        # need to wrap them in curly brackets ({...}); otherwise you could
-        # just have written 'finally=<expression>' 
             message("Keras installed.")
         }
     ) 
 
 # miRNAselector
 if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
+message("THE END. Now miRNAselector should be installed correctly.")
