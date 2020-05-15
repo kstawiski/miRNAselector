@@ -8,7 +8,7 @@ packages = c("remotes","devtools","rlang","ps","roxygen2", "plotly", "rJava", "m
                        "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow", "sva", "Biobase",
                        "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
                        "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr",
-                       "rpart", "party", "mgcv", "GDCRNATools", "rJava",
+                       "rpart", "party", "mgcv", "GDCRNATools", "rJava", "cutpointr",
                        "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools",
                        "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
                        "BiocStyle","magick", "BiocCheck","cluster")
@@ -20,7 +20,6 @@ library(devtools)
 library(remotes)
 # Paczki z githuba
 if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
-if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
 if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 
 tryCatch(
