@@ -10,3 +10,4 @@ Rplots.pdf
 ..Rcheck
 **/*.RDS
 **/*.rds
+vignettes/*.csv
