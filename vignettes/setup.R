@@ -29,4 +29,4 @@ suppressWarnings(suppressMessages(require("keras", character.only = TRUE)))
 } else { cat("\n\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n\n") }
 
 # miRNAselector
-remotes::install_github("kstawiski/miRNAselector") # Install our package.
+if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
