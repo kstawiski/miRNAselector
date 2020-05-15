@@ -48,7 +48,7 @@ This code does not cover the installation of mxnet, which can be used for benchm
 
 You can run this code directly from GitHub:
 
-```{r, eval = F}
+```{r}
 library(devtools)
 source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
 ```

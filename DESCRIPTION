@@ -66,5 +66,8 @@ Imports:
     kableExtra,
     doSNOW,
     curl,
-    rJava
+    rJava,
+    mice,
+    MatchIt,
+    cluster
 RoxygenNote: 7.1.0

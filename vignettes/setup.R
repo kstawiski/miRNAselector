@@ -11,7 +11,7 @@ packages = c("remotes","devtools","rlang","ps","roxygen2", "plotly", "rJava", "m
                        "rpart", "party", "mgcv", "GDCRNATools", "rJava",
                        "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools",
                        "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
-                       "BiocStyle","magick", "BiocCheck")
+                       "BiocStyle","magick", "BiocCheck","cluster")
 
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
@@ -33,7 +33,7 @@ tryCatch(
         },
         error=function(cond) {
             message(cond)
-            install_keras()
+            message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
             # Choose a return value in case of error
             return(NA)
         },
@@ -44,7 +44,7 @@ tryCatch(
         finally={
             message("Keras installed.")
         }
-    ) 
+    )
 
 # miRNAselector
 if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
