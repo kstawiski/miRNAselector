@@ -5,6 +5,7 @@
 docker builder prune
 docker image prune -a
 docker build --rm --force-rm -t mirnaselector ../
+# if low memory machine: docker build --rm --force-rm -f ../Dockerfile.workflow -t mirnaselector ../ 
 docker tag mirnaselector:latest kstawiski/mirnaselector:latest
 docker push kstawiski/mirnaselector
 
