@@ -28,9 +28,6 @@
   if("cutpointr" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("Thie1e/cutpointr") }
   if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 
-  # miRNAselector
-  if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
-
   
   packageStartupMessage("\n\nWelcome to miRNAselector!\nAuthors: Konrad Stawiski M.D. (konrad@konsta.com.pl) and Marcin Kaszkowiak.\nFor more details go to https://kstawiski.github.io/miRNAselector/\n")
 }
