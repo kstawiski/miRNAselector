@@ -13,9 +13,6 @@ on:
   # Run tests for any PRs.
   pull_request:
 
-env:
-  # TODO: Change variable to your image's name.
-  IMAGE_NAME: mirnaselector
 
 jobs:
   # Run tests.
@@ -27,15 +24,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        name: Check out code
 
-      - name: Clean
-        run: |
-            sudo swapoff -a
-            sudo rm -f /swapfile
-            sudo apt clean
-            sudo apt autoremove -y --purge
-            docker rmi $(docker image ls -aq)
-            df -h
-
-      - name: Build image
-        run: docker build . --file Dockerfile.workflow --tag $IMAGE_NAME
+      - uses: mr-smithers-excellent/docker-build-push@v3
+        name: Build & push Docker image
+        with:
+          image: kstawiski/mirnaselector
+          tag: latest
+          registry: registry-url.io
+          dockerfile: Dockerfile.ci
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
