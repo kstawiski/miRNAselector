@@ -19,9 +19,9 @@ jobs:
           install.packages(c("remotes", "rcmdcheck","devtools","keras"))
           remotes::install_deps(dependencies = TRUE)
           library(devtools)
-          source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
           library(keras)
           install_keras()
+          source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
         shell: Rscript {0}
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
