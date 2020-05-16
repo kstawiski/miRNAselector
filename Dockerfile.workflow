@@ -40,14 +40,14 @@ RUN apt-get update --fix-missing && \
     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
     /opt/conda/bin/conda clean -afy
 
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran40/" && apt update && apt -y dist-upgrade && apt install -y r-base-core r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages(c('remotes','devtools'))" && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add - && add-apt-repository -y "deb https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" && apt update && apt -y dist-upgrade 
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran40/" && apt update && apt -y dist-upgrade && apt install -y r-base-core r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages(c('remotes','devtools'))" && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add - && add-apt-repository -y "deb https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" && apt update && apt -y dist-upgrade 
 
 COPY vignettes/setup.R /
 COPY docker/register_jupyter.R /
 
 RUN Rscript /setup.R && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && conda install -c conda-forge bash_kernel && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc && R CMD javareconf && conda create -y -n tensorflow -c conda-forge -c anaconda tensorflow keras numpy scikit-learn pandas ipykernel && python -m ipykernel install --user --name=tensorflow
 
-RUN Rscript -e "library(keras); install_keras();" && Rscript -e "library(miRNAselector); ks.setup();" && pip install jupyter_contrib_nbextensions && jupyter contrib nbextension install && pip install nbresuse[resources]
+RUN Rscript -e "library(keras); install_keras();" && Rscript -e "library(miRNAselector); ks.setup();" && conda install -c conda-forge jupyter_contrib_nbextensions nbresuse && jupyter contrib nbextension install
 
 COPY docker/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 COPY docker/logo.png /opt/conda/lib/python3.7/site-packages/notebook/static/base/images/logo.png

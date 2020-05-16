@@ -294,7 +294,7 @@ c.NotebookApp.port = 8888
 
 ## If True, display a button in the dashboard to quit (shutdown the notebook
 #  server).
-#c.NotebookApp.quit_button = True
+c.NotebookApp.quit_button = False
 
 ## (sec) Time window used to  check the message and data rate limits.
 #c.NotebookApp.rate_limit_window = 3
