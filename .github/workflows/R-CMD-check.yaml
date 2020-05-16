@@ -20,6 +20,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           library(devtools)
           source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
+          library(keras)
           install_keras()
         shell: Rscript {0}
       - name: Check
