@@ -491,7 +491,7 @@ c.NotebookApp.token = ''
 #c.Session.copy_threshold = 65536
 
 ## Debug output in the Session
-c.Session.debug = True
+c.Session.debug = False
 
 ## The maximum number of digests to remember.
 #  
@@ -763,3 +763,4 @@ c.MultiKernelManager.default_kernel_name = 'ir'
 #  
 #  By default, all installed kernels are allowed.
 #c.KernelSpecManager.whitelist = set()
+c.NotebookApp.ResourceUseDisplay.track_cpu_percent = True

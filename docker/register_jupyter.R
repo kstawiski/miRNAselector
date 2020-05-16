@@ -1,2 +1,3 @@
-install.packages('IRkernel')
-IRkernel::installspec()  # to register the kernel in the current R installation
+install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))
+devtools::install_github("IRkernel/IRkernel")
+IRkernel::installspec(user = FALSE, displayname = 'miRNAselector R env')

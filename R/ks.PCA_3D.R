@@ -29,17 +29,22 @@ ks.PCA_3D = function(ttpm_pofiltrze, meta) {
   suppressMessages(library(tidyverse))
   dane.pca <- prcomp(ttpm_pofiltrze, scale. = TRUE)
   suppressMessages(library(plotly))
-  
+
+  if(!is.null(sessionInfo()$loadedOnly$IRdisplay)) {
+    message("Running this code in the Jupyter enviorment may cause trouble like crash of R kernel.")
+    invisible(readline(prompt="Press [Enter] to continue or [Ctrl+C] to cancel."))
+  }
+
   for(i in colnames(ttpm_pofiltrze)) {
     if(!is.numeric(ttpm_pofiltrze[, i])) {
       stop("Please provide a dataframe with only numeric variables")
     }
   }
-  
+
   if(is.data.frame(meta)) {
     stop("Please provide a single categorical vector")
   }
-  
+
   pc = as.data.frame(dane.pca$x)
   pc = cbind(pc, meta)
 

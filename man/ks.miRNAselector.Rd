@@ -70,8 +70,7 @@ Pearls about the methods:
 For more detailed defitions please see the tutorial vignette.
 }
 \examples{
-
-# Commented as NOT RUN during CMD check as it takes a lot of time, but feel free to use this code for your project.
+# NOT RUN: (to speed up check, but this is a valid example for your real time projects)
 # suppressMessages(library(foreach))
 # suppressMessages(library(doParallel))
 # suppressMessages(library(parallel))
@@ -90,5 +89,4 @@ For more detailed defitions please see the tutorial vignette.
 # ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
 # }
 # stopCluster(cl)
-
 }

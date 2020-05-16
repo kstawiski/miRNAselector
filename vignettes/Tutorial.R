@@ -103,8 +103,9 @@ pca = ks.PCA(trainx, train$Class)
 pca
 
 ## -----------------------------------------------------------------------------
+if(is.null(sessionInfo()$loadedOnly$IRdisplay)) { # if not in the Jupyter, if you run ks.PCA_3D in learning/editing Jupyter enviorment it may cause "*** caught segfault *** address 0x1, cause 'memory not mapped'"
 pca3d = ks.PCA_3D(trainx, train$Class)
-pca3d
+pca3d }
 
 ## -----------------------------------------------------------------------------
 de = ks.miRNA_differential_expression(trainx, train$Class)
@@ -132,6 +133,7 @@ ks.correlation_plot(de$log2FC, de_valid$log2FC, "log2FC on training set", "log2F
 ks.correlation_plot(de_test$log2FC, de_valid$log2FC, "log2FC on test set", "log2FC on validation set", "", yx = T)
 
 ## -----------------------------------------------------------------------------
+library(miRNAselector)
 selected_features = ks.miRNAselector(wd = getwd(), m = c(1:4), max_iterations = 1, stamp = "tutorial") # For the sake of this tutorial and vignette building we will use only few fastest methods. The m parameter defines what methods will be tested. See more details below.
 
 ## -----------------------------------------------------------------------------
@@ -162,6 +164,7 @@ psych::describe(featureselection_formulas_final$ile_miRNA[-which(featureselectio
 #  readLines("Tutorial_benchmark.R") %>% paste0(collapse="\n") %>% cat
 
 ## -----------------------------------------------------------------------------
+library(miRNAselector)
 ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more, like 5000...
             algorithms = c("ctree"), # just add ctree, note that logistic regression (glm) is always included
             output_file = paste0("benchmark.csv")) # the main output
