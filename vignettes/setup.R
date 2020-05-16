@@ -22,27 +22,31 @@ library(remotes)
 if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
 if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 
-tryCatch(
-        {
-            if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
-            # Keras
-            library(keras)
-            if(!is_keras_available()) { install_keras() }
-            } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
+# tryCatch(
+#         {
+#             if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
+#             # Keras
+#             library(keras)
+#             if(!keras::is_keras_available()) { 
+              
+#               install_keras() }
+#             } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
-        },
-        error=function(cond) {
-            message(cond)
-            message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
-        },
-        warning=function(cond) {
-            message(cond)
-            message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
-        },
-        finally={
+#         },
+#         error=function(cond) {
+#             message(cond)
+#             message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
+#         },
+#         warning=function(cond) {
+#             message(cond)
+#             message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
+#         },
+#         finally={
             
-        }
-    )
+#         }
+#     )
+
+if(grepl("64", Sys.info()[["machine"]], fixed = TRUE) && !keras::is_keras_available()) { message("Keras is not installed. Please run keras::install_keras() later.") }
 
 # miRNAselector
 if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
