@@ -65,5 +65,6 @@ RUN cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git 
 
 EXPOSE 8888
 EXPOSE 80
+EXPOSE 443
 
 ENTRYPOINT ["/entrypoint.sh"]
