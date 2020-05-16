@@ -491,7 +491,7 @@ c.NotebookApp.token = ''
 #c.Session.copy_threshold = 65536
 
 ## Debug output in the Session
-#c.Session.debug = False
+c.Session.debug = True
 
 ## The maximum number of digests to remember.
 #  
