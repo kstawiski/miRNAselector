@@ -584,3 +584,11 @@ Packages installed in our docker enviorment:
 ```{r}
 ks.table(as.data.frame(installed.packages()))
 ```
+
+Clean the temporary and model files (as the results of this tutorial are simplified and we do not need them).
+
+```{r}
+unlink("temp", recursive=TRUE)
+unlink("models", recursive=TRUE)
+```
+
