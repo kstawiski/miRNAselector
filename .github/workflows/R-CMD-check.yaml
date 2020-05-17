@@ -53,7 +53,7 @@ jobs:
         run: Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
 
       - name: Check
-        run: Rscript -e "remotes::install_github("kstawiski/miRNAselector"); library(miRNAselector); ks.setup(); rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'error', check_dir = 'check')"
+        run: Rscript -e "remotes::install_github('kstawiski/miRNAselector'); library(miRNAselector); ks.setup(); rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'error', check_dir = 'check')"
 
       - name: Upload check results
         if: failure()
