@@ -54,7 +54,10 @@ jobs:
           sudo apt-get install python3-venv default-jdk default-jre
          
       - name: Install dependencies
-        run: | Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
+        run: | 
+          Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
+          Rscript -e "install.packages('keras'); keras::install_keras()"
+          Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
 
       - name: Check
         run: Rscript -e "remotes::install_github('kstawiski/miRNAselector'); library(miRNAselector); ks.setup(); rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'error', check_dir = 'check')"
