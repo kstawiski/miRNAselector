@@ -11,3 +11,4 @@ Rplots.pdf
 **/*.RDS
 **/*.rds
 vignettes/*.csv
+docs

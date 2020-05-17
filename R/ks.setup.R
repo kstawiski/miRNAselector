@@ -1,12 +1,12 @@
 #' ks.setup
-#' 
+#'
 #' Run this function to be sure that everything is installed properly for miRNAselector.
-#' 
+#'
 ks.setup = function(keras = TRUE, msg = TRUE) {
     suppressWarnings(suppressMessages(require("curl", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("utils", character.only = TRUE)))
-    
+
 
     tylko_cran = c("BiocManager","devtools","reticulate","remotes")
     if (length(setdiff(tylko_cran, rownames(installed.packages()))) > 0) {
@@ -40,7 +40,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
                 if(!is_keras_available()) { install_keras() }
                 } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
-            }
+    }
 
     # miRNAselector
     if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }

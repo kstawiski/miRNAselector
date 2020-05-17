@@ -14,13 +14,8 @@ options(knitr.table.format = "html")
 ## -----------------------------------------------------------------------------
 readLines("setup.R") %>% paste0(collapse="\n") %>% cat
 
-## ----echo = T, results = 'hide'-----------------------------------------------
-library(devtools)
-source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
-
 ## ----setup--------------------------------------------------------------------
 library(miRNAselector)
-ks.setup() # just to be sure that everything is properly installed
 
 ## ---- eval = F----------------------------------------------------------------
 #  ks.download_tissue_miRNA_data_from_TCGA()
@@ -103,7 +98,7 @@ pca = ks.PCA(trainx, train$Class)
 pca
 
 ## -----------------------------------------------------------------------------
-if(is.null(sessionInfo()$loadedOnly$IRdisplay)) { # if not in the Jupyter, if you run ks.PCA_3D in learning/editing Jupyter enviorment it may cause "*** caught segfault *** address 0x1, cause 'memory not mapped'"
+if(is.null(sessionInfo()$loadedOnly$IRdisplay)) { # if not in the Jupyter, if you run ks.PCA_3D in learning/editing Jupyter enviorment it may cause: *** caught segfault *** address 0x1, cause 'memory not mapped'
 pca3d = ks.PCA_3D(trainx, train$Class)
 pca3d }
 
