@@ -35,6 +35,7 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   kolory = rep(palette(),20)[-1]
   kolor_i = 1
   for (i in 1:ncol(rlab)){
+    rlab[,i] = as.factor(rlab[,i])
     o_ile = as.numeric(length(unique(rlab[,i])))
     #assigcode = c(assigcode, as.character(unique(rlab[,i]))) -> bug
     assigcode = c(assigcode, as.character(levels(rlab[, i])))
