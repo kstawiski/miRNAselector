@@ -11,6 +11,7 @@
 #'
 #' @return Final formulas object, also save as `featureselection_formulas_final.RDS` in working directory.
 #'
+#' @export
 ks.merge_formulas = function(wd = getwd(), max_miRNAs = 11, add = list()) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))

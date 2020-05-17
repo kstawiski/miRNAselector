@@ -7,6 +7,8 @@
 #' @param method Passed to `matchit()`.
 #' @param distance Passed to `matchit()`.
 #'
+#' @export
+#'
 ks.propensity_score_matching = function(dataset, match_by = c("age_at_diagnosis","gender.x"), method = "nearest", distance = "logit"){
   suppressMessages(library(MatchIt))
   suppressMessages(library(mice))

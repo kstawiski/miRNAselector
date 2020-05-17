@@ -10,6 +10,7 @@ options(warn=-1)
 suppressMessages(library(dplyr))
 set.seed(1)
 options(knitr.table.format = "html")
+library(miRNAselector)
 
 ## -----------------------------------------------------------------------------
 readLines("setup.R") %>% paste0(collapse="\n") %>% cat

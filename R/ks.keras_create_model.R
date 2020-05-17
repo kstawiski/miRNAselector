@@ -1,6 +1,8 @@
 #' ks.keras_create_model
 #'
 #' Helper function for `ks.deep_learning()`
+#'
+#' @export
 ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x_train_scale)) {
   # tempmodel <- keras_model_sequential() %>%
   #   { if(hyperparameters[i,10]==T) { layer_dense(. , units = hyperparameters[i,1], kernel_regularizer = regularizer_l2(l = 0.001),

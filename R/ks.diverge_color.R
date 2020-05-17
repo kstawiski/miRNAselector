@@ -1,6 +1,8 @@
 #' ks.diverge_color
 #'
 #' Helper for plotting.
+#'
+#' @export
 ks.diverge_color <- function(data,centeredOn=0){
   suppressMessages(library(classInt))
   nHalf=50

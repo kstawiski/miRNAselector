@@ -8,6 +8,8 @@
 #' @param labvar2 Label to be written on plot for second variable.
 #' @param yx Logical varable. TRUE if you want f(x)=x axis for reference (usefull for calibration plots).
 #' @param gdzie_legenda Where the legend should be placed?
+#'
+#' @export
 ks.correlation_plot = function(var1, var2, labvar1, labvar2, title, yx = T, metoda = 'pearson', gdzie_legenda = "topleft") {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))

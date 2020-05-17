@@ -3,6 +3,8 @@
 #' Function allowing to dowload all miRNA-seq data from TCGA.
 #'
 #' @param data_folder Path. Where to dowload the data?
+#'
+#' @export
 ks.download_tissue_miRNA_data_from_TCGA = function(data_folder = getwd())
 {
   oldwd = getwd()

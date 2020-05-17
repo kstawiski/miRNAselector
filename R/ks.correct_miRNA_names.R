@@ -7,6 +7,8 @@
 #' @param correct_dots Boolean variable to correct the names after correction of dots to hyphens. This tries to compensate the effect of make.names() function.
 #'
 #' @return Corrected dataset.
+#'
+#' @export
 ks.correct_miRNA_names = function(temp, species = "hsa", correct_dots = T) {
   suppressMessages(library(foreach))
   suppressMessages(library(doParallel))
@@ -43,7 +45,7 @@ ks.correct_miRNA_names = function(temp, species = "hsa", correct_dots = T) {
   temp2 = colnames(temp)
   final <- foreach(i=1:length(temp2), .combine=c) %dopar% {
     #for(i in 1:length(temp2)) {
-    if(correct_dots) { naz = gsub("\\.", "-", temp2[i]) } else { naz = temp2[i] } # correct dots to hyphens 
+    if(correct_dots) { naz = gsub("\\.", "-", temp2[i]) } else { naz = temp2[i] } # correct dots to hyphens
     suppressMessages(library(data.table))
     suppressMessages(library(stringr))
     for (ii in 1:nrow(miRbase_aliasy_hsa)) {
@@ -52,10 +54,10 @@ ks.correct_miRNA_names = function(temp, species = "hsa", correct_dots = T) {
       temp4 = temp4[temp4 != ""]
       if(naz %in% temp4) { naz = temp4[length(temp4)] }
     }
-    
-    
-    
-    
+
+
+
+
     naz
 
 

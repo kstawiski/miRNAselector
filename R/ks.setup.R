@@ -2,6 +2,11 @@
 #'
 #' Run this function to be sure that everything is installed properly for miRNAselector.
 #'
+#' @param keras Try to install keras using install_keras()?
+#' @param msg Display OK message at the end?
+#'
+#' @export
+#'
 ks.setup = function(keras = TRUE, msg = TRUE) {
     suppressWarnings(suppressMessages(require("curl", character.only = TRUE)))
     suppressWarnings(suppressMessages(require("devtools", character.only = TRUE)))
@@ -37,7 +42,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
                 if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
                 # Keras
                 library(keras)
-                if(!is_keras_available()) { install_keras() }
+                if(!is_keras_available()) { message("Keras is not avaible. Please run install_keras() to install it!") }
                 } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
     }

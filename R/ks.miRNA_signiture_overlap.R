@@ -6,6 +6,8 @@
 #' @param benchmark_csv Which benchmark to use?
 #'
 #' @return Object of `venn()` function which can be used for plotting venn diagram and check the overlap.
+#'
+#' @export
 ks.miRNA_signiture_overlap = function(which_formulas = c("sig","cfs"), benchmark_csv = "benchmark1578929876.21765.csv")
 {
   suppressMessages(library(plyr))

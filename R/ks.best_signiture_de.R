@@ -6,6 +6,9 @@
 #' @param use_mix By default (i.e. FALSE) we check the differential expression only on training dataset. If you want to check it on whole dataset (training, testing and validation dataset combined) set it to TRUE.
 #'
 #' @return Results of differential expression.
+#'
+#'
+#' @export
 ks.best_signiture_de = function(selected_miRNAs, use_mix = F)
 {
   suppressMessages(library(plyr))

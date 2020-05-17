@@ -56,6 +56,8 @@
 #' # ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
 #' # }
 #' # stopCluster(cl)
+#'
+#' @export
 ks.miRNAselector = function(wd = getwd(), m = c(1:70),
                             max_iterations = 10, code_path = system.file("extdata", "", package = "miRNAselector"),
                             register_parallel = T, clx = NULL, stamp = as.numeric(Sys.time()),

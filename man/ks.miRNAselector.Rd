@@ -89,4 +89,5 @@ For more detailed defitions please see the tutorial vignette.
 # ks.miRNAselector(m = i, max_iterations = 1, stamp = "tutorial", debug = T) # we set debug to get more output
 # }
 # stopCluster(cl)
+
 }

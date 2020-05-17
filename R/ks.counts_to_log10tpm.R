@@ -12,6 +12,8 @@
 #' @param filtr_howmany In how many samples? (Please provide a percentage or proportion, e.g. 1/2 or 1/3).
 #'
 #' @return Normalized counts in `ttpm` format. Please note, that the function also saves `TPM_DGEList_filtered.rds` to working directory, which is a DGEList object that can be used in packages like edgeR.
+#'
+#' @export
 
 ks.counts_to_log10tpm = function(danex, metadane = metadane, ids = metadane$ID, filtr = T,
                                  filtr_minimalcounts = 10, filtr_howmany = 1/2) {
@@ -35,10 +37,10 @@ ks.counts_to_log10tpm = function(danex, metadane = metadane, ids = metadane$ID, 
   suppressMessages(library(stringr))
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
-  
-  #data check 
-  
-  #check if all columns are numerical and with names starting as hsa 
+
+  #data check
+
+  #check if all columns are numerical and with names starting as hsa
   for(i in colnames(danex)) {
     if(!is.numeric(danex[, i])) {
       stop("Please provide a dataframe with only numeric variables")
@@ -50,7 +52,7 @@ ks.counts_to_log10tpm = function(danex, metadane = metadane, ids = metadane$ID, 
   if(table(colnames(metadane))["Class"] != 1 || length(unique(metadane$Class)) != 2) {
     stop("Metadata dataframe must contain exactly one binary 'Class' variable")
   }
-  
+
   danex = as.matrix(danex)
 
   dane_counts = t(danex)

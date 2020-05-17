@@ -45,7 +45,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 COPY vignettes/setup.R /
 COPY docker/register_jupyter.R /
 
-RUN Rscript /setup.R && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && conda install -c conda-forge bash_kernel && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc && R CMD javareconf && conda create -y -n tensorflow -c conda-forge -c anaconda tensorflow keras numpy scikit-learn pandas ipykernel && python -m ipykernel install --user --name=tensorflow
+RUN Rscript /setup.R && echo 'root:biostat' | chpasswd && conda update --all && conda install -c anaconda jupyter && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ && conda install nbconvert && apt-get -y install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc && conda create -y -n tensorflow -c conda-forge -c anaconda tensorflow keras numpy scikit-learn pandas ipykernel && python -m ipykernel install --user --name=tensorflow
 
 RUN Rscript -e "library(keras); install_keras(method = 'conda', conda = '/opt/conda/bin/conda');" && Rscript -e "library(miRNAselector); ks.setup();" && conda install -c conda-forge jupyter_contrib_nbextensions nbresuse && jupyter contrib nbextension install
 

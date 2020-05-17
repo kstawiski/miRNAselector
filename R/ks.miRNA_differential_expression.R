@@ -9,6 +9,8 @@
 #' @param klasy vector describing label for each case. It should contain only "Cancer" and "Control" labeles!!!!
 #'
 #' @return Data frame with results.
+#'
+#' @export
 ks.miRNA_differential_expression = function(ttpm_pofiltrze, klasy)
 {
   suppressMessages(library(plyr))

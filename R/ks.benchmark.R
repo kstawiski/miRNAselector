@@ -21,6 +21,7 @@
 #'
 #' @return Results of benchmark. Note that benchmark files are also saved in working directory (`wd`).
 #'
+#' @export
 ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, keras_threads = floor(parallel::detectCores()/2), search_iters_mxnet = 5000,
                         cores = detectCores()-1, input_formulas = readRDS("featureselection_formulas_final.RDS"),
                         output_file = "benchmark.csv", mxnet = F, gpu = F,

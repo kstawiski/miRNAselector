@@ -4,6 +4,8 @@
 #'
 #' @param table Table to draw.
 #' @param hight High (default: 400px)
+#'
+#' @export
 ks.table = function(table, height = "400px", ...)
 {
   suppressMessages(library(knitr))

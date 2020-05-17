@@ -6,6 +6,8 @@
 #' @param meta Factor of cases labels that should be visualized on biplot.
 #'
 #' @return Plotly 3D object.
+#'
+#' @export
 ks.PCA_3D = function(ttpm_pofiltrze, meta) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))

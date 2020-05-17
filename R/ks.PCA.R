@@ -6,6 +6,8 @@
 #' @param meta Factor of cases labels that should be visualized on biplot.
 #'
 #' @return Biplot.
+#'
+#' @export
 ks.PCA = function(ttpm_pofiltrze, meta) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
@@ -27,18 +29,18 @@ ks.PCA = function(ttpm_pofiltrze, meta) {
   suppressMessages(library(stringr))
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
-  
-  
+
+
   for(i in colnames(ttpm_pofiltrze)) {
     if(!is.numeric(ttpm_pofiltrze[, i])) {
       stop("Please provide a dataframe with only numeric variables")
     }
   }
-  
+
   if(is.data.frame(meta)) {
     stop("Please provide a single categorical vector")
   }
-  
+
   dane.pca <- prcomp(ttpm_pofiltrze, scale. = TRUE)
   suppressMessages(library(ggbiplot))
   ggbiplot(dane.pca,var.axes = FALSE,ellipse=TRUE,circle=TRUE, groups=as.factor(meta))

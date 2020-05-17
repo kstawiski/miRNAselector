@@ -5,6 +5,8 @@
 #' @param message Message to log.
 #' @param logfile Path to logfile.
 #'
+#'
+#' @export
 ks.log = function(message_to_log = "Working...", logfile = "temp.log") {
   hostname = as.character(R.utils::GString$getBuiltinHostname())
   timestamp = as.character(Sys.time())

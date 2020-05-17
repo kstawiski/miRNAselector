@@ -8,8 +8,10 @@
 
 #'
 #' @return Batch-corrected dataset.
+#'
+#' @export
 ks.combat = function(danex, metadane = metadane, model = c("~ Batch", "~ Batch + Class")) {
-  
+
   suppressMessages(library(dplyr))
   suppressMessages(library(devtools))
   suppressMessages(library(stringr))
@@ -18,8 +20,8 @@ ks.combat = function(danex, metadane = metadane, model = c("~ Batch", "~ Batch +
   suppressMessages(library(sva))
   suppressMessages(library(Biobase))
   suppressMessages(library(devtools))
-  
-  #data check 
+
+  #data check
   if(table(colnames(metadane))["Class"] != 1 || length(unique(metadane$Class)) != 2) {
     stop("Metadata dataframe must contain exactly one binary 'Class' variable")
   }
@@ -27,7 +29,7 @@ ks.combat = function(danex, metadane = metadane, model = c("~ Batch", "~ Batch +
   if(table(colnames(metadane))["Batch"] != 1) {
     stop("Metadata dataframe must contain nominal 'Batch' variable")
   }
-  
+
   danex = as.matrix(danex)
 
 eset <- new("ExpressionSet", exprs = t(danex))

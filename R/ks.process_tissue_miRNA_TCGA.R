@@ -4,6 +4,8 @@
 #'
 #' @param data_folder Directory where TCGA data were downloaded.
 #' @param remove_miRNAs_with_null_var Wheter to remove the miRNAs without any expression? Default: True
+#'
+#' @export
 ks.process_tissue_miRNA_TCGA = function(data_folder = getwd(), remove_miRNAs_with_null_var = T) {
   suppressMessages(library(plyr))
   suppressMessages(library(data.table))

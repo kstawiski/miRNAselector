@@ -2,6 +2,8 @@
 #'
 #' Helper for Marcin Kaszkowiak propritary method.
 #' Very longs.. needs optimizing.
+#'
+#' @export
 mk.iteratedRFE <- function(trainSet, testSet = NULL, initFeatures = colnames(trainSet), classLab, checkNFeatures = 25, votingIterations = 1000, useCV = F, nfolds = 10, initRandomState = 42 ) {
 
   set.seed(initRandomState)
@@ -16,7 +18,7 @@ mk.iteratedRFE <- function(trainSet, testSet = NULL, initFeatures = colnames(tra
   for (i in 1:votingIterations) {
 
     print(paste0("iteration ", i))
-    
+
     if(useCV == F) {
       params <- rfeControl(functions = rfFuncs, saveDetails = T)
       iter <- rfeIter(x = trainSet[, initFeatures], y = as.factor(trainSet[, classLab]), testX = testSet[, initFeatures], testY = as.factor(testSet[, classLab]), sizes = 1:checkNFeatures,

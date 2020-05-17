@@ -5,7 +5,7 @@
 #'
 #'
 #'
-#'
+#' @export
 ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                             SMOTE = F, keras_batch_size = 64, clean_temp_files = T,
                             save_threshold_trainacc = 0.85, save_threshold_testacc = 0.8, keras_epochae = 5000,

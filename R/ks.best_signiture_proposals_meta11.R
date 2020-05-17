@@ -5,10 +5,12 @@
 #' Formula: `metaIndex11 = validation sensitivitiy + validation specificity - 1`
 #' In the next step, it sorts the miRNA sets based on `metaIndex11` score. The first row in resulting data frame is the winner miRNA set.
 #'
-#'  @param benchmark_csv Path to benchmark csv.
+#' @param benchmark_csv Path to benchmark csv.
 #'
 #'
-#'  @return The benchmark sorted by metaIndex. First row is the best performing miRNA set.
+#' @return The benchmark sorted by metaIndex. First row is the best performing miRNA set.
+#'
+#' @export
 ks.best_signiture_proposals_meta11 = function(benchmark_csv = "benchmark1578929876.21765.csv"){
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))

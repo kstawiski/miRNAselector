@@ -7,6 +7,8 @@
 #' @param only_label If NULL - all selected miRNAs will be labeled. If you want to label only selected miRNAs provide a character vector with their names.
 #'
 #' @return Vulcano plot.
+#'
+#' @export
 ks.vulcano_plot = function(selected_miRNAs, DE = ks.miRNA_differential_expression(), only_label = NULL)
 {
   suppressMessages(library(plyr))

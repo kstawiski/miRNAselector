@@ -27,6 +27,7 @@ options(warn=-1)
 suppressMessages(library(dplyr))
 set.seed(1)
 options(knitr.table.format = "html")
+library(miRNAselector)
 ```
 
 # Introduction

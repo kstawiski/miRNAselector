@@ -6,6 +6,8 @@
 #' @param method Method of interest.
 #'
 #' @return Vector of miRNAs.
+#'
+#' @export
 ks.get_miRNAs_from_benchmark = function(benchmark_csv = "benchmark1578990441.6531.csv", method = "fcsig")
 {
   suppressMessages(library(plyr))

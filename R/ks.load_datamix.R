@@ -12,6 +12,8 @@
 #' @param replace_smote For some analyses we may want to replace imbalanced train dataset with balanced dataset. This saved coding time in some functions.
 #'
 #' @return The list of objects in the following order: train, test, valid, train_smoted, trainx, trainx_smoted. (trainx contains only the miRNA data without metadata)
+#'
+#' @export
 ks.load_datamix = function(wd = getwd(), smote_over = 10000, use_smote_not_rose = T, replace_smote = F) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))

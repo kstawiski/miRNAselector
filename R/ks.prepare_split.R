@@ -10,6 +10,8 @@
 #' @param train_proc What perc. should be kept in training dataset?
 #'
 #' @return The mixed dataset is return. In working directory mixed_train.csv, mixed_test.csv and mixed_valid.csv are saved. This is a crucial step in data preprocessing.
+#'
+#' @export
 ks.prepare_split = function(metadane = metadane, ttpm = ttpm_pofiltrze, train_proc = 0.6)
 {
   suppressMessages(library(plyr))
@@ -34,10 +36,10 @@ ks.prepare_split = function(metadane = metadane, ttpm = ttpm_pofiltrze, train_pr
   suppressMessages(library(tidyverse))
   tempp = cbind(metadane, ttpm)
   # Podzial - http://topepo.github.io/caret/data-splitting.html#simple-splitting-based-on-the-outcome
-  
+
   #data check
-  
-  #check if all columns are numerical and with names starting as hsa 
+
+  #check if all columns are numerical and with names starting as hsa
   for(i in colnames(ttpm)) {
     if(!is.numeric(ttpm[, i])) {
       stop("Please provide a dataframe with only numeric variables")
@@ -46,14 +48,14 @@ ks.prepare_split = function(metadane = metadane, ttpm = ttpm_pofiltrze, train_pr
       stop("Please provide only microRNA expression data (column names starting with hsa)")
     }
   }
-  
+
   metadane <- data.frame(metadane)
-  
+
   if(table(colnames(metadane))["Class"] != 1 || length(unique(metadane$Class)) != 2) {
     stop("Metadata dataframe must contain exactly one binary 'Class' variable")
   }
-  
-  
+
+
   set.seed(1)
   mix = rep("unasign", nrow(tempp))
   suppressMessages(library(caret))

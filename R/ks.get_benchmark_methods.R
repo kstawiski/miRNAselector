@@ -4,6 +4,8 @@
 #'
 #' @param benchmark_csv Path to benchmark csv file.
 #' @return Vector of feature selection methods checked.
+#'
+#' @export
 ks.get_benchmark_methods = function(benchmark_csv = "benchmark1578929876.21765.csv"){
   suppressMessages(library(limma))
   suppressMessages(library(plyr))

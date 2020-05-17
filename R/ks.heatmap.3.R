@@ -1,6 +1,7 @@
 #' ks.heatmap.3
 #'
 #' Helper function. No description needed. See `ks.heatmap` for heatmap creation.
+#'
 ks.heatmap.3 <- function(x,
                          Rowv = TRUE, Colv = if (symm) "Rowv" else TRUE,
                          distfun = dist,

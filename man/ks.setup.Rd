@@ -6,6 +6,11 @@
 \usage{
 ks.setup(keras = TRUE, msg = TRUE)
 }
+\arguments{
+\item{keras}{Try to install keras using install_keras()?}
+
+\item{msg}{Display OK message at the end?}
+}
 \description{
 Run this function to be sure that everything is installed properly for miRNAselector.
 }

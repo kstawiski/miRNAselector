@@ -4,10 +4,13 @@
 #' This function calculated the `metaIndex1` value which is the mean accuracy from train, test and validation dataset.
 #' In the next step, it sorts the miRNA sets based on `metaIndex1` score. The first row in resulting data frame is the winner miRNA set.
 #'
-#'  @param benchmark_csv Path to benchmark csv.
-#'  @param without_train One can argue, that accuracy on training dataset should not be used in calculation of metaIndex. By setting this to TRUE, you can calculate it without train dataset.
+#' @param benchmark_csv Path to benchmark csv.
+#' @param without_train One can argue, that accuracy on training dataset should not be used in calculation of metaIndex. By setting this to TRUE, you can calculate it without train dataset.
 #'
-#'  @return The benchmark sorted by metaIndex. First row is the best performing miRNA set.
+#' @return The benchmark sorted by metaIndex. First row is the best performing miRNA set.
+#'
+#' @export
+#'
 ks.best_signiture_proposals = function(benchmark_csv = "benchmark1578929876.21765.csv", without_train = F){
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
