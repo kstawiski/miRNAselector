@@ -20,6 +20,8 @@ R package:
 library("devtools")
 source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
 install_github("kstawiski/miRNAselector", force = T)
+library(keras)
+install_keras()
 library(miRNAselector)
 ks.setup()
 ```
