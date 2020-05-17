@@ -39,6 +39,13 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
 
+      - name: Manage X11 on macOS
+        if: matrix.config.os == "macOS-latest"
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew install xquartz
+
+
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:
@@ -47,6 +54,7 @@ jobs:
           Rscript -e "install.packages(c('remotes','devtools'))" -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+          sudo apt-get install python3-venv default-jdk default-jre
           Rscript -e "install.packages('keras'); keras::install_keras()"
           Rscript -e "devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")"
       - name: Install dependencies
