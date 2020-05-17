@@ -13,7 +13,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
     suppressWarnings(suppressMessages(require("utils", character.only = TRUE)))
 
 
-    tylko_cran = c("BiocManager","devtools","reticulate","remotes")
+    tylko_cran = c("BiocManager","devtools","reticulate","remotes","keras")
     if (length(setdiff(tylko_cran, rownames(installed.packages()))) > 0) {
     install.packages(setdiff(tylko_cran, rownames(installed.packages())), ask = F)  }
 

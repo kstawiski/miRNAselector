@@ -1,4 +1,4 @@
-tylko_cran = c("BiocManager","devtools","reticulate","remotes")
+tylko_cran = c("BiocManager","devtools","reticulate","remotes","keras")
 if (length(setdiff(tylko_cran, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(tylko_cran, rownames(installed.packages())), ask = F)  }
 
@@ -27,8 +27,8 @@ if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_g
 #             if(grepl("64", Sys.info()[["machine"]], fixed = TRUE)) {
 #             # Keras
 #             library(keras)
-#             if(!keras::is_keras_available()) { 
-              
+#             if(!keras::is_keras_available()) {
+
 #               install_keras() }
 #             } else { message("\n\n!!!!! If you are not running 64-bit based machine you might experience problems with keras and tensorflow that are unrelated to this package. !!!!!\n\n") }
 
@@ -42,7 +42,7 @@ if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_g
 #             message("Unable to verify the correctness of keras installation. Please run keras::install_keras() later.")
 #         },
 #         finally={
-            
+
 #         }
 #     )
 
