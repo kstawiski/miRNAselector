@@ -1,4 +1,12 @@
+authors:
+  Konrad Stawiski M.D.:
+    href: https://konsta.com.pl
+    html: &lt;img src="https://www.tidyverse.org/rstudio-logo.svg" height="24" /&gt;
+  Marcin Kaszkowiak:
+
+
 template:
   params:
-    bootswatch: cerulean
+    bootswatch: cosmo
     ganalytics: UA-53584749-8
+    package: miRNAselector
