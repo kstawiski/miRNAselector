@@ -19,8 +19,7 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: 'release'}
-          - {os: macOS-latest, r: 'release'}
-          - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-latest, r: 'release' }
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -56,6 +55,32 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          apt update
+          apt dist-upgrade -y 
+          apt-get install -y apt-transport-https screen build-essential libxml2-dev ca-certificates cmake curl git libatlas-base-dev libcurl4-openssl-dev libjemalloc-dev liblapack-dev libopenblas-dev libopencv-dev libzmq3-dev ninja-build software-properties-common sudo unzip wget
+          add-apt-repository -y ppa:ubuntu-toolchain-r/test 
+          apt update 
+          apt install -y gfortran-9 
+          apt install -y build-essential libmagick++-dev libbz2-dev libpcre2-16-0 libpcre2-32-0 libpcre2-8-0 libpcre2-dev fort77 xorg-dev liblzma-dev  libblas-dev gfortran gcc-multilib gobjc++ libreadline-dev 
+          apt install -y texinfo texlive-fonts-extra texlive libcairo2-dev freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev libglfw3-dev libgles2-mesa-dev libopenblas-dev liblapack-dev libopencv-dev build-essential git gcc cmake libcairo2-dev libxml2-dev 
+          echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+          apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+          add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran40/" 
+          apt update
+          apt -y dist-upgrade
+          apt install -y r-base-core r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk 
+          Rscript -e "install.packages(c('remotes','devtools'))" 
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add - 
+          add-apt-repository -y "deb https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" 
+          apt update 
+          apt -y dist-upgrade 
+        shell: sudo {0}
+          
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:
@@ -73,7 +98,7 @@ jobs:
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-build-vignettes", "--no-vignettes", "--no-examples"), error_on = "error", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
