@@ -307,3 +307,7 @@ packageDescription("miRNAselector")
 ## -----------------------------------------------------------------------------
 ks.table(as.data.frame(installed.packages()))
 
+## -----------------------------------------------------------------------------
+unlink("temp", recursive=TRUE)
+unlink("models", recursive=TRUE)
+
