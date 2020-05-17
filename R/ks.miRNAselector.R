@@ -147,7 +147,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting subcluster ready...")
     if(is.null(clx)) {
       suppressMessages(library(doParallel))
-      cl <- makePSOCKcluster(detectCores() - 1)
+      cl <- makeCluster(detectCores() - 1)
       registerDoParallel(cl) }
     else { registerDoParallel(clx) }
   }
