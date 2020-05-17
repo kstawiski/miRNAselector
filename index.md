@@ -1,14 +1,12 @@
-# Environment, docker-based application and R package
+# miRNAselector - environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
+
+![vignettes/logo.png]
 
 `miRNAselector` package is the environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
 # Installation
 
-## [OPTION 1][Easy] Use desktop application:
-
-Comming soon...
-
-## [OPTION 2][Intermediate] Docker version (recommended):
+## [OPTION 1] Docker version (recommended):
 
 If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
@@ -18,7 +16,7 @@ Our public docker images:
 
 Alternatives:
 
-- Built by workflow on GitHub (without `mxnet` package installed): [`docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector`](https://docker.pkg.github.com/kstawiski/mirnaselector/mirnaselector)
+- Built by workflow on GitHub (without `mxnet` package installed): [`kstawiski/mirnaselector-ci`](https://hub.docker.com/r/kstawiski/mirnaselector-ci)
 
 Quick-start command: 
 
@@ -35,7 +33,7 @@ Pearls:
 - Contains Jupyter-notebook-based tutorial for learning and easy implementation of R package.
 - For docker-based version we assure the correct functionality. Docker container is based on configured ubuntu.
 
-## [OPTION 3][Expert] Installation in your local R enviorment:
+## [OPTION 2] Installation in your local R enviorment:
 
 Run following commands in your local R:
 
@@ -49,17 +47,17 @@ or run `vignettes/setup.R` script to install nessesary libraries.
 
 # Tutorials
 
-- [Get started with basic functions of the package in local R enviorment.](https://htmlpreview.github.io/?https://github.com/kstawiski/miRNAselector/blob/master/static/Tutorial.html)
+- [Get started with basic functions of the package in local R enviorment.](articles/Tutorial.html)
 
 Examplary files for the analysis:
 
-- [TCGA-based tissue expression of miRNAs: `tissue_miRNA_counts.csv`](http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts.csv)
-- [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation): `tissue_miRNA_counts_withmissing.csv`](http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing.csv)
-- [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation) and with batch variable (for testing of batch-effect correction): `tissue_miRNA_counts_withmissing_wthbatcheffect.csv`](http://kstawiski.github.io/miRNAselector/example/tissue_miRNA_counts_withmissing_wthbatcheffect.csv)
+- [TCGA-based tissue expression of miRNAs: `tissue_miRNA_counts.csv`](https://github.com/kstawiski/miRNAselector/blob/master/example/tissue_miRNA_counts.csv)
+- [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation): `tissue_miRNA_counts_withmissing.csv`](https://github.com/kstawiski/miRNAselector/blob/master/example/tissue_miRNA_counts_withmissing.csv)
+- [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation) and with batch variable (for testing of batch-effect correction): `tissue_miRNA_counts_withmissing_wthbatcheffect.csv`](https://github.com/kstawiski/miRNAselector/blob/master/example/tissue_miRNA_counts_withmissing_wthbatcheffect.csv)
 
 # Development
 
- ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg)
+ ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg)   ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg)
 
 - Bugs and issues: [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues)
 - Contact with developers: [Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl)](https://konsta.com.pl)
