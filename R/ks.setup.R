@@ -26,7 +26,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
                         "rpart", "party", "mgcv", "GDCRNATools", "rJava",
                         "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools",
                         "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
-                        "BiocStyle","magick", "BiocCheck","cluster")
+                        "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis")
 
     if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }

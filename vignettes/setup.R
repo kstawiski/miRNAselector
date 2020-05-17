@@ -11,7 +11,7 @@ packages = c("remotes","devtools","rlang","ps","roxygen2", "plotly", "rJava", "m
                        "rpart", "party", "mgcv", "GDCRNATools", "rJava", "cutpointr",
                        "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools",
                        "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
-                       "BiocStyle","magick", "BiocCheck","cluster")
+                       "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis")
 
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
