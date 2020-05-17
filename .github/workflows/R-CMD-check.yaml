@@ -43,6 +43,7 @@ jobs:
         if: matrix.config.os == 'macOS-latest'
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew update
           brew install xquartz
 
 
