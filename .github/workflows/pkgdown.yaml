@@ -38,7 +38,6 @@ jobs:
           add-apt-repository -y "deb https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" 
           apt-get update 
           apt-get -y dist-upgrade 
-        shell: sudo {0}
 
       - name: Query dependencies
         run: |
