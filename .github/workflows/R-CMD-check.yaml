@@ -34,27 +34,6 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
-        run: |
-          install.packages(c("remotes", "rcmdcheck","devtools","keras"))
-          remotes::install_deps(dependencies = TRUE)
-          library(devtools)
-          library(keras)
-          install_keras()
-          source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
       - name: Install system dependencies (Linux)
         if: matrix.config.os == 'ubuntu-latest'
         env:
@@ -80,6 +59,27 @@ jobs:
           apt update 
           apt -y dist-upgrade 
         shell: sudo {0}
+
+      - name: Query dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck","devtools","keras"))
+          remotes::install_deps(dependencies = TRUE)
+          library(devtools)
+          library(keras)
+          install_keras()
+          source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
           
       - name: Install system dependencies
         if: runner.os == 'Linux'
@@ -98,7 +98,7 @@ jobs:
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples"), error_on = "error", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples", "--no-vignettes", "--no-build-vignettes"), error_on = "error", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
