@@ -32,12 +32,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages("remotes")
+          install.packages(c("remotes","devtools"))
           # To get links for homepage
           remotes::install_cran("devtools")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("pkgdown")
-          source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
+          devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
         shell: Rscript {0}
 
       - name: Install package
