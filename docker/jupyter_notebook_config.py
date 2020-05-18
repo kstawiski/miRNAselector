@@ -763,4 +763,3 @@ c.MultiKernelManager.default_kernel_name = 'ir'
 #  
 #  By default, all installed kernels are allowed.
 #c.KernelSpecManager.whitelist = set()
-c.NotebookApp.ResourceUseDisplay.track_cpu_percent = True
