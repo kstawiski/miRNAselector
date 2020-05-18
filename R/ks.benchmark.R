@@ -138,10 +138,10 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
     print(algorytm)
 
     if(grepl("Keras",algorytm)) {
-      cl <- makeCluster(keras_threads)
+      cl <- makePSOCKcluster(keras_threads)
       registerDoParallel(cl)
     } else {
-      cl <- makeCluster(cores-1)
+      cl <- makePSOCKcluster(cores-1)
       registerDoParallel(cl)
     }
 

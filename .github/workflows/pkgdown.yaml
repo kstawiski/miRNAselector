@@ -15,7 +15,7 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - uses: r-lib/actions/setup-tinytex@v1
+      # - uses: r-lib/actions/setup-tinytex@v1
 
       - name: Install dependencies and package
         run: |

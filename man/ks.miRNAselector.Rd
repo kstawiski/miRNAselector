@@ -76,7 +76,7 @@ For more detailed defitions please see the tutorial vignette.
 # suppressMessages(library(parallel))
 # suppressMessages(library(doSNOW))
 # m = 1:56 # which methods to check?
-# cl <- makeCluster(5) # 5 threds by default
+# cl <- makePSOCKcluster(5) # 5 threds by default
 # doSNOW::registerDoSNOW(cl)
 # iterations = length(m)
 # pb <- txtProgressBar(max = iterations, style = 3)

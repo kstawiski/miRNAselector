@@ -12,9 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - { os: windows-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette --ignore-vignettes"}
-        - { os: macOS-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette --ignore-vignettes"}
-        - { os: ubuntu-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette --ignore-vignettes" }
+        - { os: windows-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette"}
+        - { os: macOS-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette"}
+        - { os: ubuntu-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette" }
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -51,7 +51,9 @@ jobs:
           Rscript -e "install.packages(c('remotes','devtools'))" -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          sudo apt-get install python3-venv default-jdk default-jre
+          sudo apt-get -y install python3-venv default-jdk default-jre
+          sudo Rscript -e "install.packages('rJava')"
+          sudo R CMD javareconf
          
       - name: Install dependencies
         run: | 

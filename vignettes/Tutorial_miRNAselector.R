@@ -6,7 +6,7 @@ suppressMessages(library(doSNOW))
 
 m = 1:56 # which methods to check?
 
-cl <- makeCluster(5) # We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing.
+cl <- makePSOCKcluster(5) # We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing.
 doSNOW::registerDoSNOW(cl)
 iterations = length(m)
 pb <- txtProgressBar(max = iterations, style = 3)

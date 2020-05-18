@@ -43,7 +43,7 @@
 #' # suppressMessages(library(parallel))
 #' # suppressMessages(library(doSNOW))
 #' # m = 1:56 # which methods to check?
-#' # cl <- makeCluster(5) # 5 threds by default
+#' # cl <- makePSOCKcluster(5) # 5 threds by default
 #' # doSNOW::registerDoSNOW(cl)
 #' # iterations = length(m)
 #' # pb <- txtProgressBar(max = iterations, style = 3)
@@ -147,7 +147,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting subcluster ready...")
     if(is.null(clx)) {
       suppressMessages(library(doParallel))
-      cl <- makeCluster(detectCores() - 1)
+      cl <- makePSOCKcluster(detectCores() - 1)
       registerDoParallel(cl) }
     else { registerDoParallel(clx) }
   }
