@@ -50,7 +50,6 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   suppressMessages(library(plyr))
   suppressMessages(library(foreach))
   suppressMessages(library(doParallel))
-  #suppressMessages(library(doSNOW))
   suppressMessages(library(data.table))
   fwrite(hyperparameters, paste0("hyperparameters_",output_file))
 

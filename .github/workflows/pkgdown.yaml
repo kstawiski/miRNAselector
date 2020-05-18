@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo apt-get -y install libcurl4-openssl-dev
           Rscript -e "install.packages(c('remotes','devtools'))"
-          Rscript -e "devtools::install_github("r-hub/sysreqs")"
+          Rscript -e "devtools::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
           sudo apt-get -y install python3-venv default-jdk default-jre
@@ -30,10 +30,9 @@ jobs:
 
       - name: Install dependencies and package
         run: |
-          install.packages(c("remotes","devtools","pkgdown"))
+          install.packages(c("remotes","devtools","pkgdown","BiocManager"))
+          BiocManager::install("BiocCheck")
           # To get links for homepage
-          remotes::install_cran("devtools")
-          remotes::install_dev("pkgdown")
           devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
           devtools::install()
           miRNAselector::ks.setup()

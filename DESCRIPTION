@@ -1,6 +1,6 @@
 Package: miRNAselector
 Type: Package
-Title: miRNAselect - a package for biomarker miRNA selection based on miRNA-seq NGS data. 
+Title: miRNAselector - a package for biomarker miRNA selection based on miRNA-seq NGS data. 
 Version: 0.1.0
 Author: Konrad Stawiski
 Maintainer: Konrad Stawiski <konrad@konsta.com.pl>
@@ -69,7 +69,6 @@ Imports:
     profileR,
     xgboost,
     kableExtra,
-    doSNOW,
     curl,
     tidyselect,
     rJava,
@@ -90,7 +89,9 @@ Imports:
     party,
     rmarkdown,
     rpart,
-    sva
+    sva,
+    devtools,
+    nnet
 RoxygenNote: 7.1.0
 Authors@R: c(
     person("Konrad", "Stawiski", , "konrad@konsta.com.pl", role = c("aut", "cre"),

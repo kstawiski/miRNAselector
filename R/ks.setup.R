@@ -24,7 +24,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
                         "calibrate", "ggrepel", "networkD3", "VennDiagram","RSNNS", "kernlab", "car", "PairedData",
                         "profileR","classInt","kernlab","xgboost", "keras", "tidyverse", "cutpointr","tibble","tidyr",
                         "rpart", "party", "mgcv", "GDCRNATools", "rJava",
-                        "imputeMissings", "visdat", "naniar", "stringr", "doSNOW", "R.utils", "TCGAbiolinks", "GDCRNATools",
+                        "imputeMissings", "visdat", "naniar", "stringr", "R.utils", "TCGAbiolinks", "GDCRNATools",
                         "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
                         "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis")
 
