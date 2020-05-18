@@ -4,8 +4,7 @@ Title: miRNAselect - a package for biomarker miRNA selection based on miRNA-seq 
 Version: 0.1.0
 Author: Konrad Stawiski
 Maintainer: Konrad Stawiski <konrad@konsta.com.pl>
-Description: To be completed...
-    A package for biomarker miRNA selection based on miRNA-seq NGS data. 
+Description:miRNAselector is package is the environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq. The package introduces automatic and structured feature selection with further benchmarking using multiple data mining methods, thus allow to find the most overfitting resiliant signiture (set of featrues) that can be used in biomarker validation studies. E.g. this package can be used to find the set of miRNAs with the greatest biomarker potential based on miRNAs-seq. This set can be further validated in cheaper qPCR studies.
 License: License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

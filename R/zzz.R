@@ -1,5 +1,5 @@
 .onAttach <- function(libname, pkgname) {
-  options(rgl.useNULL = TRUE)
+  # options(rgl.useNULL = TRUE)
   ks.setup(keras = FALSE, msg = FALSE)
 
 
