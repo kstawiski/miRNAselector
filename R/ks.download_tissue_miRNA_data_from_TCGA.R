@@ -64,13 +64,13 @@ ks.download_tissue_miRNA_data_from_TCGA = function(data_folder = getwd())
       fwrite(temp3, paste0("miRNA_",project,".csv"))
 
     }, warning = function(w) {
-      cat("\n\n\nPobrane, ale z ostrzezeniami:\n")
+      cat("\n\n\nDownloaded with warnings:\n")
       print(w)
     }, error = function(e) {
-      cat("\n\n\nBłąd!!!")
+      cat("\n\n\nError!!!")
       print(e)
     }, finally = {
-      cat("\n\n\nIdę do następnego projektu...")
+      cat("\n\n\nGoing to the next project...")
     })
   }
 

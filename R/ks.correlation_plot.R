@@ -39,9 +39,9 @@ ks.correlation_plot = function(var1, var2, labvar1, labvar2, title, yx = T, meto
   temp = cor.test(var1, var2, method = metoda)
   if (metoda=='pearson') {
     if (temp$p.value < 0.0001) {
-      legend(gdzie_legenda, bty="n", legend=paste("r =",round(cor(var1,var2,use="complete.obs"),2),", p < 0.0001\nadj. R² =", format(summary(fit)$adj.r.squared, digits=4)))
+      legend(gdzie_legenda, bty="n", legend=paste("r =",round(cor(var1,var2,use="complete.obs"),2),", p < 0.0001\nadj. R2 =", format(summary(fit)$adj.r.squared, digits=4)))
     } else {
-      legend(gdzie_legenda, bty="n", legend=paste("r =",round(cor(var1,var2,use="complete.obs"),2),", p =",round(temp$p.value, 4),"\nadj. R² =", format(summary(fit)$adj.r.squared, digits=4))) } }
+      legend(gdzie_legenda, bty="n", legend=paste("r =",round(cor(var1,var2,use="complete.obs"),2),", p =",round(temp$p.value, 4),"\nadj. R2 =", format(summary(fit)$adj.r.squared, digits=4))) } }
   if (metoda=="spearman")
   { if (temp$p.value < 0.0001) {
     legend(gdzie_legenda, bty="n", legend=paste("rho =",round(cor(var1,var2,use="complete.obs"),2),", p < 0.0001"))
