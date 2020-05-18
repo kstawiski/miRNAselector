@@ -13,7 +13,6 @@ jobs:
       matrix:
         config:
         - { os: windows-latest, r: 'release'}
-        - { os: macOS-latest, r: 'release'}
         - { os: ubuntu-latest, r: 'release'}
 
     env:
@@ -22,10 +21,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-
-      - name: Install XQuartz on macOS
-        if: runner.os == 'macOS'
-        run: brew cask install xquartz
 
       - uses: r-lib/actions/setup-r@master
         with:
@@ -47,7 +42,7 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "install.packages(c('remotes','devtools'))" -e "remotes::install_github('r-hub/sysreqs')"
+          Rscript -e "install.packages(c('remotes','devtools'))"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
           sudo apt-get -y install python3-venv default-jdk default-jre
@@ -56,7 +51,7 @@ jobs:
          
       - name: Install dependencies
         run: | 
-          Rscript -e "install.packages('keras'); keras::install_keras()"
+          Rscript -e "install.packages(c('keras','devtools','remotes')); keras::install_keras()"
           Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
 
       - name: Check
