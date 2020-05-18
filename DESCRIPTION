@@ -10,22 +10,7 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown,
-    Biobase,
-    Biocomb,
-    ComplexHeatmap,
-    GDCRNATools,
-    R.utils,
-    TCGAbiolinks,
-    VIM,
-    circlize,
-    edgeR,
-    magick,
-    mgcv,
-    party,
-    rmarkdown,
-    rpart,
-    sva
+    rmarkdown
 VignetteBuilder: knitr
 StagedInstall: yes
 Imports: 
@@ -90,10 +75,28 @@ Imports:
     rJava,
     mice,
     MatchIt,
-    cluster
+    cluster,
+    Biobase,
+    Biocomb,
+    ComplexHeatmap,
+    GDCRNATools,
+    R.utils,
+    TCGAbiolinks,
+    VIM,
+    circlize,
+    edgeR,
+    magick,
+    mgcv,
+    party,
+    rmarkdown,
+    rpart,
+    sva
 RoxygenNote: 7.1.0
 Authors@R: c(
     person("Konrad", "Stawiski", , "konrad@konsta.com.pl", role = c("aut", "cre"),
       comment = c(ORCID = "0000-0002-6550-3384")
     ),
     person("Marcin", "Kaszkowiak", role = "aut"))
+BugReports: https://github.com/kstawiski/miRNAselector/issues
+URL: https://kstawiski.github.io/miRNAselector/ 
+biocViews: Software
