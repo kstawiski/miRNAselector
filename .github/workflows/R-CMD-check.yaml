@@ -12,9 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - { os: windows-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette"}
-        - { os: macOS-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette"}
-        - { os: ubuntu-latest, r: 'release', args: "--no-manual --no-vignettes --no-build-vignette" }
+        - { os: windows-latest, r: 'release'}
+        - { os: macOS-latest, r: 'release'}
+        - { os: ubuntu-latest, r: 'release'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -34,7 +34,6 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@master
 
       - uses: r-lib/actions/setup-tinytex@master
-        if: contains(matrix.config.args, 'no-manual') == false
 
       - name: Cache R packages
         if: runner.os != 'Windows'
@@ -57,19 +56,11 @@ jobs:
          
       - name: Install dependencies
         run: | 
-          Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
           Rscript -e "install.packages('keras'); keras::install_keras()"
           Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
 
       - name: Check
-        run: Rscript -e "remotes::install_github('kstawiski/miRNAselector'); library(miRNAselector); ks.setup(); rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'error', check_dir = 'check')"
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@master
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+        run: Rscript -e "remotes::install_github('kstawiski/miRNAselector'); library(miRNAselector); ks.setup(); devtools::check();"
 
       - name: Test coverage
         if: matrix.config.os == 'macOS-latest' && matrix.config.r == '3.6'

@@ -1,3 +1,5 @@
+![vignettes/logo.png]
+
 # miRNAselector
 
 ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R-CMD-check](https://github.com/kstawiski/miRNAselector/workflows/R-CMD-check/badge.svg) ![pkgdown](https://github.com/kstawiski/miRNAselector/workflows/pkgdown/badge.svg)

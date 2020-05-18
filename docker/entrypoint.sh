@@ -1,4 +1,5 @@
 #!/bin/bash
+Rscript /update.R
 cd /miRNAselector/
 git clone https://github.com/kstawiski/miRNAselector.git
 chmod -R 755 /miRNAselector/miRNAselector/static/

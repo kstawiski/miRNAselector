@@ -7,7 +7,7 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -22,7 +22,6 @@ jobs:
           install.packages(c("remotes","devtools"))
           # To get links for homepage
           remotes::install_cran("devtools")
-          remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("pkgdown")
           devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
           devtools::install()

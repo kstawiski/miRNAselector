@@ -1,6 +1,6 @@
-# miRNAselector - environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
+# miRNAselector &lt;img src="vignettes/logo.png" align="right" /&gt;
 
-![logo][vignettes/logo.png]
+## miRNAselector - environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
 `miRNAselector` package is the environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 

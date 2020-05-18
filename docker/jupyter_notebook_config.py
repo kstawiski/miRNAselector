@@ -22,7 +22,7 @@
 ## Base class for Jupyter applications
 
 ## Answer yes to any prompts.
-#c.JupyterApp.answer_yes = False
+c.JupyterApp.answer_yes = True
 
 ## Full path of a config file.
 #c.JupyterApp.config_file = ''
@@ -435,7 +435,7 @@ c.NotebookApp.token = ''
 #c.KernelManager.kernel_cmd = []
 
 ## Time to wait for a kernel to terminate before killing it, in seconds.
-#c.KernelManager.shutdown_wait_time = 5.0
+c.KernelManager.shutdown_wait_time = 1.0
 
 #------------------------------------------------------------------------------
 # Session(Configurable) configuration
@@ -491,7 +491,7 @@ c.NotebookApp.token = ''
 #c.Session.copy_threshold = 65536
 
 ## Debug output in the Session
-c.Session.debug = False
+c.Session.debug = True
 
 ## The maximum number of digests to remember.
 #  
@@ -753,7 +753,7 @@ c.MultiKernelManager.default_kernel_name = 'ir'
 
 ## If there is no Python kernelspec registered and the IPython kernel is
 #  available, ensure it is added to the spec list.
-#c.KernelSpecManager.ensure_native_kernel = True
+c.KernelSpecManager.ensure_native_kernel = False
 
 ## The kernel spec class.  This is configurable to allow subclassing of the
 #  KernelSpecManager for customized behavior.

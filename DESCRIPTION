@@ -12,7 +12,7 @@ Suggests:
     knitr,
     rmarkdown,
 VignetteBuilder: knitr
-StagedInstall: no
+StagedInstall: yes
 Imports: 
     dplyr,
     remotes,
@@ -72,3 +72,8 @@ Imports:
     MatchIt,
     cluster
 RoxygenNote: 7.1.0
+Authors@R: c(
+    person("Konrad", "Stawiski", , "konrad@konsta.com.pl", role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-6550-3384")
+    ),
+    person("Marcin", "Kaszkowiak", role = "aut")
