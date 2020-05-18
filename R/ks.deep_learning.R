@@ -60,8 +60,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   #cores=detectCores()
   cat(paste0("\nTemp dir: ", temp_dir, "\n"))
   cat("\nStarting preparing cluster..\n")
-  #cl <- makePSOCKcluster(keras_threads) #not to overload your computer
-  cl = makePSOCKcluster(keras_threads, outfile=paste0("temp/", ceiling(as.numeric(Sys.time())), "deeplearning_cluster.log"))
+  #cl <- makeCluster(keras_threads) #not to overload your computer
+  cl = makeCluster(keras_threads, outfile=paste0("temp/", ceiling(as.numeric(Sys.time())), "deeplearning_cluster.log"))
   registerDoParallel(cl)
   on.exit(stopCluster(cl))
   cat("\nCluster prepared..\n")
