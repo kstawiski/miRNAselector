@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: | 
           Rscript -e "install.packages(c('keras','devtools','remotes')); keras::install_keras()"
-          Rscript -e "devtools::install_github("r-hub/sysreqs")"
+          Rscript -e "devtools::install_github('r-hub/sysreqs')"
           Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
 
       - name: Check
