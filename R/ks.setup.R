@@ -17,7 +17,7 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
     if (length(setdiff(tylko_cran, rownames(installed.packages()))) > 0) {
     install.packages(setdiff(tylko_cran, rownames(installed.packages())), ask = F)  }
 
-    packages = c("remotes","devtools","rlang","ps","roxygen2", "plotly", "rJava", "mice","BiocManager", "MatchIt","curl",
+    packages = c("remotes","devtools","parallel","rlang","ps","roxygen2", "plotly", "rJava", "mice","BiocManager", "MatchIt","curl",
                         "reticulate", "kableExtra","plyr","dplyr","edgeR","epiDisplay","rsq","MASS","Biocomb","caret","dplyr",
                         "pROC","ggplot2","DMwR", "doParallel", "Boruta", "spFSR", "varSelRF", "stringr", "psych", "C50", "randomForest", "doSNOW",
                         "foreach","data.table", "ROSE", "deepnet", "gridExtra", "stargazer","gplots","My.stepwise","snow", "sva", "Biobase",
