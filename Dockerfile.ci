@@ -9,7 +9,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 RUN apt-get update --fix-missing && \
     apt-get install -y python3-pip python3-venv python3-dev libffi-dev libssl-dev wget bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 git mercurial subversion gfortran-7 gcc-7 && apt-get clean && \
-    pip3 install --upgrade pip3 && pip3 install --upgrade setuptools && pip3 install notebook && pip3 install tensorflow && pip3 install keras && pip3 install jupytext --upgrade
+    pip3 install --upgrade pip && pip3 install --upgrade setuptools && pip3 install notebook && pip3 install tensorflow && pip3 install keras && pip3 install jupytext --upgrade
     
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran40/" && apt update && apt -y dist-upgrade && apt install -y r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages(c('remotes','devtools','BiocManager','keras'))"
