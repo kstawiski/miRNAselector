@@ -6,7 +6,7 @@ suppressMessages(library(parallel))
 m = 1:56 # which methods to check?
 
 cl <- makeCluster(5) # We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing.
-registerDoParallel(cl)
+registerDoSNOW(cl)
 on.exit(stopCluster(cl))
 iterations = length(m)
 pb <- txtProgressBar(max = iterations, style = 3)

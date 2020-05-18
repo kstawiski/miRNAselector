@@ -139,11 +139,11 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
 
     if(grepl("Keras",algorytm)) {
       cl <- makeCluster(keras_threads)
-      registerDoParallel(cl)
+      registerDoSNOW(cl)
       on.exit(stopCluster(cl))
     } else {
       cl <- makeCluster(cores-1)
-      registerDoParallel(cl)
+      registerDoSNOW(cl)
       on.exit(stopCluster(cl))
     }
 
