@@ -14,9 +14,7 @@ jobs:
       - uses: r-lib/actions/setup-r@master
 
       - uses: r-lib/actions/setup-pandoc@master
-
-      - uses: r-lib/actions/setup-tinytex@master
-
+      
       - name: Install dependencies and package
         run: |
           install.packages(c("remotes","devtools","pkgdown"))

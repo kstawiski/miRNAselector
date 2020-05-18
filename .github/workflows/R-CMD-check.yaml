@@ -29,6 +29,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@master
 
       - uses: r-lib/actions/setup-tinytex@master
+        if: runner.os == 'Linux'
 
       - name: Cache R packages
         if: runner.os != 'Windows'
