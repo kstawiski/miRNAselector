@@ -44,6 +44,7 @@ jobs:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
           Rscript -e "install.packages(c('remotes','devtools'))"
+          Rscript -e "devtools::install_github("r-hub/sysreqs")"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
           sudo apt-get -y install python3-venv default-jdk default-jre
@@ -53,6 +54,7 @@ jobs:
       - name: Install dependencies
         run: | 
           Rscript -e "install.packages(c('keras','devtools','remotes')); keras::install_keras()"
+          Rscript -e "devtools::install_github("r-hub/sysreqs")"
           Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
 
       - name: Check

@@ -7,14 +7,26 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@master
 
       - uses: r-lib/actions/setup-pandoc@master
-      
+
+      - name: Install system dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "install.packages(c('remotes','devtools'))"
+          Rscript -e "devtools::install_github("r-hub/sysreqs")"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+          sudo apt-get -y install python3-venv default-jdk default-jre
+          sudo Rscript -e "install.packages('rJava')"
+          sudo R CMD javareconf
+
       - name: Install dependencies and package
         run: |
           install.packages(c("remotes","devtools","pkgdown"))

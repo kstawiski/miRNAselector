@@ -11,6 +11,21 @@ LazyData: true
 Suggests: 
     knitr,
     rmarkdown,
+    Biobase,
+    Biocomb,
+    ComplexHeatmap,
+    GDCRNATools,
+    R.utils,
+    TCGAbiolinks,
+    VIM,
+    circlize,
+    edgeR,
+    magick,
+    mgcv,
+    party,
+    rmarkdown,
+    rpart,
+    sva
 VignetteBuilder: knitr
 StagedInstall: yes
 Imports: 
@@ -20,10 +35,15 @@ Imports:
     ellipsis,
     BiocManager,
     plyr,
+    tibble,
+    tidyr,
+    XML,
     epiDisplay,
     rsq,
     MASS,
     caret,
+    tidyverse,
+    xtable,
     pROC,
     ggplot2,
     DMwR,
