@@ -2,6 +2,7 @@
 suppressMessages(library(foreach))
 suppressMessages(library(doParallel))
 suppressMessages(library(parallel))
+suppressMessages(library(doSNOW))
 
 m = 1:56 # which methods to check?
 

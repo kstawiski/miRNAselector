@@ -42,12 +42,12 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          sudo apt-get -y install libcurl4-openssl-dev
+          sudo apt-get -y install libcurl4-openssl-dev python3-venv python3-pip
           Rscript -e "install.packages(c('keras','devtools','remotes')); keras::install_keras()"
           Rscript -e "devtools::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          sudo apt-get -y install python3-venv default-jdk default-jre
+          sudo apt-get -y install default-jdk default-jre
           sudo Rscript -e "install.packages('rJava')"
           sudo R CMD javareconf
          

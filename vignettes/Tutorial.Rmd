@@ -10,7 +10,7 @@ package: miRNAselector
 output: 
   BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}  
 ---
@@ -70,8 +70,7 @@ Let's load counts files and see its summary.
 ```{r}
 suppressWarnings(suppressMessages(library(data.table)))
 suppressWarnings(suppressMessages(library(knitr)))
-orginal_TCGA_data = fread("tissue_miRNA_counts.csv.gz")
-orginal_TCGA_data[orginal_TCGA_data == ""] = NA
+data("orginal_TCGA_data")
 ks.table(table(orginal_TCGA_data$primary_site, orginal_TCGA_data$sample_type))
 ```
 

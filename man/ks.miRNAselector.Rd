@@ -74,7 +74,6 @@ For more detailed defitions please see the tutorial vignette.
 # suppressMessages(library(foreach))
 # suppressMessages(library(doParallel))
 # suppressMessages(library(parallel))
-# suppressMessages(library(doSNOW))
 # m = 1:56 # which methods to check?
 # cl <- makeCluster(5) # 5 threds by default
 # doSNOW::registerDoSNOW(cl)

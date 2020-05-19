@@ -24,7 +24,7 @@ jobs:
           Rscript -e "devtools::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          sudo apt-get -y install python3-venv default-jdk default-jre
+          sudo apt-get -y install python3-venv python3-pip default-jdk default-jre
           sudo Rscript -e "install.packages('rJava')"
           sudo R CMD javareconf
 

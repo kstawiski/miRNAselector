@@ -41,6 +41,7 @@
 #' # suppressMessages(library(foreach))
 #' # suppressMessages(library(doParallel))
 #' # suppressMessages(library(parallel))
+#' # suppressMessages(library(doSNOW))
 #' # m = 1:56 # which methods to check?
 #' # cl <- makeCluster(5) # 5 threds by default
 #' # doSNOW::registerDoSNOW(cl)
@@ -56,7 +57,7 @@
 #' # }
 #' # stopCluster(cl)
 #'
-#' @import remotes parallel plotly rJava mice BiocManager MatchIt curl reticulate kableExtra plyr dplyr edgeR epiDisplay rsq MASS Biocomb caret dplyr pROC ggplot2 DMwR doParallel Boruta spFSR varSelRF stringr psych C50 randomForest foreach data.table ROSE deepnet gridExtra stargazer gplots My.stepwise snow doSNOW sva Biobase calibrate ggrepel networkD3 VennDiagram RSNNS kernlab car PairedData profileR classInt kernlab xgboost keras tidyverse cutpointr tibble tidyr rpart party mgcv GDCRNATools rJava cutpointr imputeMissings visdat naniar stringr R.utils TCGAbiolinks GDCRNATools kableExtra VIM mice MatchIt XML rmarkdown xtable ComplexHeatmap circlize magick cluster tidyselect ellipsis
+#' @import snow doSNOW
 #'
 #' @export
 ks.miRNAselector = function(wd = getwd(), m = c(1:70),
@@ -88,6 +89,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
   suppressMessages(library(R.utils))
+  suppressMessages(library(doSNOW))
 
 
   if(!dir.exists("temp")) { dir.create("temp") }
