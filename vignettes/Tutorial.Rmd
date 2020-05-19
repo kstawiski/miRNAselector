@@ -43,7 +43,7 @@ If you are using our docker enviorment to learn this package you should not run 
 Setup script:
 
 ```{r}
-readLines("setup.R") %>% paste0(collapse="\n") %>% cat
+readLines("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R") %>% paste0(collapse="\n") %>% cat
 ```
 This code does not cover the installation of mxnet, which can be used for benchmarking of the selected miRNA sets. The mxnet is however built and installed in our docker enviorment.
 
@@ -135,6 +135,7 @@ t.test(dataset$age_at_diagnosis ~ dataset$Class)
 ks.table(table(dataset$gender.x, dataset$Class))
 chisq.test(dataset$gender.x, dataset$Class)
 fwrite(dataset, "balanced_dataset.csv.gz")
+miRNAselector_tutorial_balanced_dataset = dataset # can be used by data("miRNAselector_tutorial_balanced_dataset")
 ```
 
 There are no significant differences in age or gender composition between classes now. We can proceed to standard filtering, log-transormation and TPM-normalization.
@@ -167,6 +168,7 @@ The split can be prepared manually by user (the pipeline expects to find `mixed_
 
 ```{r}
 mixed = ks.prepare_split(metadane = metadane, ttpm = ttpm, train_proc = 0.6)
+miRNAselector_tutorial_balanced_mixed = mixed # can be used by data("miRNAselector_tutorial_balanced_mixed")
 ```
 
 Let's see a split summary. 
@@ -264,7 +266,7 @@ selected_features = ks.miRNAselector(wd = getwd(), m = c(1:4), max_iterations = 
 But, for largers projects we suggest using the following wrapper wich will perform the feature selection in parallel, significantly reducing computational time. We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing:
 
 ```{r}
-readLines("Tutorial_miRNAselector.R") %>% paste0(collapse="\n") %>% cat
+readLines("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/Tutorial_miRNAselector.R") %>% paste0(collapse="\n") %>% cat
 ```
 
 [If you are using our enviorment to learn this package you can tweak and run this code in the interactive notebook. Click here.](/e/notebooks/miRNAselector/vignettes/Tutorial_miRNAselector.R)
@@ -355,9 +357,10 @@ Just for rendering this tutorial we will use a very simple benchmark using only 
 
 ```{r}
 library(miRNAselector)
-ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more, like 5000...
+miRNAselector_tutorial_balanced_benchmark = ks.benchmark(search_iters = 5, # 5 random hyperparameter sets will be checked; 5 is set here for speed purposes.. for real projects use more, like 5000...
             algorithms = c("ctree"), # just add ctree, note that logistic regression (glm) is always included
             output_file = paste0("benchmark.csv")) # the main output
+# exemplary benchmark data can be loaded using data('miRNAselector_tutorial_balanced_benchmark')
 ```
 
 As benchmarking is done, the main result file is saved in file specified in `output_file` parameter. It contains the performance metrics of signatures satisfying initial criteria (e.g. `max_miRNA`) across different methods of modelling. Let's take a quick look:
