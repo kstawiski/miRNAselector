@@ -152,9 +152,11 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
       suppressMessages(library(doParallel))
       cl <- makeCluster(detectCores() - 1)
       registerDoSNOW(cl)
-      on.exit(stopCluster(cl)) }
+      # on.exit(stopCluster(cl))
+      }
     else { registerDoParallel(clx)
-    on.exit(stopCluster(clx)) }
+    # on.exit(stopCluster(clx))
+      }
   }
 
   # 0. All and sig

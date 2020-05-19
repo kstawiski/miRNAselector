@@ -7,5 +7,5 @@
 }
 
 .onLoad <- function(libname, pkgname) {
-
+  options(rgl.useNULL = TRUE)
 }

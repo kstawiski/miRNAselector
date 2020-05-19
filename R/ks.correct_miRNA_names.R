@@ -42,7 +42,7 @@ ks.correct_miRNA_names = function(temp, species = "hsa", correct_dots = T) {
   cl <- makeCluster(cores-1) #not to overload your computer
   suppressMessages(library(doSNOW))
   registerDoSNOW(cl)
-  on.exit(stopCluster(cl))
+  # on.exit(stopCluster(cl))
 
   temp2 = colnames(temp)
   final <- foreach(i=1:length(temp2), .combine=c) %dopar% {

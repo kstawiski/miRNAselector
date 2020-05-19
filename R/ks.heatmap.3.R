@@ -261,7 +261,7 @@ ks.heatmap.3 <- function(x,
   if (length(lwid) != ncol(lmat))
     stop("lwid must have length = ncol(lmat) =", ncol(lmat))
   op <- par(no.readonly = TRUE)
-  on.exit(par(op))
+  # on.exit(par(op))
 
   layout(lmat, widths = lwid, heights = lhei, respect = FALSE)
 
