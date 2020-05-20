@@ -14,7 +14,7 @@ jobs:
       - uses: goanpeca/setup-miniconda@v1
         with:
           miniconda-version: 'latest'
-          activate-environment: base
+          auto-activate-base: true
 
       - name: Setup R
         run: |
