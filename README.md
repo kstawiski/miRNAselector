@@ -1,6 +1,4 @@
-# pkgdown &lt;img src="vignettes/logo.png" align="right" /&gt;
-
-![vignettes/logo.png]
+![](vignettes/logo.png)
 
 # miRNAselector
 
