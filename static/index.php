@@ -142,7 +142,7 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
                         <p>Select <code>.csv</code> file to upload:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
 
-                        <button type="submit" class="btn btn-success" value="Upload" name="submit">
+                        <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Uploading and performing initial check...');">
                         <i class="fas fa-upload"></i>&emsp;Upload
                         </button>
                     </form>
@@ -151,7 +151,7 @@ $status = file_get_contents('/miRNAselector/var_status.txt');
 
                     <pre><?php 
                         if(!file_exists("/miRNAselector/initial_check.txt")) {
-                        system("Rscript /miRNAselector/miRNAselector/docker/1_formalcheckcsv.R > /miRNAselector/initial_check.txt"); echo file_get_contents("/miRNAselector/initial_check.txt"); } else { echo file_get_contents("/miRNAselector/initial_check.txt"); }?></pre>
+                         echo file_get_contents("/miRNAselector/initial_check.txt"); } else { echo file_get_contents("/miRNAselector/initial_check.txt"); }?></pre>
                     <p>Initial check status:
                         <code><b><?php $var_initcheck = file_get_contents('/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code>
                     </p>
@@ -240,7 +240,9 @@ if(file_get_contents('/miRNAselector/var_batch.txt') == "TRUE") {
 echo $form->input_text('training_split', 'Proportion of training set cases: [values: 0-1]','0.6');
 echo "<p>The pipeline splits dataset into training, testing and validation sets. This value allows to set the proportion of dataset (by default 60%) that will remain in training set. The rest of cases will be evenly splitted to testing and validation set. E.g. 0.6 = 60% of cases in training set, 20% in testing and 20% in validation set.</p>";
 
-echo $form->input_submit('', '', '<i class="far fa-play-circle"></i>&emsp;Run preprocessing', 'submit', 'class="btn btn-success"');
+//echo $form->input_submit('', '', 'Run preprocessing', 'submit', 'class=btn-success');
+echo "<button type=\"submit\" class=\"btn btn-success\" name=\"submit\" onclick=\"waitingDialog.show('Processing... Please wait...');\"><i class=\"fas fa-play\"></i></i>&emsp;Run preprocessing</button>";
+
 echo $form->form_close();
 
 ?>

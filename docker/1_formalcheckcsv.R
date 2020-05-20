@@ -37,8 +37,9 @@ batch = T } else { cat("\n✓ The file does not contain `Batch` variable that ca
 x = dplyr::select(dane, starts_with("hsa"))
 like_counts = sapply(x, function(x2) (sum(unlist(na.omit(x2))%%1 == 0) + sum(unlist(na.omit(x2)) >= 0))/(2*length(unlist(na.omit(x2)))) == 1)
 positive = F
-if(like_counts) { cat("\n✓ Feature values are positive integers. The file could represent read counts (the normalization functions can be applied)."); positive = T; } else {
-    cat("\n✓ Feature values are not positive integers. The functions for normalization of the read counts will be disabled.");
+if(sum(like_counts)/ncol(x)) { cat("\n✓ Feature values are positive integers. The file could represent read counts (the normalization functions can be applied)."); positive = T; } else {
+    cat("\n✓ Feature values are not positive integers. The functions for normalization of the read counts will be disabled. Features not looking like counts: ");
+    cat(paste0(colnames(x)[which(like_counts == FALSE)], collapse = ", "))
 }
 writeLines(as.character(positive), "var_seemslikecounts.txt", sep="")
 

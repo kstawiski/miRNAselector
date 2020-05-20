@@ -1,3 +1,9 @@
+## Default repo
+r = getOption("repos")
+r["CRAN"] = "https://cran.r-project.org"
+options(repos = r)
+
+
 tylko_cran = c("BiocManager","devtools","reticulate","remotes","keras")
 if (length(setdiff(tylko_cran, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(tylko_cran, rownames(installed.packages())), ask = F)  }

@@ -1,5 +1,5 @@
 r = getOption("repos")
-r["CRAN"] = "http://cran.r-project.org"
+r["CRAN"] = "https://cran.r-project.org"
 options(repos = r)
 
 install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))
