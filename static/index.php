@@ -200,7 +200,7 @@ if(file_get_contents('/miRNAselector/var_seemslikecounts.txt') == "TRUE") {
       echo $form->input_select('input_format', 'Input features format:','','','','','transformed',$options);
 }
 
-echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized suppressMessages(library sizes are not used). The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";
+echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized library sizes are not used. The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";
 
 // Korekcja
 if(file_get_contents('/miRNAselector/var_seemslikecounts.txt') == "TRUE") {
