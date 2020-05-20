@@ -13,8 +13,8 @@ jobs:
 
       - uses: goanpeca/setup-miniconda@v1
         with:
-          auto-update-conda: true
-          python-version: 3.7
+          miniconda-version: 'latest'
+          activate-environment: base
 
       - name: Setup R
         run: |
