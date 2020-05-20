@@ -17,7 +17,7 @@ ENV RETICULATE_PYTHON /opt/conda/bin/python
 # Keras, tensorflow, jupyter
 RUN apt-get update --fix-missing && \
     apt-get install -y apt-utils libffi-dev libssl-dev wget bzip2 ca-certificates build-essential cmake git unzip pkg-config libopenblas-dev liblapack-dev libhdf5-serial-dev libglib2.0-0 libxext6 libsm6 libxrender1 gfortran-7 gcc-7 && apt-get clean && \
-    conda update --all && conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow keras jupyter jupytext numpy pandas r r-devtools r-biocmanager r-remotes r-keras r-rjava pandoc r-reticulate r-magick r-xml
+    conda update --all && conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow keras jupyter jupytext numpy pandas r r-devtools r-essentials r-biocmanager r-remotes r-keras r-rjava pandoc r-reticulate r-magick r-xml r-rgl opencv pkgconfig && echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
 
 # R:
 # RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran40/" && apt update && apt -y dist-upgrade && apt install -y r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages(c('remotes','devtools','BiocManager','keras'))"
@@ -30,7 +30,8 @@ COPY vignettes/setup.R /
 COPY docker/register_jupyter.R /
 COPY docker/keras.R /
 
-RUN Rscript /setup.R && echo 'root:biostat' | chpasswd && Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ 
+RUN Rscript -e "chooseCRANmirror(ind=1)" && Rscript /setup.R && echo 'root:biostat' | chpasswd 
+RUN Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ 
 
 # Setup keras in R env
 RUN Rscript /keras.R && Rscript -e "remotes::install_github('kstawiski/miRNAselector', force = T); library(miRNAselector);"
