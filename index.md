@@ -1,6 +1,6 @@
 # miRNAselector - environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments.
 
-![logo](https://github.com/kstawiski/miRNAselector/raw/master/vignettes/logo.png)
+![](https://github.com/kstawiski/miRNAselector/raw/master/vignettes/logo.png)
 
 `miRNAselector` can perform basic analysis of NGS (miRNA-seq, RNA-seq) counts or normalized values from any . Initially developed for miRNA-seq.
 

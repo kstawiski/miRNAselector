@@ -2,6 +2,7 @@
 $msg = "";
 require_once 'class.formr.php';
 $form = new Formr('bootstrap');
+putenv("PATH=/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
 
 /* print the contents of a url */
 function print_r_xml($arr,$wrapper = 'data',$cycle = 1)
