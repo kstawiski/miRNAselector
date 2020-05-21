@@ -4,6 +4,9 @@ require_once 'class.formr.php';
 if (!file_exists('/miRNAselector/var_status.txt')) { file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); } // Wyjściowy status.
 $status = file_get_contents('/miRNAselector/var_status.txt');
 
+$pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-task | awk '{print $2}'");
+if($pid != "") { header("Location: /inprogress.php"); }
+
 
 ?>
 
@@ -252,6 +255,49 @@ echo $form->form_close();
             </div>
                     <?php } ?>
 
+
+<?php 
+/* Po preprocessingu */
+if($status != "[2] PREPROCESSED") { ?>
+<div class="panel panel-default">
+    <div class="panel-heading"><i class="fas fa-check"></i>&emsp;&emsp;[STEP 1] Preprocessing</div>
+    <div class="panel-body">
+<p>Preprocessing is completed. Please view the results below:</p>
+<p><a href="report.php?r=1_preprocessing" class="btn btn-success" role="button" target="popup" onclick="window.open('report.php?r=1_preprocessing','popup','width=600,height=600'); return false;"><i class="fas fa-chart-pie"></i>&emsp;View analysis report</a>&emsp;&emsp;<a href="e/notebooks/miRNAselector/1_preprocessing.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary"><i class="fas fa-edit"></i>&emsp;Edit (advanced)</a></p>
+
+</div></div></div>
+<div class="panel panel-default">
+    <div class="panel-heading"><i class="fas fa-tools"></i>&emsp;&emsp;[STEP 2] Feature selection</div>
+    <div class="panel-body">
+<?php
+$form = new Formr('bootstrap');
+echo $form->form_open('','','process.php?type=init_preprocessing');
+
+echo "<h3>Feature selection:</h3>";
+echo "<p>In the next step feature selection can be performed using various methods. Please select methods for feature selection.</p>";
+
+echo "<table class=\"table\"><thead><tr><th> </th><th>Method:</th><th>Description:</th></tr></thead><tbody>";
+
+echo "<tr><td>";
+echo $form->input_checkbox('method1','</td><td style="white-space: nowrap"><code>1</code>&emsp;<code>[all]</code>','yes','','','','checked');
+echo "<td>". "All features (e.g. miRNAs) in dataset." . "</td>";
+echo "</td><tr>";
+
+echo "<tr><td>";
+echo $form->input_checkbox('method2','</td><td style="white-space: nowrap"><code>2</code>&emsp;<code>[sig]</code>','yes','','','','checked');
+echo "<td>". "Significiance filter. Features that differ significantly (p<0.05) between groups, verifed by Welch two samples t-test. P-values are adjusted using Benjamini and Hochberg method." . "</td>";
+echo "</td><tr>";
+
+
+
+echo "</tbody></table>";
+
+
+echo "<button type=\"submit\" class=\"btn btn-success\" name=\"submit\" onclick=\"waitingDialog.show('Processing... Please wait...');\"><i class=\"fas fa-play\"></i></i>&emsp;Run preprocessing</button>";
+echo $form->form_close();
+?>
+</div></div></div>
+<?php } ?>
 
 
 

@@ -139,16 +139,18 @@ switch($_GET['type'])
         
         if (file_exists("/miRNAselector/". $step_name .".log")) { unlink('/miRNAselector/'. $step_name . '.log'); }
         exec('/bin/cp /miRNAselector/miRNAselector/templetes/'. $step_name .'.rmd /miRNAselector/' . $step_name . '.Rmd '); // PAMIETAC ZEBY ZMIENIEC TEMPLETE!!!
-        exec('screen -dmS mirnaselector-'.$step_name.' /miRNAselector/miRNAselector/docker/'. $step_name . '.sh');
+        exec('screen -dmS mirnaselector-task /miRNAselector/miRNAselector/docker/'. $step_name . '.sh');
         sleep(2); // Czas, zeby zaczal pisac log.
-        if (shell_exec('ps -ef | grep -v grep | grep mirnaselector-'.$step_name.' | wc -l')>0) {
-        file_put_contents('/miRNAselector/var_status.txt', "[1] PREPROCESSING RUNNING"); $msg = "Step <code>".$step_name."</code> is running..."; } else {
-            $msg = "Something is wrong with <code>".$step_name."</code> :( Please check the logs in <code>/miRNAselector</code> directory for clarification.";        }
-        $msg = urlencode($msg);
-        header("Location: /?msg=" . $msg);
+        header("Location: /inprogress.php");
         die();
     break;
 
+    case "cancel":
+        exec("kill -9 " . $_GET['pid']);
+        $msg .= "The running process was interrupted. Configure and run it again.";
+        header("Location: /?msg=" . $msg);
+        die();
+    break;
 
     
     

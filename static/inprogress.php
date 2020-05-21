@@ -58,7 +58,7 @@ if(file_exists("/task.log")) {
     <p>Currenty running task: <code><?php echo file_get_contents('/task-name.txt'); ?></code></p>
     <?php if($skonczone == 1) { ?>
 	<p id="msg"><b>The task is finished.</b> Please go to the next step to analyze the results and move to next steps.</p>
-    <p></p><a href="/" onclick="waitingDialog.show('Loading...');" class="btn btn-success"><i class="fas fa-chart-line"></i>&emsp;Analysis & further steps</a></p>
+    <p><a href="/" onclick="waitingDialog.show('Loading...');" class="btn btn-success"><i class="fas fa-chart-line"></i>&emsp;Analysis & further steps</a></p>
     <script>
         $( document ).ready(function() {
         $(document).scrollTop($(document).height()); 
@@ -82,7 +82,11 @@ if(file_exists("/task.log")) {
 });
     </script>
 	<?php } else { ?>
-		<p id="msg"><b>The task is still in progress...</b> Status: <pre><?php echo $czy_dziala . " with PID=" . $pid; ?></pre>Please wait and do not use the app until this is finished. </p>
+		<p id="msg"><b>Status:</b><pre><?php echo $czy_dziala . " [PID=" . $pid . "]"; ?></pre>Please wait and do not use the app until this is finished. </p>
+        <?php if($skonczone == 0 && $pid == "") {
+            echo "<p style=\"color:red;\"><b><i class=\"fas fa-exclamation-triangle\"></i> The task stopped. Probably due to error. Please check out the log below, cancel the task using the button below and try to fix the issue. If you think this is a bug please report it on GitHub.</b></p>";
+        } ?>
+        <p><a href="/process.php?type=cancel&pid=<?php echo $pid; ?>" onclick="return confirm('Are you sure? This will kill the process of task processing and you will need to reconfigure this task!')" class="btn btn-danger"><i class="fas fa-skull-crossbones"></i>&emsp;Cancel task</a></p>
         <script>
         $( document ).ready(function() {
     $(document).scrollTop($(document).height()); 

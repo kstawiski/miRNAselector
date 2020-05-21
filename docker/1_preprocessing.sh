@@ -1,6 +1,16 @@
 #!/bin/bash
-echo "Starting preprocessing..." 2>&1 | tee /miRNAselector/1_preprocessing.log
-date 2>&1 | tee -a /miRNAselector/1_preprocessing.log
+set -e
+# Task:
+echo "Preprocessing" > /task-name.txt
+
+# Process:
+echo "Starting task..." 2>&1 | tee /task.log
+date 2>&1 | tee -a /task.log
 cd /miRNAselector/
-Rscript --verbose -e 'library(miRNAselector); library(rmarkdown); ' 2>&1 | tee -a /update.log
-echo "-- miRNAselector_finished --" 2>&1 | tee -a /update.log
+Rscript -e 'file.copy("/miRNAselector/miRNAselector/templetes/1_preprocessing.rmd", "/miRNAselector/1_preprocessing.Rmd", overwrite = TRUE)'
+Rscript -e 'rmarkdown::render("/miRNAselector/1_preprocessing.Rmd", output_file = "1_preprocessing.html", output_dir = "/miRNAselector")' 2>&1 | tee -a /task.log
+
+# Ending:
+Rscript -e 'file.copy("/task.log", "/miRNAselector/1_preprocessing.Rmd", overwrite = TRUE)'
+echo "[miRNAselector: TASK COMPLETED]" 2>&1 | tee -a /task.log
+echo "[2] PREPROCESSED" > /miRNAselector/var_status.txt
