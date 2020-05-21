@@ -258,14 +258,14 @@ echo $form->form_close();
 
 <?php 
 /* Po preprocessingu */
-if($status != "[2] PREPROCESSED") { ?>
+if($status == "[2] PREPROCESSED") { ?>
 <div class="panel panel-default">
     <div class="panel-heading"><i class="fas fa-check"></i>&emsp;&emsp;[STEP 1] Preprocessing</div>
     <div class="panel-body">
 <p>Preprocessing is completed. Please view the results below:</p>
 <p><a href="report.php?r=1_preprocessing" class="btn btn-success" role="button" target="popup" onclick="window.open('report.php?r=1_preprocessing','popup','width=600,height=600'); return false;"><i class="fas fa-chart-pie"></i>&emsp;View analysis report</a>&emsp;&emsp;<a href="e/notebooks/miRNAselector/1_preprocessing.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary"><i class="fas fa-edit"></i>&emsp;Edit (advanced)</a></p>
 
-</div></div></div>
+</div></div>
 <div class="panel panel-default">
     <div class="panel-heading"><i class="fas fa-tools"></i>&emsp;&emsp;[STEP 2] Feature selection</div>
     <div class="panel-body">
@@ -296,7 +296,7 @@ echo "</tbody></table>";
 echo "<button type=\"submit\" class=\"btn btn-success\" name=\"submit\" onclick=\"waitingDialog.show('Processing... Please wait...');\"><i class=\"fas fa-play\"></i></i>&emsp;Run preprocessing</button>";
 echo $form->form_close();
 ?>
-</div></div></div>
+</div></div>
 <?php } ?>
 
 
