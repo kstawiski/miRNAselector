@@ -356,6 +356,7 @@ echo $form->form_close();
                 <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i
                     class="fab fa-github"></i> <a href="https://github.com/kstawiski/miRNAselector"
                     target="_blank">https://github.com/kstawiski/miRNAselector</a></span>
+                    <p>&emsp;</p>
         </div>
     </footer>
     <!-- /.container -->

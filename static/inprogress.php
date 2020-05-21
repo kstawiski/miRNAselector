@@ -1,11 +1,16 @@
 <html>
 <?php 
 
-
-if(file_exists("/update.log")) { 
-	$zawartosc_logu = file_get_contents('/update.log');
-	$czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-updater | wc -l');
-	$skonczone = 0; if (strpos($zawartosc_logu, 'update is finished') !== false) { $skonczone = 1; } } else { $msg = urlencode("The update was not initialized. Please run it again."); header("Location: /?msg=" . $msg); die(); }
+$czy_dziala = "Not running";
+if(file_exists("/task.log")) { 
+    $pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-task | awk '{print $2}'");
+    $zawartosc_logu = file_get_contents('/task.log');
+    $task_process = shell_exec('ps -ef | grep -v grep | grep mirnaselector-task');
+    if($task_process == "") { $task_process = "NOT RUNNING"; }
+    // $czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-task | wc -l');
+    if ($pid != "") { $czy_dziala = "Running"; }
+    $skonczone = 0; if (strpos($zawartosc_logu, '[miRNAselector: TASK COMPLETED]') !== false) { $skonczone = 1; } } else { $msg = urlencode("The task was not initialized. Please run it again."); header("Location: /?msg=" . $msg); die(); }
+// if()
 ?>
 
 <head>
@@ -34,75 +39,9 @@ if(file_exists("/update.log")) {
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'UA-53584749-8');
     </script>
-	<script type="text/javascript">
-    $( document ).ready(function() {
-		$('html, body').scrollTop($(document).height());
-    });
-
-	var waitingDialog = waitingDialog || (function ($) { 'use strict';
-
-	// Creating modal dialog's DOM
-	var $dialog = $(
-		'<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
-		'<div class="modal-dialog modal-m">' +
-		'<div class="modal-content">' +
-			'<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
-			'<div class="modal-body">' +
-				'<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
-			'</div>' +
-		'</div></div></div>');
-
-	return {
-		/**
-		 * Opens our dialog
-		 * @param message Custom message
-		 * @param options Custom options:
-		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
-		 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
-		 */
-		show: function (message, options) {
-			// Assigning defaults
-			if (typeof options === 'undefined') {
-				options = {};
-			}
-			if (typeof message === 'undefined') {
-				message = 'Loading';
-			}
-			var settings = $.extend({
-				dialogSize: 'm',
-				progressType: '',
-				onHide: null // This callback runs after the dialog was hidden
-			}, options);
-
-			// Configuring dialog
-			$dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
-			$dialog.find('.progress-bar').attr('class', 'progress-bar');
-			if (settings.progressType) {
-				$dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
-			}
-			$dialog.find('h3').text(message);
-			// Adding callbacks
-			if (typeof settings.onHide === 'function') {
-				$dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
-					settings.onHide.call($dialog);
-				});
-			}
-			// Opening dialog
-			$dialog.modal();
-		},
-		/**
-		 * Closes dialog
-		 */
-		hide: function () {
-			$dialog.modal('hide');
-		}
-	};
-
-})(jQuery);
-    </script>
+	<script src="konsta.js"></script>
 </head>
 <body>
     <div class="container">
@@ -112,17 +51,161 @@ if(file_exists("/update.log")) {
             </p>
             <p><br></p>
         </div>
-    <p>Currenty running task: <code><?php ?></code></p>
-    <pre><?php echo $zawartosc_logu; ?></pre></p>
-    
+        <div class="panel-group">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Task status</div>
+                <div class="panel-body">
+    <p>Currenty running task: <code><?php echo file_get_contents('/task-name.txt'); ?></code></p>
     <?php if($skonczone == 1) { ?>
-	<p id="msg"><b>The update is finished.</b> Please go back to the app. If you have any active notebooks running, you may need to restart kernel for new features.<br />More details on new features: <a href="https://github.com/kstawiski/miRNAselector" target="_blank">https://github.com/kstawiski/miRNAselector</a>.</p>
-    <p></p><a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-undo"></i>&emsp;Go back</a></p>
+	<p id="msg"><b>The task is finished.</b> Please go to the next step to analyze the results and move to next steps.</p>
+    <p></p><a href="/" onclick="waitingDialog.show('Loading...');" class="btn btn-success"><i class="fas fa-chart-line"></i>&emsp;Analysis & further steps</a></p>
+    <script>
+        $( document ).ready(function() {
+        $(document).scrollTop($(document).height()); 
+        get_log(); 
+    
+    function get_log(){
+        var feedback = $.ajax({
+            type: "GET",
+            url: "api.php",
+            async: false,
+            data: {
+                "typ" : "odczyt",
+                "plik" : "/task.log"
+            },
+            success: function() {
+                // setTimeout(function(){ get_log();}, 1000);
+            }
+        }).responseText;
+    $('#log').html(feedback);
+    }
+});
+    </script>
 	<?php } else { ?>
-		<p id="msg"><b>The task is still in progress...</b> Please do not use the app and don't leave this page. Running status: <code><?php echo $czy_dziala; ?></code></p>
-		<meta http-equiv="refresh" content="3">
+		<p id="msg"><b>The task is still in progress...</b> Status: <pre><?php echo $czy_dziala . " with PID=" . $pid; ?></pre>Please wait and do not use the app until this is finished. </p>
+        <script>
+        $( document ).ready(function() {
+    $(document).scrollTop($(document).height()); 
+    setInterval(get_log, 2000);
+    
+    
+    function get_log(){
+        var feedback = $.ajax({
+            type: "GET",
+            url: "api.php",
+            async: false,
+            data: {
+                "typ" : "odczyt",
+                "plik" : "/task.log"
+            },
+            success: function() {
+                //setTimeout(function(){ get_log();}, 1000);
+            }
+        }).responseText;
+        
+        var substring = "[miRNAselector: TASK COMPLETED]";
+        console.log("Refreshing log..");
+        if(feedback.includes(substring)) { location.reload(); }
+
+        $('#log').html(feedback);
+    }
+});</script>
 	<?php } ?>
-    <p>&emsp;</p>
+    </div></div>
+    <div class="panel panel-default">
+                <div class="panel-heading"><i class="fas fa-file-medical-alt"></i>&emsp;&emsp;Task details</div>
+                <div class="panel-body">
+    <p><b>Task progress (log file):</b> (this is updated in the real-time)</p>
+    <p></p><pre id="log"></pre></p>
+    <hr>
+    <p>Process details:</p>
+    <p><pre><?php echo $task_process; ?></pre></p>
+    </div></div>
+    <div class="panel panel-default">
+                <div class="panel-heading"><i class="fas fa-bars"></i>&emsp;&emsp;Additional tools</div>
+                <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
+                        data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalYT2"><i class="fas fa-terminal"></i>&emsp;Shell</button>&emsp;
+                        <a href="monitor/" target="_blank" role="button" class="btn btn-info"><i class="fas fa-server"></i>&emsp;Hardware</a>&emsp;<a href="e" target="_blank" role="button" class="btn btn-primary"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a>
+                    &emsp;
+                    </div>
+            </div>
+    </div>
 	</div>
+    <!--Modal: Name-->
+    <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Body-->
+                <div class="modal-body mb-0 p-0">
+
+                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                        <iframe class="embed-responsive-item" src="top.php" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <span class="mr-4">Running <code>top</code> every 2 seconds...</span>
+
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+            <!--/.Content-->
+
+        </div>
+    </div>
+    <!--Modal: Name-->
+
+
+        <!--Modal: Name-->
+        <div class="modal fade" id="modalYT2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Body-->
+                <div class="modal-body mb-0 p-0">
+
+                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                        <iframe class="embed-responsive-item" src="shell.php" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <span class="mr-4">More advanced terminal features are available via Jupyter-based advanced features.</span>
+
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+            <!--/.Content-->
+
+        </div>
+    </div>
+    <!--Modal: Name-->
+    <hr />
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">miRNAselector by Konrad Stawiski and Marcin Kaszkowiak&emsp;&emsp;&emsp;&emsp;<i
+                    class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i
+                    class="fas fa-globe-europe"></i>
+                <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i
+                    class="fab fa-github"></i> <a href="https://github.com/kstawiski/miRNAselector"
+                    target="_blank">https://github.com/kstawiski/miRNAselector</a></span>
+                    <p>&emsp;</p>
+        </div>
+    </footer>
   </body>
 </html>
