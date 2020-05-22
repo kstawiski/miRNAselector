@@ -20,11 +20,11 @@ jobs:
         env:
           PATH: /opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
         run: |
-          conda update --all && conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow keras jupyter jupytext numpy pandas r r-devtools r-essentials r-biocmanager r-remotes r-keras r-rjava pandoc r-reticulate r-magick r-xml r-rgl opencv pkgconfig && echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
-          Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
-          Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/docker/keras.R')"
-          Rscript -e "install.packages(c('pkgdown'))"
+          /opt/conda/bin/conda update --all && /opt/conda/bin/conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow keras jupyter jupytext numpy pandas r r-devtools r-essentials r-biocmanager r-remotes r-keras r-rjava pandoc r-reticulate r-magick r-xml r-rgl opencv pkgconfig && echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
+          /opt/conda/bin/Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R')"
+          /opt/conda/bin/Rscript -e "devtools::source_url('https://raw.githubusercontent.com/kstawiski/miRNAselector/master/docker/keras.R')"
+          /opt/conda/bin/Rscript -e "install.packages(c('pkgdown'))"
 
       - name: Deploy kstawiski.github.io/miRNAselector
         run: pkgdown::deploy_to_branch()
-        shell: Rscript {0}
+        shell: /opt/conda/bin/Rscript -e "{0}"
