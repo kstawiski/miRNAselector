@@ -9,7 +9,9 @@ if(file_exists("/task.log")) {
     if($task_process == "") { $task_process = "NOT RUNNING"; }
     // $czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-task | wc -l');
     if ($pid != "") { $czy_dziala = "Running"; }
-    $skonczone = 0; if (strpos($zawartosc_logu, '[miRNAselector: TASK COMPLETED]') !== false) { $skonczone = 1; } } else { $msg = urlencode("The task was not initialized. Please run it again."); header("Location: /?msg=" . $msg); die(); }
+    $skonczone = 0; if (strpos($zawartosc_logu, '[miRNAselector: TASK COMPLETED]') !== false) { $skonczone = 1; } 
+    if (strpos($zawartosc_logu, 'Error') !== false) { $skonczone = 1; } 
+} else { $msg = urlencode("The task was not initialized. Please run it again."); header("Location: /?msg=" . $msg); die(); }
 // if()
 ?>
 
@@ -82,7 +84,7 @@ if(file_exists("/task.log")) {
 });
     </script>
 	<?php } else { ?>
-		<p id="msg"><b>Status:</b><pre><?php echo $czy_dziala . " [PID=" . $pid . "]"; ?></pre>Please wait and do not use the app until this is finished. </p>
+		<p id="msg"><b>Status:</b><pre><?php echo $czy_dziala . " PID=" . $pid; ?></pre>Please wait and do not use the app until this is finished. </p>
         <?php if($skonczone == 0 && $pid == "") {
             echo "<p style=\"color:red;\"><b><i class=\"fas fa-exclamation-triangle\"></i> The task stopped. Probably due to error. Please check out the log below, cancel the task using the button below and try to fix the issue. If you think this is a bug please report it on GitHub.</b></p>";
         } ?>
@@ -109,6 +111,8 @@ if(file_exists("/task.log")) {
         
         var substring = "[miRNAselector: TASK COMPLETED]";
         console.log("Refreshing log..");
+        if(feedback.includes(substring)) { location.reload(); }
+        var substring = "Error";
         if(feedback.includes(substring)) { location.reload(); }
 
         $('#log').html(feedback);

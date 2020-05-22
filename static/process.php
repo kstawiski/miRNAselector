@@ -140,7 +140,7 @@ switch($_GET['type'])
         if (file_exists("/miRNAselector/". $step_name .".log")) { unlink('/miRNAselector/'. $step_name . '.log'); }
         exec('/bin/cp /miRNAselector/miRNAselector/templetes/'. $step_name .'.rmd /miRNAselector/' . $step_name . '.Rmd '); // PAMIETAC ZEBY ZMIENIEC TEMPLETE!!!
         exec('screen -dmS mirnaselector-task /miRNAselector/miRNAselector/docker/'. $step_name . '.sh');
-        sleep(2); // Czas, zeby zaczal pisac log.
+        sleep(3); // Czas, zeby zaczal pisac log.
         header("Location: /inprogress.php");
         die();
     break;
