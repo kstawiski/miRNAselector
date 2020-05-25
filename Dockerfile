@@ -49,6 +49,9 @@ COPY docker/php.ini /etc/php/7.3/fpm/php.ini
 COPY docker/default /etc/nginx/sites-available/default
 COPY docker/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
+# Extentions
+RUN conda install -c conda-forge jupyter_contrib_nbextensions nbresuse && jupyter contrib nbextension install --sys-prefix && jupyter nbextension enable varInspector/main && jupyter nbextension install --py nbresuse --sys-prefix && jupyter nbextension enable --py nbresuse --sys-prefix
+
 EXPOSE 8888
 EXPOSE 80
 EXPOSE 443
