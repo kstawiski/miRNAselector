@@ -1,9 +1,18 @@
 #!/bin/bash
 
+
+
+
 # must start in ./docker/ dir
 # docker login --username=kstawiski
 docker builder prune
 docker image prune -a
+
+docker build --rm --force-rm -f ../Dockerfile.gpu -t mirnaselector-gpu ../
+# if low memory machine: docker build --rm --force-rm -f ../Dockerfile.workflow -t mirnaselector ../
+docker tag mirnaselector-gpu:latest kstawiski/mirnaselector-gpu:latest
+docker push kstawiski/mirnaselector-gpu
+
 docker build --rm --force-rm -t mirnaselector ../
 # if low memory machine: docker build --rm --force-rm -f ../Dockerfile.workflow -t mirnaselector ../ 
 docker tag mirnaselector:latest kstawiski/mirnaselector:latest

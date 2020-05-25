@@ -61,8 +61,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   cat("\nStarting preparing cluster..\n")
   #cl <- makeCluster(keras_threads) #not to overload your computer
   cl = makeCluster(keras_threads, outfile=paste0("temp/", ceiling(as.numeric(Sys.time())), "deeplearning_cluster.log"))
-  suppressMessages(library(doSNOW))
-  registerDoSNOW(cl)
+  registerDoParallel(cl)
   # on.exit(stopCluster(cl))
   cat("\nCluster prepared..\n")
 
