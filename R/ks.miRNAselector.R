@@ -41,10 +41,10 @@
 #' # suppressMessages(library(foreach))
 #' # suppressMessages(library(doParallel))
 #' # suppressMessages(library(parallel))
-#' # suppressMessages(library(doSNOW))
+#' # suppressMessages(library(doParallel))
 #' # m = 1:56 # which methods to check?
 #' # cl <- makeCluster(5) # 5 threds by default
-#' # doSNOW::registerDoSNOW(cl)
+#' # doParallel:: registerDoParallel(cl)
 #' # iterations = length(m)
 #' # pb <- txtProgressBar(max = iterations, style = 3)
 #' # progress <- function(n) setTxtProgressBar(pb, n)
@@ -57,7 +57,7 @@
 #' # }
 #' # stopCluster(cl)
 #'
-#' @import snow doSNOW
+#' @import snow doParallel
 #'
 #' @export
 ks.miRNAselector = function(wd = getwd(), m = c(1:70),
@@ -89,7 +89,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
   suppressMessages(library(R.utils))
-  suppressMessages(library(doSNOW))
+  suppressMessages(library(doParallel))
 
 
   if(!dir.exists("temp")) { dir.create("temp") }
@@ -151,7 +151,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     if(is.null(clx)) {
       suppressMessages(library(doParallel))
       cl <- makeCluster(detectCores() - 1)
-      registerDoSNOW(cl)
+       registerDoParallel(cl)
       # on.exit(stopCluster(cl))
       }
     else { registerDoParallel(clx)

@@ -74,10 +74,10 @@ For more detailed defitions please see the tutorial vignette.
 # suppressMessages(library(foreach))
 # suppressMessages(library(doParallel))
 # suppressMessages(library(parallel))
-# suppressMessages(library(doSNOW))
+# suppressMessages(library(doParallel))
 # m = 1:56 # which methods to check?
 # cl <- makeCluster(5) # 5 threds by default
-# doSNOW::registerDoSNOW(cl)
+# doParallel:: registerDoParallel(cl)
 # iterations = length(m)
 # pb <- txtProgressBar(max = iterations, style = 3)
 # progress <- function(n) setTxtProgressBar(pb, n)

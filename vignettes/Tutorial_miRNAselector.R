@@ -2,12 +2,12 @@
 suppressMessages(library(foreach))
 suppressMessages(library(doParallel))
 suppressMessages(library(parallel))
-suppressMessages(library(doSNOW))
+suppressMessages(library(doParallel))
 
 m = 1:56 # which methods to check?
 
 cl <- makeCluster(5) # We do not recommend using more than 5 threads, beacuse some of the methods inhereditly use multicore processing.
-registerDoSNOW(cl)
+ registerDoParallel(cl)
 # on.exit(stopCluster(cl))
 iterations = length(m)
 pb <- txtProgressBar(max = iterations, style = 3)
