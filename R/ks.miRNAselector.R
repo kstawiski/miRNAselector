@@ -813,7 +813,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   out <- tryCatch(
     {
       setwd(paste0(code_path,"wx/DearWXpub/src/"))
-      system(paste0(conda_path," activate tensorflow"))
+      system(paste0(conda_path," activate base"))
       py_run_file("wx_konsta.py", local = T)
 
       np <- import("numpy")
