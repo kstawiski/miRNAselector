@@ -15,7 +15,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                                                           dropout_layer1 = c(0, 0.1), dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0),
                                                           layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
                                                           optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = SMOTE, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(T,F),
-                                                          stringsAsFactors = F),
+                                                          stringsAsFactors = F), miRNAselector_docker_set = TRUE,
                             keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F)
 {
   suppressMessages(library(plyr))
@@ -76,6 +76,25 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=TRUE, .inorder=FALSE
                    ,.errorhandling="remove", .export = ls(), .packages = loadedNamespaces()
   ) %dopar% {
+
+
+    if(miRNAselector_docker_set) {
+      reticulate::use_python('/opt/conda/bin/python')
+
+      require(tensorflow)
+      require(reticulate)
+      require(keras)
+
+      is_keras_available()
+      system('which python')
+      Sys.setenv(TENSORFLOW_PYTHON='/opt/conda/bin/python')
+      use_python('/opt/conda/bin/python')
+
+      py_discover_config('tensorflow')
+      py_discover_config('keras')
+
+    }
+
     start_time <- Sys.time()
     suppressMessages(library(keras))
     suppressMessages(library(ggplot2))
