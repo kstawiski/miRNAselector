@@ -39,7 +39,7 @@ ks.correct_miRNA_names = function(temp, species = "hsa", correct_dots = T) {
 
   #setup parallel backend to use many processors
   cores=detectCores()
-  cl <- makePSOCKcluster(useXDR = FALSE, cores-1) #not to overload your computer
+  cl <- makePSOCKcluster(useXDR = TRUE, cores-1) #not to overload your computer
   suppressMessages(library(doParallel))
    registerDoParallel(cl)
   # on.exit(stopCluster(cl))

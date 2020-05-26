@@ -43,7 +43,7 @@
 #' # suppressMessages(library(parallel))
 #' # suppressMessages(library(doParallel))
 #' # m = 1:56 # which methods to check?
-#' # cl <- makePSOCKcluster(useXDR = FALSE, 5) # 5 threds by default
+#' # cl <- makePSOCKcluster(useXDR = TRUE, 5) # 5 threds by default
 #' # doParallel:: registerDoParallel(cl)
 #' # iterations = length(m)
 #' # pb <- txtProgressBar(max = iterations, style = 3)
@@ -150,7 +150,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting subcluster ready...")
     if(is.null(clx)) {
       suppressMessages(library(doParallel))
-      cl <- makePSOCKcluster(useXDR = FALSE, detectCores() - 1)
+      cl <- makePSOCKcluster(useXDR = TRUE, detectCores() - 1)
        registerDoParallel(cl)
       # on.exit(stopCluster(cl))
       }
