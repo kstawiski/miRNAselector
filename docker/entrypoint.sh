@@ -1,5 +1,6 @@
 #!/bin/bash
 conda init
+. ~/.bashrc
 Rscript /update.R
 cd /miRNAselector/
 git clone https://github.com/kstawiski/miRNAselector.git

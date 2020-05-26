@@ -76,7 +76,7 @@ For more detailed defitions please see the tutorial vignette.
 # suppressMessages(library(parallel))
 # suppressMessages(library(doParallel))
 # m = 1:56 # which methods to check?
-# cl <- makeCluster(5) # 5 threds by default
+# cl <- makePSOCKcluster(useXDR = FALSE, 5) # 5 threds by default
 # doParallel:: registerDoParallel(cl)
 # iterations = length(m)
 # pb <- txtProgressBar(max = iterations, style = 3)
