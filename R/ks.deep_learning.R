@@ -88,7 +88,6 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       is_keras_available()
       Sys.setenv(TENSORFLOW_PYTHON='/opt/conda/bin/python')
       use_python('/opt/conda/bin/python')
-      system(paste0("/opt/conda/bin/conda activate base"))
 
       py_discover_config('tensorflow')
       py_discover_config('keras')

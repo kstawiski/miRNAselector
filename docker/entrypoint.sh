@@ -1,4 +1,5 @@
 #!/bin/bash
+conda init
 Rscript /update.R
 cd /miRNAselector/
 git clone https://github.com/kstawiski/miRNAselector.git
