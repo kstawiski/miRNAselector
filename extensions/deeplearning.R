@@ -127,6 +127,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                    ,.errorhandling="remove", .export = ls(), .packages = loadedNamespaces()
                    ) %dopar% {
     Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
+    if(!dir.exists(paste0(temp_dir,"/models"))) { dir.create(paste0(temp_dir,"/models")) }
+    if(!dir.exists(paste0(temp_dir,"/temp"))) { dir.create(paste0(temp_dir,"/temp")) }
     start_time <- Sys.time()
     library(keras)
     library(ggplot2)
