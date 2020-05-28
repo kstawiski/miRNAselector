@@ -125,7 +125,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   cat(paste0("\nStarting parallel loop.. There are: ", end-start+1, " hyperparameter sets to be checked.\n"))
   final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F
                    ,.errorhandling="remove", .export = ls(), .packages = loadedNamespaces()
-                   ) %dopar% {
+                   ) %do% {
     Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
     if(!dir.exists(paste0(temp_dir,"/models"))) { dir.create(paste0(temp_dir,"/models")) }
     if(!dir.exists(paste0(temp_dir,"/temp"))) { dir.create(paste0(temp_dir,"/temp")) }
@@ -164,8 +164,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     #pdf(paste0(temp_dir,"/models/keras",model_id,"/plots.pdf"), paper="a4")
     
     con <- file(paste0(temp_dir,"/models/keras",model_id,"/training.log"))
-    sink(con, append=TRUE, split =TRUE)
-    ##sink(con, append=TRUE, type="message")
+    #sink(con, append=TRUE, split =TRUE)
+    ###sink(con, append=TRUE, type="message")
     
     early_stop <- callback_early_stopping(monitor = "val_loss", mode="min", patience = keras_patience)
     cp_callback <- callback_model_checkpoint(
@@ -495,8 +495,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       #message("Checkpoint passed: chunk 20")
       
       # czy jest sens zapisywac?
-      sink() 
-      ###sink(type="message")
+      #sink() 
+      ####sink(type="message")
       message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
@@ -746,8 +746,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       #message("Checkpoint passed: chunk 37")
     } }
     
-    sink() 
-    ##sink(type="message")
+    #sink() 
+    ###sink(type="message")
     #dev.off()
     tempwyniki2 = cbind(hyperparameters[i,],tempwyniki)
     tempwyniki2[1,"name"] = paste0(codename,"_", model_id)
