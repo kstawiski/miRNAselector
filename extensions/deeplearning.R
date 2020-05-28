@@ -139,8 +139,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     if(gpu) {
     gpux <- tf$config$experimental$get_visible_devices('GPU')[[1]]
     tf$config$experimental$set_memory_growth(device = gpux, enable = TRUE)
-    py_run_string("gpus = tf.config.experimental.list_physical_devices('GPU')")
-    py_run_string("tf.config.experimental.set_virtual_device_configuration(gpus[0],[tf.config.experimental.VirtualDeviceConfiguration(memory_limit=2048)])")
+    # py_run_string("gpus = tf.config.experimental.list_physical_devices('GPU')")
+    # py_run_string("tf.config.experimental.set_virtual_device_configuration(gpus[0],[tf.config.experimental.VirtualDeviceConfiguration(memory_limit=2048)])")
 
      } 
     
