@@ -126,6 +126,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F
                    ,.errorhandling="remove", .export = ls(), .packages = loadedNamespaces()
                    ) %dopar% {
+    Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
     start_time <- Sys.time()
     library(keras)
     library(ggplot2)
@@ -138,18 +139,9 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     if(gpu) {
     gpux <- tf$config$experimental$get_visible_devices('GPU')[[1]]
     tf$config$experimental$set_memory_growth(device = gpux, enable = TRUE)
-    py_run_string("gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-    # Restrict TensorFlow to only allocate 1GB of memory on the first GPU
-  try:
-    tf.config.experimental.set_virtual_device_configuration(
-        gpus[0],
-        [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=1024)])
-    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-    print(len(gpus), \"Physical GPUs,\", len(logical_gpus), \"Logical GPUs\")
-  except RuntimeError as e:
-    # Virtual devices must be set before GPUs have been initialized
-    print(e)")
+    py_run_string("gpus = tf.config.experimental.list_physical_devices('GPU')")
+    py_run_string("tf.config.experimental.set_virtual_device_configuration(gpus[0],[tf.config.experimental.VirtualDeviceConfiguration(memory_limit=2048)])")
+
      } 
     
     cat("\nStarting hyperparameters..\n")
