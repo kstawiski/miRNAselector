@@ -137,7 +137,20 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     gpu = tf$test$is_gpu_available()
     if(gpu) {
     gpux <- tf$config$experimental$get_visible_devices('GPU')[[1]]
-    tf$config$experimental$set_memory_growth(device = gpux, enable = TRUE) } 
+    tf$config$experimental$set_memory_growth(device = gpux, enable = TRUE)
+    py_run_string("gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    # Restrict TensorFlow to only allocate 1GB of memory on the first GPU
+  try:
+    tf.config.experimental.set_virtual_device_configuration(
+        gpus[0],
+        [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=1024)])
+    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+    print(len(gpus), \"Physical GPUs,\", len(logical_gpus), \"Logical GPUs\")
+  except RuntimeError as e:
+    # Virtual devices must be set before GPUs have been initialized
+    print(e)")
+     } 
     
     cat("\nStarting hyperparameters..\n")
     print(hyperparameters[i,])
