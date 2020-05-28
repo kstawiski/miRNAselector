@@ -3,7 +3,9 @@
 #' Function for loading extension.
 #' 
 #' @param name Name of extension to be loaded.
-ks.load_extension = function(name = "deeplearning"){
+#' 
+#' @export 
+ks.load_extension = function(name = "deeplearning") {
     if(file.exists(paste0(name, ".R"))) {
         source(paste0(name, ".R"))
     } else {
