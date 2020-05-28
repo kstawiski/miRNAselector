@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 options(warn = -1)
+library(plyr)
 library(dplyr)
 library(caret)
 library(epiDisplay)
@@ -13,6 +14,7 @@ library(devtools)
 library(stringr)
 library(data.table)
 library(tidyverse)
+library(miRNAselector)
 
 
 ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x_train_scale)) {
@@ -67,7 +69,7 @@ ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x
 ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                             SMOTE = F, keras_batch_size = 64, clean_temp_files = T,
                             save_threshold_trainacc = 0.85, save_threshold_testacc = 0.8, keras_epochae = 5000,
-                            keras_epoch = 2000, keras_patience = 20, 
+                            keras_epoch = 2000, keras_patience = 50, 
                             hyperparameters = expand.grid(layer1 = seq(3,11, by = 2), layer2 = c(0,seq(3,11, by = 2)), layer3 = c(0,seq(3,11, by = 2)),
                                                           activation_function_layer1 = c("relu","sigmoid"), activation_function_layer2 = c("relu","sigmoid"), activation_function_layer3 = c("relu","sigmoid"),
                                                           dropout_layer1 = c(0, 0.1), dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0),
@@ -130,10 +132,16 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     library(dplyr)
     library(data.table)
     set.seed(1)
+
+    library(tensorflow)
+    gpu = tf$test$is_gpu_available()
+    if(gpu) {
+    gpux <- tf$config$experimental$get_visible_devices('GPU')[[1]]
+    tf$config$experimental$set_memory_growth(device = gpux, enable = TRUE) } 
     
     cat("\nStarting hyperparameters..\n")
     print(hyperparameters[i,])
-    if(file.exists("ks_ext_deeplearning.R")) { source("ks_ext_deeplearning.R") } else { } # dodac z githuba
+    ks.load_extension("deeplearning")
     options(bitmapType = 'cairo', device = 'png')
     model_id = paste0(format(i, scientific = FALSE), "-", ceiling(as.numeric(Sys.time())))
     if(SMOTE == T) { model_id = paste0(format(i, scientific = FALSE), "-SMOTE-", ceiling(as.numeric(Sys.time()))) }
@@ -149,8 +157,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     #pdf(paste0(temp_dir,"/models/keras",model_id,"/plots.pdf"), paper="a4")
     
     con <- file(paste0(temp_dir,"/models/keras",model_id,"/training.log"))
-    sink(con, append=TRUE)
-    #sink(con, append=TRUE, type="message")
+    sink(con, append=TRUE, split =TRUE)
+    ##sink(con, append=TRUE, type="message")
     
     early_stop <- callback_early_stopping(monitor = "val_loss", mode="min", patience = keras_patience)
     cp_callback <- callback_model_checkpoint(
@@ -460,11 +468,13 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         mix = rbind(train,test,valid)
         mixx = rbind(x_train_scale, x_test_scale, x_valid_scale)
         y_mixx_pred <- predict(object = dnn_class_model, x = mixx)
-      
-        mix2 = data.frame(ID = 1:nrow(mix))
-        mix2$Podzial = c(rep("Training",nrow(train)),rep("Test",nrow(test)),rep("Validation",nrow(valid)))
-        mix2$Pred = y_mixx_pred[,2]
-        mix2$PredClass = ifelse(mix$Pred >= wybrany_cutoff, "Cancer", "Control")
+        
+        mix2 = data.frame(
+          `Podzial` = c(rep("Training",nrow(train)),rep("Test",nrow(test)),rep("Validation",nrow(valid))),
+          `Pred` = y_mixx_pred[,2],
+          `PredClass` = ifelse(y_mixx_pred[,2] >= wybrany_cutoff, "Cancer", "Control")
+        )
+        
         fwrite(mix2, paste0(temp_dir,"/models/keras",model_id,"/data_predictions.csv.gz"))
 
       }
@@ -479,7 +489,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       
       # czy jest sens zapisywac?
       sink() 
-      ##sink(type="message")
+      ###sink(type="message")
       message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
@@ -689,11 +699,13 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         mix = rbind(train,test,valid)
         mixx = rbind(x_train_scale, x_test_scale, x_valid_scale)
         y_mixx_pred <- predict(object = dnn_class_model, x = mixx)
-      
-        mix2 = data.frame(ID = 1:nrow(mix))
-        mix2$Podzial = c(rep("Training",nrow(train)),rep("Test",nrow(test)),rep("Validation",nrow(valid)))
-        mix2$Pred = y_mixx_pred[,2]
-        mix2$PredClass = ifelse(mix$Pred >= wybrany_cutoff, "Cancer", "Control")
+        
+        mix2 = data.frame(
+          `Podzial` = c(rep("Training",nrow(train)),rep("Test",nrow(test)),rep("Validation",nrow(valid))),
+          `Pred` = y_mixx_pred[,2],
+          `PredClass` = ifelse(y_mixx_pred[,2] >= wybrany_cutoff, "Cancer", "Control")
+        )
+        
         fwrite(mix2, paste0(temp_dir,"/models/keras",model_id,"/data_predictions.csv.gz"))
 
       }
@@ -728,7 +740,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     } }
     
     sink() 
-    #sink(type="message")
+    ##sink(type="message")
     #dev.off()
     tempwyniki2 = cbind(hyperparameters[i,],tempwyniki)
     tempwyniki2[1,"name"] = paste0(codename,"_", model_id)
@@ -752,11 +764,11 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
 }
 
 ks.big_deep_learning = function(hyperparameters = expand.grid(layer1 = seq(3,11, by = 2), layer2 = c(0,seq(3,11, by = 2)), layer3 = c(0,seq(3,11, by = 2)),
-                                                              activation_function_layer1 = c("relu","sigmoid"), activation_function_layer2 = c("relu","sigmoid"), activation_function_layer3 = c("relu","sigmoid"),
-                                                              dropout_layer1 = c(0, 0.1), dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0),
-                                                              layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
-                                                              optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = balanced, formula = as.character(ks.miR.formula(selected_miRNAs))[3], scaled = c(F,T),
-                                                              stringsAsFactors = F), 
+                              activation_function_layer1 = c("relu","sigmoid"), activation_function_layer2 = c("relu","sigmoid"), activation_function_layer3 = c("relu","sigmoid"),
+                              dropout_layer1 = c(0, 0.1), dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0),
+                              layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
+                              optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = balanced, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(F,T),
+                              stringsAsFactors = F), 
                                 nazwa_konfiguracji = "TCGA_wybraneprzezWF+normalizatory.csv",
                                 selected_miRNAs = c("hsa.miR.192.5p",
                                                     "hsa.let.7g.5p",
@@ -774,20 +786,27 @@ ks.big_deep_learning = function(hyperparameters = expand.grid(layer1 = seq(3,11,
                                                     "hsa.miR.92a.3p"
                                 ),
                                 balanced = F, ...) {
-  ile = nrow(hyperparameters)
-  ile_w_batchu = 1000
-  ile_batchy = ceiling(nrow(hyperparameters)/ile_w_batchu)
-  batch_start = 1
-  for (i in 1:ile_batchy) {
-    batch_end = batch_start + (ile_w_batchu-1)
-    if (batch_end > ile) { batch_end = ile }
-    cat(paste0("\n\nProcessing batch no ", i , " of ", ile_batchy, " (", batch_start, "-", batch_end, ")"))
-    
-    ks.deep_learning(selected_miRNAs = selected_miRNAs, wd = getwd(),
-                     SMOTE = balanced, start = batch_start, end = batch_end, output_file = nazwa_konfiguracji, ...)
-    
-    batch_start = batch_end + 1
-  }
+        library(miRNAselector)
+        ks.load_extension("deeplearning")
+        library(data.table)
+
+        head(hyperparameters)
+
+        ile = nrow(hyperparameters)
+        ile_w_batchu = 100
+        ile_batchy = ceiling(nrow(hyperparameters)/ile_w_batchu)
+        batch_start = 1
+        for (i in 1:ile_batchy) {
+                batch_end = batch_start + (ile_w_batchu-1)
+                if (batch_end > ile) { batch_end = ile }
+                cat(paste0("\n\nProcessing batch no ", i , " of ", ile_batchy, " (", batch_start, "-", batch_end, ")"))
+
+                ks.deep_learning(selected_miRNAs = selected_miRNAs, wd = getwd(),
+                                    SMOTE = balanced, start = batch_start, end = batch_end, output_file = nazwa_konfiguracji, ...)
+
+                batch_start = batch_end + 1
+        }
+  
 }
 
 ks.miR.formula = function(wybrane_miRy) {
