@@ -23,4 +23,10 @@ docker push kstawiski/mirnaselector
 # docker push gcr.io/konsta/mirnaselector
 docker pull kstawiski/mirnaselector
 
-docker run --name mirnaselector --rm -d -p 28888:80 kstawiski/mirnaselector # debug container
+
+docker run --name mirnaselector --rm -d -p 28888:80 -v /boot/temp/:/tmp/ -v /home/konrad/:/miRNAselector/host/ kstawiski/mirnaselector
+
+
+# RAMDISK:
+# sudo mkdir /mnt/ramdisk
+# sudo mount -t tmpfs -o size=128g tmpfs /mnt/ramdisk
