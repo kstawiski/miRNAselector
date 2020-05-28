@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-options(warn = -1)
 library(plyr)
 library(dplyr)
 library(caret)
@@ -103,7 +102,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   
   dane = ks.wczytajmix(wd = wd, replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
   if (SMOTE == T) { train = train_smoted }
-  #message("Checkpoint passed: load lib and data")
+  message("Checkpoint passed: load lib and data")
   
   #cores=detectCores()
   cat(paste0("\nTemp dir: ", temp_dir, "\n"))
@@ -113,7 +112,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   registerDoParallel(cl)
   on.exit(stopCluster(cl))
   cat("\nCluster prepared..\n")
-  #message("Checkpoint passed: cluster prepared")
+  message("Checkpoint passed: cluster prepared")
   
   
 
@@ -125,7 +124,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   cat(paste0("\nStarting parallel loop.. There are: ", end-start+1, " hyperparameter sets to be checked.\n"))
   final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F
                    ,.errorhandling="remove", .export = ls(), .packages = loadedNamespaces()
-                   ) %do% {
+                   ) %dopar% {
     Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
     if(!dir.exists(paste0(temp_dir,"/models"))) { dir.create(paste0(temp_dir,"/models")) }
     if(!dir.exists(paste0(temp_dir,"/temp"))) { dir.create(paste0(temp_dir,"/temp")) }
@@ -154,18 +153,18 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     if(SMOTE == T) { model_id = paste0(format(i, scientific = FALSE), "-SMOTE-", ceiling(as.numeric(Sys.time()))) }
     tempwyniki = data.frame(model_id=model_id)
     tempwyniki[1, "model_id"] = model_id
-    #message("Checkpoint passed: chunk 1")
+    message("Checkpoint passed: chunk 1")
 
     
     if(!dir.exists(paste0(temp_dir,"/models"))) { dir.create(paste0(temp_dir,"/models"))}
     if(!dir.exists(paste0(temp_dir,"/models/keras",model_id))) { dir.create(paste0(temp_dir,"/models/keras",model_id))}
     cat(paste0("\nTraining model: ",temp_dir,"/models/keras",model_id,"\n"))
-    #message("Checkpoint passed: chunk 2")
+    message("Checkpoint passed: chunk 2")
     #pdf(paste0(temp_dir,"/models/keras",model_id,"/plots.pdf"), paper="a4")
     
     con <- file(paste0(temp_dir,"/models/keras",model_id,"/training.log"))
-    #sink(con, append=TRUE, split =TRUE)
-    ###sink(con, append=TRUE, type="message")
+    sink(con, append=TRUE, split =TRUE)
+    ##sink(con, append=TRUE, type="message")
     
     early_stop <- callback_early_stopping(monitor = "val_loss", mode="min", patience = keras_patience)
     cp_callback <- callback_model_checkpoint(
@@ -203,7 +202,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       dplyr::select("Class") %>% 
       as.matrix()
     y_valid[,1] = ifelse(y_valid[,1] == "Cancer",1,0)
-    #message("Checkpoint passed: chunk 3")
+    message("Checkpoint passed: chunk 3")
     
     if(hyperparameters[i, 17] == T) {
     x_train_scale = x_train %>% scale()
@@ -226,7 +225,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     }
     
     input_layer <- layer_input(shape = c(ncol(x_train_scale)))
-    #message("Checkpoint passed: chunk 4")
+    message("Checkpoint passed: chunk 4")
     
     #psych::describe(x_test_scale)
 
@@ -265,7 +264,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                 metrics = c("mean_squared_error"))
       
       summary(ae_model)
-      #message("Checkpoint passed: chunk 5")
+      message("Checkpoint passed: chunk 5")
       
 
       
@@ -297,7 +296,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         ylab("loss") +
         theme_bw()
       
-      #message("Checkpoint passed: chunk 6")
+      message("Checkpoint passed: chunk 6")
       ggplot2::ggsave(file = paste0(temp_dir,"/models/keras",model_id,"/training_autoencoder.png"), grid.arrange(plot1, nrow =1, top = "Training of autoencoder"))
       
       cat("\n- Reloading autoencoder to get weights...\n")
@@ -311,7 +310,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
 
       
       cat("\n- Creating deep features...\n")
-      #message("Checkpoint passed: chunk 7")
+      message("Checkpoint passed: chunk 7")
       
       ae_x_train_scale <- encoder_model %>% 
         predict(x_train_scale) %>% 
@@ -335,7 +334,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       
       cat("\n- Training model based on deep features...\n")
       dnn_class_model <- ks.keras_create_model(i, hyperparameters = hyperparameters, how_many_features = ncol(x_train_scale))
-      #message("Checkpoint passed: chunk 8")
+      message("Checkpoint passed: chunk 8")
       message("Starting training...")
       #tempmodelfile = tempfile()
       history <- fit(dnn_class_model, x = x_train_scale, 
@@ -348,12 +347,12 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                    batch_size = keras_batch_size, shuffle = T)
       message(history)
       print(history)
-      #message("Checkpoint passed: chunk 8")
+      message("Checkpoint passed: chunk 8")
       #plot(history, col="black")
       #history_df <- as.data.frame(history)
       # fwrite(history_df, paste0(temp_dir,"/models/keras",model_id,"/history_df.csv.gz"))
       saveRDS(history, paste0(temp_dir,"/models/keras",model_id,"/history.RDS"))
-      #message("Checkpoint passed: chunk 9")
+      message("Checkpoint passed: chunk 9")
       
       cat("\n- Saving history and plots...\n")
       compare_cx <- data.frame(
@@ -369,7 +368,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         xlab("Epoch") +
         ylab("Loss") +
         theme_bw()
-      #message("Checkpoint passed: chunk 10")
+      message("Checkpoint passed: chunk 10")
 
       compare_cx <- data.frame(
         train_accuracy = history$metrics$accuracy,
@@ -384,7 +383,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         xlab("Epoch") +
         ylab("Accuracy") + 
         theme_bw()
-        #message("Checkpoint passed: chunk 12")
+        message("Checkpoint passed: chunk 12")
       
       ggplot2::ggsave(file = paste0(temp_dir,"/models/keras",model_id,"/training.png"), grid.arrange(plot1, plot2, nrow =2, top = "Training of final neural network"))
       
@@ -394,7 +393,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       y_train_pred <- predict(object = dnn_class_model, x = x_train_scale)
       y_test_pred <- predict(object = dnn_class_model, x = x_test_scale)
       y_valid_pred <- predict(object = dnn_class_model, x = x_valid_scale)
-      #message("Checkpoint passed: chunk 13")
+      message("Checkpoint passed: chunk 13")
       
       
       # wybranie odciecia
@@ -415,14 +414,14 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       pred$PredClass = factor(pred$PredClass, levels = c("Control","Cancer"))
       cm_train = caret::confusionMatrix(pred$PredClass, pred$Class, positive = "Cancer")
       print(cm_train)
-      #message("Checkpoint passed: chunk 14")
+      message("Checkpoint passed: chunk 14")
       
       t1_roc = pROC::roc(Class ~ as.numeric(Pred.2), data=pred)
       tempwyniki[1, "training_AUC2"] = t1_roc$auc
       tempwyniki[1, "training_AUC_lower95CI"] = as.character(ci(t1_roc))[1]
       tempwyniki[1, "training_AUC_upper95CI"] = as.character(ci(t1_roc))[3]
       saveRDS(t1_roc, paste0(temp_dir,"/models/keras",model_id,"/training_ROC.RDS"))
-      #message("Checkpoint passed: chunk 15")
+      message("Checkpoint passed: chunk 15")
       
       tempwyniki[1, "training_Accuracy"] = cm_train$overall[1]
       tempwyniki[1, "training_Sensitivity"] = cm_train$byClass[1]
@@ -431,7 +430,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "training_NPV"] = cm_train$byClass[4]
       tempwyniki[1, "training_F1"] = cm_train$byClass[7]
       saveRDS(cm_train, paste0(temp_dir,"/models/keras",model_id,"/cm_train.RDS"))
-      #message("Checkpoint passed: chunk 16")
+      message("Checkpoint passed: chunk 16")
       
       cat(paste0("\n\n---- TESTING PERFORMANCE ----\n\n"))
       pred = data.frame(`Class` = test$Class, `Pred` = y_test_pred)
@@ -446,7 +445,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "test_NPV"] = cm_test$byClass[4]
       tempwyniki[1, "test_F1"] = cm_test$byClass[7]
       saveRDS(cm_test, paste0(temp_dir,"/models/keras",model_id,"/cm_test.RDS"))
-      #message("Checkpoint passed: chunk 17")
+      message("Checkpoint passed: chunk 17")
       
       cat(paste0("\n\n---- VALIDATION PERFORMANCE ----\n\n"))
       pred = data.frame(`Class` = valid$Class, `Pred` = y_valid_pred)
@@ -461,7 +460,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "valid_NPV"] = cm_test$byClass[4]
       tempwyniki[1, "valid_F1"] = cm_test$byClass[7]
       saveRDS(cm_valid, paste0(temp_dir,"/models/keras",model_id,"/cm_valid.RDS"))
-      #message("Checkpoint passed: chunk 18")
+      message("Checkpoint passed: chunk 18")
       
       if(add_features_to_predictions) {
       mix = rbind(train,test,valid)
@@ -486,17 +485,17 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
 
       }
       fwrite(cbind(hyperparameters[i,], tempwyniki), paste0(temp_dir,"/models/keras",model_id,"/wyniki.csv"))
-      #message("Checkpoint passed: chunk 19")
+      message("Checkpoint passed: chunk 19")
       
       wagi = get_weights(dnn_class_model)
       saveRDS(wagi, paste0(temp_dir,"/models/keras",model_id,"/finalmodel_weights.RDS"))
       save_model_weights_hdf5(dnn_class_model, paste0(temp_dir,"/models/keras",model_id,"/finalmodel_weights.hdf5"))
       saveRDS(dnn_class_model, paste0(temp_dir,"/models/keras",model_id,"/finalmodel.RDS"))
-      #message("Checkpoint passed: chunk 20")
+      message("Checkpoint passed: chunk 20")
       
       # czy jest sens zapisywac?
-      #sink() 
-      ####sink(type="message")
+      sink() 
+      ###sink(type="message")
       message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
@@ -510,7 +509,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       # file.copy(list.files(paste0(temp_dir,"/models/keras",model_id), pattern = "_wyniki.csv$", full.names = T, recursive = T, include.dirs = T),paste0("temp/",codename,"_",model_id,"_deeplearningresults.csv"))
       if (!dir.exists(paste0("temp/",codename,"/"))) { dir.create(paste0("temp/",codename,"/")) }
       file.copy(list.files(paste0(temp_dir,"/models/keras",model_id), pattern = "_wyniki.csv$", full.names = T, recursive = T, include.dirs = T),paste0("temp/",codename,"/",model_id,"_deeplearningresults.csv"))
-      #message("Checkpoint passed: chunk 21")
+      message("Checkpoint passed: chunk 21")
       #dev.off()
       }
     } else {
@@ -521,7 +520,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         dplyr::select("Class") %>% 
         as.matrix()
       y_train[,1] = ifelse(y_train[,1] == "Cancer",1,0)
-      #message("Checkpoint passed: chunk 22")
+      message("Checkpoint passed: chunk 22")
       
       
       x_test <- test %>% 
@@ -539,7 +538,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         dplyr::select("Class") %>% 
         as.matrix()
       y_valid[,1] = ifelse(y_valid[,1] == "Cancer",1,0)
-      #message("Checkpoint passed: chunk 23")
+      message("Checkpoint passed: chunk 23")
       
       if(hyperparameters[i, 17] == T) {
         x_train_scale = x_train %>% scale()
@@ -561,7 +560,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         x_valid_scale <- x_valid
       }
       
-      #message("Checkpoint passed: chunk 24")
+      message("Checkpoint passed: chunk 24")
       dnn_class_model <- ks.keras_create_model(i, hyperparameters = hyperparameters, how_many_features = ncol(x_train_scale))
       
       message("Starting training...")
@@ -578,11 +577,11 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                    view_metrics = FALSE,
                    batch_size = keras_batch_size, shuffle = T)
       print(history)
-      #message("Checkpoint passed: chunk 25")
+      message("Checkpoint passed: chunk 25")
       message(history)
       #plot(history, col="black")
       saveRDS(history, paste0(temp_dir,"/models/keras",model_id,"/history.RDS"))
-      #message("Checkpoint passed: chunk 26")
+      message("Checkpoint passed: chunk 26")
       #fwrite(history_df, paste0(temp_dir,"/models/keras",model_id,"/history_df.csv.gz"))
       
     
@@ -600,7 +599,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         xlab("epoch") +
         ylab("loss") +
         theme_bw()
-      #message("Checkpoint passed: chunk 27")
+      message("Checkpoint passed: chunk 27")
 
       compare_cx <- data.frame(
         train_accuracy = history$metrics$accuracy,
@@ -615,7 +614,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         xlab("epoch") +
         ylab("loss") + 
         theme_bw()
-      #message("Checkpoint passed: chunk 28")
+      message("Checkpoint passed: chunk 28")
       
       ggplot2::ggsave(file = paste0(temp_dir,"/models/keras",model_id,"/training.png"), grid.arrange(plot1, plot2, nrow =2, top = "Training of final neural network"))
       
@@ -624,7 +623,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       y_train_pred <- predict(object = dnn_class_model, x = x_train_scale)
       y_test_pred <- predict(object = dnn_class_model, x = x_test_scale)
       y_valid_pred <- predict(object = dnn_class_model, x = x_valid_scale)
-      #message("Checkpoint passed: chunk 29")
+      message("Checkpoint passed: chunk 29")
       
       
       # wybranie odciecia
@@ -638,14 +637,14 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "training_AUC"] = cutoff$AUC
       #wyniki[i, "cutoff"] = wybrany_cutoff
       tempwyniki[1, "cutoff"] = wybrany_cutoff
-      #message("Checkpoint passed: chunk 30")
+      message("Checkpoint passed: chunk 30")
       
       cat(paste0("\n\n---- TRAINING PERFORMANCE ----\n\n"))
       pred$PredClass = ifelse(pred$Pred.2 >= wybrany_cutoff, "Cancer", "Control")
       pred$PredClass = factor(pred$PredClass, levels = c("Control","Cancer"))
       cm_train = caret::confusionMatrix(pred$PredClass, pred$Class, positive = "Cancer")
       print(cm_train)
-      #message("Checkpoint passed: chunk 31")
+      message("Checkpoint passed: chunk 31")
       
       t1_roc = pROC::roc(Class ~ as.numeric(Pred.2), data=pred)
       tempwyniki[1, "training_AUC2"] = t1_roc$auc
@@ -653,7 +652,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "training_AUC_upper95CI"] = as.character(ci(t1_roc))[3]
       saveRDS(t1_roc, paste0(temp_dir,"/models/keras",model_id,"/training_ROC.RDS"))
       #ggplot2::ggsave(file = paste0(temp_dir,"/models/keras",model_id,"/training_ROC.png"), grid.arrange(plot(t1_roc), nrow =1, top = "Training ROC curve"))
-      #message("Checkpoint passed: chunk 32")
+      message("Checkpoint passed: chunk 32")
       
       tempwyniki[1, "training_Accuracy"] = cm_train$overall[1]
       tempwyniki[1, "training_Sensitivity"] = cm_train$byClass[1]
@@ -662,7 +661,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "training_NPV"] = cm_train$byClass[4]
       tempwyniki[1, "training_F1"] = cm_train$byClass[7]
       saveRDS(cm_train, paste0(temp_dir,"/models/keras",model_id,"/cm_train.RDS"))
-      #message("Checkpoint passed: chunk 33")
+      message("Checkpoint passed: chunk 33")
       
       cat(paste0("\n\n---- TESTING PERFORMANCE ----\n\n"))
       pred = data.frame(`Class` = test$Class, `Pred` = y_test_pred)
@@ -677,7 +676,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "test_NPV"] = cm_test$byClass[4]
       tempwyniki[1, "test_F1"] = cm_test$byClass[7]
       saveRDS(cm_test, paste0(temp_dir,"/models/keras",model_id,"/cm_test.RDS"))
-      #message("Checkpoint passed: chunk 34")
+      message("Checkpoint passed: chunk 34")
       
       cat(paste0("\n\n---- VALIDATION PERFORMANCE ----\n\n"))
       pred = data.frame(`Class` = valid$Class, `Pred` = y_valid_pred)
@@ -692,7 +691,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       tempwyniki[1, "valid_NPV"] = cm_test$byClass[4]
       tempwyniki[1, "valid_F1"] = cm_test$byClass[7]
       saveRDS(cm_valid, paste0(temp_dir,"/models/keras",model_id,"/cm_valid.RDS"))
-      #message("Checkpoint passed: chunk 35")
+      message("Checkpoint passed: chunk 35")
       
       if(add_features_to_predictions) {
       mix = rbind(train,test,valid)
@@ -722,7 +721,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       saveRDS(wagi, paste0(temp_dir,"/models/keras",model_id,"/finalmodel_weights.RDS"))
       save_model_weights_hdf5(dnn_class_model, paste0(temp_dir,"/models/keras",model_id,"/finalmodel_weights.hdf5"))
       saveRDS(dnn_class_model, paste0(temp_dir,"/models/keras",model_id,"/finalmodel.RDS"))
-      #message("Checkpoint passed: chunk 36")
+      message("Checkpoint passed: chunk 36")
       
       
       # czy jest sens zapisywac?
@@ -730,24 +729,24 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
       # zapisywanie modelu do właściwego katalogu
-      #message("Checkpoint passed: chunk 37e")
+      message("Checkpoint passed: chunk 37e")
       if (save_all_vars) { save(list = ls(all=TRUE), file = paste0(temp_dir,"/models/keras",model_id,"/all.Rdata.gz"), compress = "gzip", compression_level = 9) }
-      #message("Checkpoint passed: chunk 37d")
+      message("Checkpoint passed: chunk 37d")
       if(!dir.exists(paste0("models/",codename,"/"))) { dir.create(paste0("models/",codename,"/")) }
-      #message("Checkpoint passed: chunk 37c")
+      message("Checkpoint passed: chunk 37c")
       if(dir.exists("/miRNAselector")) {
       system(paste0("/bin/bash -c 'screen -dmS save_network zip -9 -r ", paste0("models/",codename,"/",codename, "_", model_id,".zip") ," ", paste0(temp_dir,"models/keras",model_id), "/'"))
       } else {
       zip(paste0("models/",codename,"/",codename, "_", model_id,".zip"),list.files(paste0(temp_dir,"models/keras",model_id), full.names = T, recursive = T, include.dirs = T)) }
-      #message("Checkpoint passed: chunk 37b")
+      message("Checkpoint passed: chunk 37b")
       if (!dir.exists(paste0("temp/",codename,"/"))) { dir.create(paste0("temp/",codename,"/")) }
-      #message("Checkpoint passed: chunk 37a")
+      message("Checkpoint passed: chunk 37a")
       file.copy(list.files(paste0(temp_dir,"/models/keras",model_id), pattern = "_wyniki.csv$", full.names = T, recursive = T, include.dirs = T),paste0("temp/",codename,"/",model_id,"_deeplearningresults.csv"))
-      #message("Checkpoint passed: chunk 37")
+      message("Checkpoint passed: chunk 37")
     } }
     
-    #sink() 
-    ###sink(type="message")
+    sink() 
+    ##sink(type="message")
     #dev.off()
     tempwyniki2 = cbind(hyperparameters[i,],tempwyniki)
     tempwyniki2[1,"name"] = paste0(codename,"_", model_id)
