@@ -799,6 +799,9 @@ ks.shotgun_deep_learning = function(hyperparameters = expand.grid(layer1 = seq(3
 
         head(hyperparameters)
 
+        if(!dir.exists(paste0("models"))) { dir.create(paste0("models")) }
+        if(!dir.exists(paste0("temp"))) { dir.create(paste0("temp")) }
+
         ile = nrow(hyperparameters)
         ile_w_batchu = 100
         ile_batchy = ceiling(nrow(hyperparameters)/ile_w_batchu)
