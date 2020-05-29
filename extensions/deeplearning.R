@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 library(plyr)
 library(dplyr)
 library(caret)
@@ -73,12 +72,12 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                                                           activation_function_layer1 = c("relu","sigmoid"), activation_function_layer2 = c("relu","sigmoid"), activation_function_layer3 = c("relu","sigmoid"),
                                                           dropout_layer1 = c(0, 0.1), dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0),
                                                           layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
-                                                          optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = SMOTE, formula = as.character(ks.miR.formula(selected_miRNAs))[3], scaled = c(T,F),
+                                                          optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = SMOTE, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(T,F),
                                                           stringsAsFactors = F), add_features_to_predictions = F,
                             keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F) 
   {
-  library(miRNAselector)
-  ks.load_extension("deeplearning")
+  # library(miRNAselector)
+  # ks.load_extension("deeplearning")
   codename = sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(output_file))
   #options(warn=-1)
   oldwd = getwd()
@@ -102,7 +101,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   library(data.table)
   fwrite(hyperparameters, paste0("hyperparameters_",output_file))
   
-  dane = ks.wczytajmix(wd = wd, replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+  dane = ks.load_datamix(wd = wd, replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
   if (SMOTE == T) { train = train_smoted }
   message("Checkpoint passed: load lib and data")
   
@@ -124,11 +123,11 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   
   # tu musi isc iteracja
   cat(paste0("\nStarting parallel loop.. There are: ", end-start+1, " hyperparameter sets to be checked.\n"))
-  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=F, .inorder=F, .export = ls(), .errorhandling = "remove"
+  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=F, .inorder=F, .export = ls()
                    #,.packages = loadedNamespaces()
                    ) %dopar% {
-    Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
     
+    Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
     library(miRNAselector)
     ks.load_extension("deeplearning")
     
@@ -775,99 +774,4 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   # sprzątanie
   if(clean_temp_files) {
   unlink(paste0(normalizePath(temp_dir), "/", dir(temp_dir)), recursive = TRUE) }
-}
-
-ks.shotgun_deep_learning = function(hyperparameters = expand.grid(layer1 = seq(3,11, by = 2), layer2 = c(0,seq(3,11, by = 2)), layer3 = c(0,seq(3,11, by = 2)),
-                              activation_function_layer1 = c("relu","sigmoid"), activation_function_layer2 = c("relu","sigmoid"), activation_function_layer3 = c("relu","sigmoid"),
-                              dropout_layer1 = c(0, 0.1), dropout_layer2 = c(0, 0.1), dropout_layer3 = c(0),
-                              layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
-                              optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = balanced, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(F,T),
-                              stringsAsFactors = F), 
-                                nazwa_konfiguracji = "TCGA_wybraneprzezWF+normalizatory.csv",
-                                selected_miRNAs = c("hsa.miR.192.5p",
-                                                    "hsa.let.7g.5p",
-                                                    "hsa.let.7a.5p",
-                                                    "hsa.let.7d.5p",
-                                                    "hsa.miR.194.5p",
-                                                    "hsa.miR.98.5p",
-                                                    "hsa.let.7f.5p",
-                                                    "hsa.miR.122.5p",
-                                                    "hsa.miR.340.5p",
-                                                    "hsa.miR.26b.5p"
-                                                    ,"hsa.miR.17.5p",
-                                                    "hsa.miR.199a.3p.hsa.miR.199b.3p.1",
-                                                    "hsa.miR.28.3p",
-                                                    "hsa.miR.92a.3p"
-                                ),
-                                balanced = F, ...) {
-        library(miRNAselector)
-        ks.load_extension("deeplearning")
-        library(data.table)
-
-        head(hyperparameters)
-
-        if(!dir.exists(paste0("models"))) { dir.create(paste0("models")) }
-        if(!dir.exists(paste0("temp"))) { dir.create(paste0("temp")) }
-
-        ile = nrow(hyperparameters)
-        ile_w_batchu = 100
-        ile_batchy = ceiling(nrow(hyperparameters)/ile_w_batchu)
-        batch_start = 1
-        for (i in 1:ile_batchy) {
-                batch_end = batch_start + (ile_w_batchu-1)
-                if (batch_end > ile) { batch_end = ile }
-                cat(paste0("\n\nProcessing batch no ", i , " of ", ile_batchy, " (", batch_start, "-", batch_end, ")"))
-
-                ks.deep_learning(selected_miRNAs = selected_miRNAs, wd = getwd(),
-                                    SMOTE = balanced, start = batch_start, end = batch_end, output_file = nazwa_konfiguracji, ...)
-
-                batch_start = batch_end + 1
-        }
-  
-}
-
-ks.miR.formula = function(wybrane_miRy) {
-  as.formula(paste0("Class ~ ",paste0(as.character(wybrane_miRy), collapse = " + ")))
-}
-
-ks.wczytajmix = function(wd = getwd(), smote_over = 10000, use_smote_not_rose = F, replace_smote = F) {
-  oldwd = getwd()
-  setwd(wd)
-  train = dplyr::select(read.csv("mixed_train.csv", stringsAsFactors = F), starts_with("hsa"), Class)
-  
-  test = dplyr::select(read.csv("mixed_test.csv", stringsAsFactors = F), starts_with("hsa"), Class)
-  valid = dplyr::select(read.csv("mixed_valid.csv", stringsAsFactors = F), starts_with("hsa"), Class)
-  train$Class = factor(train$Class, levels = c("Control","Cancer"))
-  test$Class = factor(test$Class, levels = c("Control","Cancer"))
-  valid$Class = factor(valid$Class, levels = c("Control","Cancer"))
-  
-  # Wywalamy miRy z zerowa wariancja
-  temp = train %>% filter(Class == "Cancer")
-  temp2 = as.numeric(which(apply(temp, 2, var) == 0))
-  temp = train %>% filter(Class == "Control")
-  temp3 = as.numeric(which(apply(temp, 2, var) == 0))
-  temp4 = unique(c(temp2, temp3))
-  if (length(temp4) > 0) {
-  train = train[,-temp4]
-  test = test[,-temp4]
-  valid = valid[,-temp4]
-  }
-  
-  if(use_smote_not_rose) {
-    train_smoted = DMwR::SMOTE(Class ~ ., data = train, perc.over = smote_over,perc.under=100, k=10)
-  train_smoted$Class = factor(train_smoted$Class, levels = c("Control","Cancer"))
-  } else {
-  rosed = ROSE(Class ~ ., data = train, N = nrow(train)*10, seed = 1)
-  train_smoted = rosed[["data"]]
-  train_smoted$Class = factor(train_smoted$Class, levels = c("Control","Cancer"))
-  }
-  
-  
-  
-  if (replace_smote == T) { train = train_smoted }
-  
-  trainx = dplyr::select(train, starts_with("hsa"))
-  trainx_smoted = dplyr::select(train_smoted, starts_with("hsa"))
-  setwd(oldwd)
-  return(list(train, test, valid, train_smoted, trainx, trainx_smoted))
 }
