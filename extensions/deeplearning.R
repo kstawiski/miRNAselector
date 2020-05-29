@@ -1,4 +1,4 @@
-﻿library(plyr)
+library(plyr)
 library(dplyr)
 library(caret)
 library(epiDisplay)
@@ -334,7 +334,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         as.matrix()
       fwrite(ae_x_valid_scale, paste0(temp_dir,"/models/keras",model_id,"/deepfeatures_valid.csv"))
       
-      # # podmiana żeby nie edytować kodu
+      # # podmiana eby nie edytowa kodu
       x_train_scale = as.matrix(ae_x_train_scale)
       x_test_scale = as.matrix(ae_x_test_scale)
       x_valid_scale = as.matrix(ae_x_valid_scale)
@@ -506,7 +506,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
-      # zapisywanie modelu do właściwego katalogu
+      # zapisywanie modelu do waciwego katalogu
       if (save_all_vars) { save(list = ls(all=TRUE), file = paste0(temp_dir,"/models/keras",model_id,"/all.Rdata.gz"), compress = "gzip", compression_level = 9) }
       if(!dir.exists(paste0("models/",codename,"/"))) { dir.create(paste0("models/",codename,"/")) }
       if(dir.exists("/miRNAselector")) {
@@ -735,7 +735,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
-      # zapisywanie modelu do właściwego katalogu
+      # zapisywanie modelu do waciwego katalogu
       #message("Checkpoint passed: chunk 37e")
       if (save_all_vars) { save(list = ls(all=TRUE), file = paste0(temp_dir,"/models/keras",model_id,"/all.Rdata.gz"), compress = "gzip", compression_level = 9) }
       #message("Checkpoint passed: chunk 37d")
@@ -771,7 +771,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   fwrite(final, output_file)
   setwd(oldwd)
   #options(warn=0)
-  # sprzątanie
+  # sprztanie
   if(clean_temp_files) {
   unlink(paste0(normalizePath(temp_dir), "/", dir(temp_dir)), recursive = TRUE) }
 }
