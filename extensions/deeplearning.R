@@ -89,7 +89,6 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   } else {
     temp_dir = tempdir()
   }
-  options(warn = -1)
   options(bitmapType = 'cairo', device = 'png')
   library(plyr)
   library(dplyr)
@@ -122,10 +121,14 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   
   # tu musi isc iteracja
   cat(paste0("\nStarting parallel loop.. There are: ", end-start+1, " hyperparameter sets to be checked.\n"))
-  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F
-                   ,.errorhandling="remove", .export = ls(), .packages = loadedNamespaces()
+  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F, .export = ls()
+                   #,.packages = loadedNamespaces()
                    ) %dopar% {
     Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
+    
+    library(miRNAselector)
+    ks.load_extension("deeplearning")
+    
     if(!dir.exists(paste0(temp_dir,"/models"))) { dir.create(paste0(temp_dir,"/models")) }
     if(!dir.exists(paste0(temp_dir,"/temp"))) { dir.create(paste0(temp_dir,"/temp")) }
     start_time <- Sys.time()
@@ -147,7 +150,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     
     cat("\nStarting hyperparameters..\n")
     print(hyperparameters[i,])
-    ks.load_extension("deeplearning")
+    
     options(bitmapType = 'cairo', device = 'png')
     model_id = paste0(format(i, scientific = FALSE), "-", ceiling(as.numeric(Sys.time())))
     if(SMOTE == T) { model_id = paste0(format(i, scientific = FALSE), "-SMOTE-", ceiling(as.numeric(Sys.time()))) }
@@ -164,7 +167,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     
     con <- file(paste0(temp_dir,"/models/keras",model_id,"/training.log"))
     sink(con, append=TRUE, split =TRUE)
-    ##sink(con, append=TRUE, type="message")
+    sink(con, append=TRUE, type="message")
     
     early_stop <- callback_early_stopping(monitor = "val_loss", mode="min", patience = keras_patience)
     cp_callback <- callback_model_checkpoint(
@@ -495,7 +498,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       
       # czy jest sens zapisywac?
       sink() 
-      ###sink(type="message")
+      sink(type="message")
       message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
@@ -746,7 +749,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     } }
     
     sink() 
-    ##sink(type="message")
+    sink(type="message")
     #dev.off()
     tempwyniki2 = cbind(hyperparameters[i,],tempwyniki)
     tempwyniki2[1,"name"] = paste0(codename,"_", model_id)
