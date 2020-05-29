@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-library(plyr)
-library(dplyr)
-library(caret)
-library(epiDisplay)
-library(pROC)
-library(ggplot2)
-library(DMwR)
-library(ROSE)
-library(gridExtra)
-library(gplots)
-library(devtools)
-library(stringr)
+#library(plyr)
+#library(dplyr)
+#library(caret)
+#library(epiDisplay)
+#library(pROC)
+#library(ggplot2)
+#library(DMwR)
+#library(ROSE)
+#library(gridExtra)
+#library(gplots)
+#library(devtools)
+#library(stringr)
 library(data.table)
 library(tidyverse)
 library(miRNAselector)
-
+message("Loading DeepLearning miRNAselector extensions!!")
 
 ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x_train_scale)) {
   # tempmodel <- keras_model_sequential() %>% 
@@ -103,7 +103,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   
   dane = ks.wczytajmix(wd = wd, replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
   if (SMOTE == T) { train = train_smoted }
-  #message("Checkpoint passed: load lib and data")
+  message("Checkpoint passed: load lib and data")
   
   #cores=detectCores()
   cat(paste0("\nTemp dir: ", temp_dir, "\n"))
@@ -123,7 +123,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   
   # tu musi isc iteracja
   cat(paste0("\nStarting parallel loop.. There are: ", end-start+1, " hyperparameter sets to be checked.\n"))
-  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=F, .inorder=F, .export = ls(), .errorhandling = "remove"
+  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F, .export = ls(), .errorhandling = "remove"
                    #,.packages = loadedNamespaces()
                    ) %dopar% {
     Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
