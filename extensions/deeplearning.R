@@ -123,7 +123,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   
   # tu musi isc iteracja
   cat(paste0("\nStarting parallel loop.. There are: ", end-start+1, " hyperparameter sets to be checked.\n"))
-  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=T, .inorder=F, .export = ls()
+  final <- foreach(i=as.numeric(start):as.numeric(end), .combine=rbind, .verbose=F, .inorder=F, .export = ls(), .errorhandling = "remove",
                    #,.packages = loadedNamespaces()
                    ) %dopar% {
     Sys.setenv(TF_FORCE_GPU_ALLOW_GROWTH = 'true')
