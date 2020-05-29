@@ -77,7 +77,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                                                           stringsAsFactors = F), add_features_to_predictions = F,
                             keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F) 
   {
-  
+  library(miRNAselector)
+  ks.load_extension("deeplearning")
   codename = sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(output_file))
   #options(warn=-1)
   oldwd = getwd()
