@@ -64,7 +64,7 @@ ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x
 }
 
 # autoencoder ma softmax na deep feature
-# jesli zmienna autoencoder >0 budujemy autoencoder 5-wartwowy, jesli <0 budujemy autoencoder 3-warstwowy
+# jesli zmienna autoencoder >0 budujemy autoencoder 3-wartwowy, jesli <0 budujemy autoencoder 3-warstwowy z regularyzacja (sparse autoencoder)
 ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                             SMOTE = F, keras_batch_size = 64, clean_temp_files = T,
                             save_threshold_trainacc = 0.85, save_threshold_testacc = 0.8, keras_epochae = 5000,
@@ -243,17 +243,17 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         encoder <- 
           input_layer %>%
           #layer_dense(units = ceiling(n3/2), activation = hyperparameters[i,6])    %>% 
-          layer_dense(units = n1, activation = "sigmoid")  # dimensions of final encoding layer
+          layer_dense(units = n1, activation = "relu")  # dimensions of final encoding layer
         
         decoder <- encoder %>% 
           #layer_dense(units = ceiling(n3/2), activation = hyperparameters[i,6]) %>% 
           layer_dense(units = n3, hyperparameters[i,6])  # dimension of original variable
       }
       else {
-        n1 = -n1
+        # n1 = -n1
         encoder <- 
           input_layer %>%
-          layer_dense(units = n1, activation = "sigmoid")  # dimensions of final encoding layer
+          layer_dense(units = n1, activation = "relu", kernel_regularizer = regularizer_l1(l = 0.001))  # dimensions of final encoding layer
         
         decoder <- encoder %>% 
           layer_dense(units = n3, hyperparameters[i,6])  # dimension of original variable
@@ -744,7 +744,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       message("Checkpoint passed: chunk 37b")
       if (!dir.exists(paste0("temp/",codename,"/"))) { dir.create(paste0("temp/",codename,"/")) }
       message("Checkpoint passed: chunk 37a")
-      file.copy(list.files(paste0(temp_dir,"/models/keras",model_id), pattern = "_wyniki.csv$", full.names = T, recursive = T, include.dirs = T),paste0("temp/",codename,"/",model_id,"_deeplearningresults.csv"))
+      file.copy(list.files(paste0(temp_dir,"/models/keras",model_id), pattern = "_wyniki.csv$", full.names = T, recursive = T, include.dirs = T),paste0("models/",codename,"/",model_id,"_deeplearningresults.csv"))
       message("Checkpoint passed: chunk 37")
     } }
     
