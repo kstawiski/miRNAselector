@@ -152,6 +152,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
     
     cat("\nStarting hyperparameters..\n")
     print(hyperparameters[i,])
+    message(hyperparameters[i,])
     
     options(bitmapType = 'cairo', device = 'png')
     model_id = paste0(format(i, scientific = FALSE), "-", ceiling(as.numeric(Sys.time())))
