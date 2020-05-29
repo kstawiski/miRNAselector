@@ -89,6 +89,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   } else {
     temp_dir = tempdir()
   }
+  if(!dir.exists("temp")) { dir.create("temp") }
+  if(!dir.exists("models")) { dir.create("models") }
   options(bitmapType = 'cairo', device = 'png')
   library(plyr)
   library(dplyr)
