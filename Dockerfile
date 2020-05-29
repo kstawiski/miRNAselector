@@ -17,7 +17,7 @@ RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
 
 # Keras, tensorflow, jupyter
 RUN apt-get update --fix-missing && \
-    apt-get install -y apt-utils libffi-dev libssl-dev wget bzip2 ca-certificates build-essential cmake git unzip pkg-config libopenblas-dev liblapack-dev libhdf5-serial-dev libglib2.0-0 libxext6 libsm6 libxrender1 gfortran-7 gcc-7 && apt-get clean && \
+    apt-get install -y apt-utils sshfs cifs-utils libffi-dev libssl-dev wget bzip2 ca-certificates build-essential cmake git unzip pkg-config libopenblas-dev liblapack-dev libhdf5-serial-dev libglib2.0-0 libxext6 libsm6 libxrender1 gfortran-7 gcc-7 && apt-get clean && \
     conda update --all && conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow-mkl keras jupyter jupytext numpy pandas r r-devtools r-essentials r-biocmanager r-remotes r-keras r-rjava pandoc r-reticulate r-magick r-xml r-rgl opencv pkgconfig && echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
 
 # R:
