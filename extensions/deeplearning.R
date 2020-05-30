@@ -777,5 +777,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
   #options(warn=0)
   # sprztanie
   if(clean_temp_files) {
-  unlink(paste0(normalizePath(temp_dir), "/", dir(temp_dir)), recursive = TRUE) }
+    keras::k_clear_session()
+    unlink(paste0(normalizePath(temp_dir), "/", dir(temp_dir)), recursive = TRUE) 
+    }
 }
