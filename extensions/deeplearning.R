@@ -246,26 +246,29 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       
       n1 <- hyperparameters[i,14]
       n3 <- ncol(x_train_scale)
+
+      n2 = 10
+      if(ceiling(n3/2) > 10) { n2 = ceiling(n3/2) }
       
       if (hyperparameters[i,14]>0) {
         encoder <- 
           input_layer %>%
-          layer_dense(units = ceiling(n3/2), activation = hyperparameters[i,6])    %>% 
+          layer_dense(units = n2, activation = hyperparameters[i,6])    %>% 
           layer_dense(units = n1, activation = "softmax")  # dimensions of final encoding layer
         
         decoder <- encoder %>% 
-          layer_dense(units = ceiling(n3/2), activation = hyperparameters[i,6]) %>% 
+          layer_dense(units = n2, activation = hyperparameters[i,6]) %>% 
           layer_dense(units = n3, hyperparameters[i,6])  # dimension of original variable
       }
       else {
         n1 = -n1 # korekta dla ujemnej wartosci w hiperparametrach
         encoder <- 
           input_layer %>%
-          layer_dense(units = ceiling(n3/2), activation = hyperparameters[i,6], kernel_regularizer = regularizer_l1(l = 0.01))    %>% 
+          layer_dense(units = n2, activation = hyperparameters[i,6], kernel_regularizer = regularizer_l1(l = 0.01))    %>% 
           layer_dense(units = n1, activation = "softmax", kernel_regularizer = regularizer_l1(l = 0.01))  # dimensions of final encoding layer
         
         decoder <- encoder %>% 
-          layer_dense(units = ceiling(n3/2), activation = hyperparameters[i,6], kernel_regularizer = regularizer_l1(l = 0.01))    %>% 
+          layer_dense(units = n2, activation = hyperparameters[i,6], kernel_regularizer = regularizer_l1(l = 0.01))    %>% 
           layer_dense(units = n3, hyperparameters[i,6])  # dimension of original variable
       }
       ae_model <- keras_model(inputs = input_layer, outputs = decoder)
@@ -509,8 +512,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       # czy jest sens zapisywac?
       #sink() 
       #sink(type="message")
-      message(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
-      cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
+      message(paste0("\n ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
+      cat(paste0("\n ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
       # zapisywanie modelu do waciwego katalogu
       if (save_all_vars) { save(list = ls(all=TRUE), file = paste0(temp_dir,"/models/keras",model_id,"/all.Rdata.gz"), compress = "gzip", compression_level = 9) }
@@ -739,7 +742,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       
       # czy jest sens zapisywac?
      
-      cat(paste0("\n\n== ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
+      cat(paste0("\n ",model_id, ": ", tempwyniki[1, "training_Accuracy"], " / ", tempwyniki[1, "test_Accuracy"], " ==> ", tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc))
       if(tempwyniki[1, "training_Accuracy"]>save_threshold_trainacc & tempwyniki[1, "test_Accuracy"]>save_threshold_testacc) {
       # zapisywanie modelu do waciwego katalogu
       #message("Checkpoint passed: chunk 37e")
