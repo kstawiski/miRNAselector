@@ -491,7 +491,7 @@ c.KernelManager.shutdown_wait_time = 1.0
 #c.Session.copy_threshold = 65536
 
 ## Debug output in the Session
-c.Session.debug = True
+c.Session.debug = False
 
 ## The maximum number of digests to remember.
 #  
