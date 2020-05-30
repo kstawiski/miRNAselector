@@ -15,6 +15,9 @@ library(data.table)
 library(tidyverse)
 library(miRNAselector)
 
+if(!dir.exists("temp")) { dir.create("temp") }
+if(!dir.exists("models")) { dir.create("models") }
+
 
 ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x_train_scale)) {
   # tempmodel <- keras_model_sequential() %>% 
