@@ -16,6 +16,9 @@ library(tidyverse)
 library(miRNAselector)
 message("miRNAselector: DeepLearning extension loaded.")
 
+if(!dir.exists(paste0("models"))) { dir.create(paste0("models")) }
+if(!dir.exists(paste0("temp"))) { dir.create(paste0("temp")) }
+
 ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x_train_scale)) {
   # tempmodel <- keras_model_sequential() %>% 
   #   { if(hyperparameters[i,10]==T) { layer_dense(. , units = hyperparameters[i,1], kernel_regularizer = regularizer_l2(l = 0.001),
