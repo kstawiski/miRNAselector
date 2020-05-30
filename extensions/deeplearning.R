@@ -261,7 +261,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         n1 = -n1 # korekta dla ujemnej wartosci w hiperparametrach
         encoder <- 
           input_layer %>%
-          layer_dense(units = n1, activation = "relu", kernel_regularizer = regularizer_l1(l = 0.001))  # dimensions of final encoding layer
+          layer_dense(units = n1, activation = "relu", kernel_regularizer = regularizer_l1(l = 0.01))  # dimensions of final encoding layer
         
         decoder <- encoder %>% 
           layer_dense(units = n3, hyperparameters[i,6])  # dimension of original variable
