@@ -31,31 +31,26 @@ ks.vulcano_plot = function(selected_miRNAs, DE = ks.miRNA_differential_expressio
   suppressMessages(library(stringr))
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
-  temp = DE[match(selected_miRNAs, DE$miR),]
-  tlabels = gsub("\\.","-", selected_miRNAs)
-  if (is.null(only_label))
-  {
+  temp = DE[match(selected_miRNAs, DE$miR), ]
+  tlabels = gsub("\\.", "-", selected_miRNAs)
+  if (is.null(only_label)) {
   }
   else {
-    tlabels = rep(NA, length(gsub("\\.","-", selected_miRNAs)))
-
-    tlabels[match(only_label, DE$miR)] = gsub("\\.","-", selected_miRNAs)[match(only_label, DE$miR)]
+    tlabels = rep(NA, length(gsub("\\.", "-", selected_miRNAs)))
+    tlabels[match(only_label, DE$miR)] = gsub("\\.", "-", 
+                                              selected_miRNAs)[match(only_label, DE$miR)]
   }
   thres = -log10(0.05)
   suppressMessages(library(ggplot2))
   suppressMessages(library(ggrepel))
-  x_limits <- c(-3, +3)
+  x_limits <- c(-max(abs(temp$log2FC)), +max(abs(temp$log2FC)))
   pval = -log10(temp$`p-value BH`)
-  ggplot(data = temp, aes(x = temp$`log2FC`, y = pval, label = tlabels)) +
-    geom_text_repel(arrow = arrow(length = unit(0.01, "npc"), type = "closed", ends = "last"),
-                    force = 50) +
-    geom_point(color = 'black') +
-    theme_classic(base_size = 16) +
-    labs(x = "Log2(FC)") +
-    labs(y = "-Log10(adjusted p-value)") +
-    geom_hline(yintercept=thres, linetype="dashed", color = "red") +
-    geom_vline(xintercept = 0, linetype="dotted",
-               color = "blue", size=0.5) +
-    xlim(-3,3) +
-    ylim(0,max(pval))
+  ggplot(data = temp, aes(x = temp$log2FC, y = pval, label = tlabels)) + 
+    geom_text_repel(arrow = arrow(length = unit(0.01, "npc"), 
+                                  type = "closed", ends = "last"), force = 50) + geom_point(color = "black") + 
+    theme_classic(base_size = 16) + labs(x = "Log2(FC)") + 
+    labs(y = "-Log10(adjusted p-value)") + geom_hline(yintercept = thres, 
+                                                      linetype = "dashed", color = "red") + geom_vline(xintercept = 0, 
+                                                                                                       linetype = "dotted", color = "blue", size = 0.5) + xlim(-max(abs(temp$log2FC)), 
+                                                                                                                                                               max(abs(temp$log2FC))) + ylim(0, max(pval))
 }
