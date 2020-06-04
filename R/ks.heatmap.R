@@ -5,11 +5,12 @@
 #' @param x Matrix of log-transformed TPM-normalized counts with miRNAs in columns and cases in rows.
 #' @param rlab Data frame of factors to be marked on heatmap (like batch or class). Maximum of 2 levels for every variable is supported.
 #' @param zscore Whether to z-score values before clustering and plotting.
+#' @param expression_name What should be written on the plot?
 #'
 #' @return Heatmap.
 #'
 #' @export
-ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10)) {
+ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)") {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))
@@ -60,7 +61,7 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
     ks.heatmap.3(x2, hclustfun=ks.myclust, distfun=ks.mydist,
                  RowSideColors=t(rlab),
                  margins = margins,
-                 KeyValueName="log10(TPM)",
+                 KeyValueName=expression_name,
                  symm=F,symkey=F,symbreaks=T, scale="none",
                  col=as.character(brks[[2]]),
                  breaks=as.numeric(brks[[1]]$brks),
@@ -84,7 +85,7 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
     ks.heatmap.3(x3, hclustfun=ks.myclust, distfun=ks.mydist,
                  RowSideColors=t(rlab),
                  margins = margins,
-                 KeyValueName="Z-score log10(TPM)",
+                 KeyValueName=paste0("Z-score ",expression_name),
                  symm=F,symkey=F,symbreaks=T, scale="none",
                  col=as.character(brks[[2]]),
                  breaks=as.numeric(brks[[1]]$brks),
