@@ -265,7 +265,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
         encoder <- 
           input_layer %>%
           layer_dense(units = n2, activation = hyperparameters[i,6], kernel_regularizer = regularizer_l1(l = 0.01))    %>% 
-          layer_dense(units = n1, activation = "softmax", kernel_regularizer = regularizer_l1(l = 0.01))  # dimensions of final encoding layer
+          layer_dense(units = n1, activation = "softmax")  # dimensions of final encoding layer
         
         decoder <- encoder %>% 
           layer_dense(units = n2, activation = hyperparameters[i,6], kernel_regularizer = regularizer_l1(l = 0.01))    %>% 

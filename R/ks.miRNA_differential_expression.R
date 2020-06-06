@@ -36,6 +36,7 @@ ks.miRNA_differential_expression = function(ttpm_pofiltrze, klasy, mode = "logtp
   suppressMessages(library(data.table))
   suppressMessages(library(tidyverse))
   wyniki = data.frame(miR = as.character(colnames(ttpm_pofiltrze)))
+  ttpm_pofiltrze = as.data.frame(ttpm_pofiltrze)
 
   suppressMessages(library(dplyr))
 

@@ -1,4 +1,5 @@
 ## Default repo
+# Ubuntu: apt install default-jre default-jdk libmagick++-dev zlib1g-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev r-cran-rgl
 r = getOption("repos")
 r["CRAN"] = "https://cran.r-project.org"
 options(repos = r)
