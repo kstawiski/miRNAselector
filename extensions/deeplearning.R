@@ -221,7 +221,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       majority=max(counter$frequency)
       counter$weight=ceil(majority/counter$frequency)
       l_weights=setNames(as.list(counter$weight), counter$var)
-      message(str(l_weights))
+      message(l_weights)
     } else {
       l_weights = NULL
     }
