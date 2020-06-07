@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-library(plyr)
-library(dplyr)
-library(caret)
-library(epiDisplay)
-library(pROC)
-library(ggplot2)
-library(DMwR)
-library(ROSE)
-library(gridExtra)
-library(gplots)
-library(devtools)
-library(stringr)
-library(data.table)
-library(tidyverse)
+suppressMessages(library(plyr))
+suppressMessages(library(dplyr))
+suppressMessages(library(caret))
+suppressMessages(library(epiDisplay))
+suppressMessages(library(pROC))
+suppressMessages(library(ggplot2))
+suppressMessages(library(DMwR))
+suppressMessages(library(ROSE))
+suppressMessages(library(gridExtra))
+suppressMessages(library(gplots))
+suppressMessages(library(devtools))
+suppressMessages(library(stringr))
+suppressMessages(library(data.table))
+suppressMessages(library(tidyverse))
 library(miRNAselector)
-library(funModeling)
+suppressMessages(library(funModeling))
 message("miRNAselector: DeepLearning extension loaded.")
 
 if(!dir.exists(paste0("models"))) { dir.create(paste0("models")) }
@@ -79,7 +79,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                                                           layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
                                                           optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = SMOTE, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(T,F),
                                                           stringsAsFactors = F), add_features_to_predictions = F,
-                            keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F, automatic_weight = T) 
+                            keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F, automatic_weight = F) 
   {
   # library(miRNAselector)
   # ks.load_extension("deeplearning")
