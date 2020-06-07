@@ -14,6 +14,7 @@ library(stringr)
 library(data.table)
 library(tidyverse)
 library(miRNAselector)
+library(funModeling)
 message("miRNAselector: DeepLearning extension loaded.")
 
 if(!dir.exists(paste0("models"))) { dir.create(paste0("models")) }
@@ -78,7 +79,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                                                           layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
                                                           optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = SMOTE, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(T,F),
                                                           stringsAsFactors = F), add_features_to_predictions = F,
-                            keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F, class_weight = list()) 
+                            keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F, automatic_weight = T) 
   {
   # library(miRNAselector)
   # ks.load_extension("deeplearning")
@@ -214,6 +215,15 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       as.matrix()
     y_valid[,1] = ifelse(y_valid[,1] == "Cancer",1,0)
     #message("Checkpoint passed: chunk 3")
+
+    if(automatic_weight) {
+      counter=funModeling::freq(to_categorical(y_train), plot=F) %>% select(var, frequency)
+      majority=max(counter$frequency)
+      counter$weight=ceil(majority/counter$frequency)
+      l_weights=setNames(as.list(counter$weight), counter$var)
+    } else {
+      l_weights = NULL
+    }
     
     if(hyperparameters[i, 17] == T) {
     x_train_scale = x_train %>% scale()
@@ -360,7 +370,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                    callbacks = list(cp_callback, early_stop),
                    verbose = 0,
                    view_metrics = FALSE,
-                   batch_size = keras_batch_size, shuffle = T, class_weight = class_weight)
+                   batch_size = keras_batch_size, shuffle = T, class_weight = l_weights)
       message(history)
       print(history)
       #message("Checkpoint passed: chunk 8")
@@ -591,7 +601,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                      early_stop),
                    verbose = 0,
                    view_metrics = FALSE,
-                   batch_size = keras_batch_size, shuffle = T, class_weight = list())
+                   batch_size = keras_batch_size, shuffle = T, class_weight = l_weights)
       print(history)
       #message("Checkpoint passed: chunk 25")
       message(history)
