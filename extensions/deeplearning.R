@@ -78,7 +78,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                                                           layer1_regularizer = c(T,F), layer2_regularizer = c(T,F), layer3_regularizer = c(T,F),
                                                           optimizer = c("adam","rmsprop","sgd"), autoencoder = c(0,7,-7), balanced = SMOTE, formula = as.character(ks.create_miRNA_formula(selected_miRNAs))[3], scaled = c(T,F),
                                                           stringsAsFactors = F), add_features_to_predictions = F,
-                            keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F) 
+                            keras_threads = ceiling(parallel::detectCores()/2), start = 1, end = nrow(hyperparameters), output_file = "deeplearning_results.csv", save_all_vars = F, ...) 
   {
   # library(miRNAselector)
   # ks.load_extension("deeplearning")
@@ -360,7 +360,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                    callbacks = list(cp_callback, early_stop),
                    verbose = 0,
                    view_metrics = FALSE,
-                   batch_size = keras_batch_size, shuffle = T)
+                   batch_size = keras_batch_size, shuffle = T, ...)
       message(history)
       print(history)
       #message("Checkpoint passed: chunk 8")
@@ -591,7 +591,7 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
                      early_stop),
                    verbose = 0,
                    view_metrics = FALSE,
-                   batch_size = keras_batch_size, shuffle = T)
+                   batch_size = keras_batch_size, shuffle = T, ...)
       print(history)
       #message("Checkpoint passed: chunk 25")
       message(history)
