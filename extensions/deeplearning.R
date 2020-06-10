@@ -711,12 +711,12 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       pred$PredClass = factor(pred$PredClass, levels = c("Control","Cancer"))
       cm_valid = caret::confusionMatrix(pred$PredClass, pred$Class, positive = "Cancer")
       print(cm_valid)
-      tempwyniki[1, "valid_Accuracy"] = cm_test$overall[1]
-      tempwyniki[1, "valid_Sensitivity"] = cm_test$byClass[1]
-      tempwyniki[1, "valid_Specificity"] = cm_test$byClass[2]
-      tempwyniki[1, "valid_PPV"] = cm_test$byClass[3]
-      tempwyniki[1, "valid_NPV"] = cm_test$byClass[4]
-      tempwyniki[1, "valid_F1"] = cm_test$byClass[7]
+      tempwyniki[1, "valid_Accuracy"] = cm_valid$overall[1]
+      tempwyniki[1, "valid_Sensitivity"] = cm_valid$byClass[1]
+      tempwyniki[1, "valid_Specificity"] = cm_valid$byClass[2]
+      tempwyniki[1, "valid_PPV"] = cm_valid$byClass[3]
+      tempwyniki[1, "valid_NPV"] = cm_valid$byClass[4]
+      tempwyniki[1, "valid_F1"] = cm_valid$byClass[7]
       saveRDS(cm_valid, paste0(temp_dir,"/models/keras",model_id,"/cm_valid.RDS"))
       #message("Checkpoint passed: chunk 35")
       
