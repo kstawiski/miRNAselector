@@ -258,8 +258,8 @@ ks.deep_learning = function(selected_miRNAs = ".", wd = getwd(),
       n1 <- hyperparameters[i,14]
       n3 <- ncol(x_train_scale)
 
-      n2 = 10
-      if(ceiling(n3/2) > 10) { n2 = ceiling(n3/2) }
+      n2 = 7
+      if(ceiling(n3/2) > 7) { n2 = ceiling(n3/2) }
       
       if (hyperparameters[i,14]>0) {
         encoder <- 
