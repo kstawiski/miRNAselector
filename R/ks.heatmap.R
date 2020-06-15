@@ -52,13 +52,15 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   #levels(rlab$Class) = c("red","green") # red - cancer, green - control
   x2 = as.matrix(x)
   colnames(x2) = gsub("\\.","-", colnames(x2))
+  
+  if(!is.null(trim_min)) { x2[x2<trim_min] = trim_min }
+  if(!is.null(trim_max)) { x2[x2>trim_max] = trim_max }
 
   if(zscore == F) {
     brks<-ks.diverge_color(x2, centeredOn = median(x2))
 
 
-  if(!is.null(trim_min)) { x2[x2<trim_min] = trim_min }
-  if(!is.null(trim_max)) { x2[x2>trim_max] = trim_max }
+  
 
     # colors = seq(min(x2), max(x2), by = 0.01)
     # my_palette <- colorRampPalette(c("blue", "white", "red"))(n = length(colors) - 1)
@@ -82,8 +84,9 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
       x3[,i] = scale(x2[,i])
     }
 
-    if(!is.null(trim_min)) { x3[x3<trim_min] = trim_min }
-    if(!is.null(trim_max)) { x3[x3>trim_max] = trim_max }
+    
+    # if(!is.null(trim_min)) { x3[x3<trim_min] = trim_min }
+    # if(!is.null(trim_max)) { x3[x3>trim_max] = trim_max }
 
     brks<-ks.diverge_color(x3, centeredOn = median(0))
 
