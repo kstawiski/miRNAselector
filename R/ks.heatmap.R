@@ -8,12 +8,12 @@
 #' @param expression_name What should be written on the plot?
 #' @param trim_min Trim lower than.. Useful for setting appropriate scale
 #' @param trim_max Trim greater than.. Useful for setting appropriate scale
-#' @param center How to set the center of the scale? Options: 'median' - use median, 'middle' - keep the scale symetric
+#' @param centered_on On which value should the scale be centered? If null - median will be used.
 #'
 #' @return Heatmap.
 #'
 #' @export
-ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL, center = "median") {
+ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL, centered_on = NULL) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))
@@ -54,19 +54,21 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   x2 = as.matrix(x)
   colnames(x2) = gsub("\\.","-", colnames(x2))
   
-  if(!is.null(trim_min)) { x2[x2<trim_min] = trim_min }
-  if(!is.null(trim_max)) { x2[x2>trim_max] = trim_max }
-
-  if(zscore == F) {
-    
-    if(center == "middle") { brks<-ks.diverge_color(x2, centeredOn = mean(min(x2), max(x2))) }
-    else { brks<-ks.diverge_color(x2, centeredOn = median(x2)) }
-
   
-
+  
+  if(zscore == F) {
+    if(!is.null(trim_min)) { x2[x2<trim_min] = trim_min }
+    if(!is.null(trim_max)) { x2[x2>trim_max] = trim_max }
+    
+    
+    if(!is.null(centered_on)) { brks<-ks.diverge_color(x2, centeredOn = centered_on) }
+    else { brks<-ks.diverge_color(x2, centeredOn = median(x2)) }
+    
+    
+    
     # colors = seq(min(x2), max(x2), by = 0.01)
     # my_palette <- colorRampPalette(c("blue", "white", "red"))(n = length(colors) - 1)
-
+    
     rlab = as.matrix(rlab)
     ks.heatmap.3(x2, hclustfun=ks.myclust, distfun=ks.mydist,
                  RowSideColors=t(rlab),
@@ -85,17 +87,17 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
     for(i in 1:ncol(x2)) {
       x3[,i] = scale(x2[,i])
     }
-
     
-    # if(!is.null(trim_min)) { x3[x3<trim_min] = trim_min }
-    # if(!is.null(trim_max)) { x3[x3>trim_max] = trim_max }
-
-    if(center == "middle") { brks<-ks.diverge_color(x3, centeredOn = mean(min(x3), max(x3))) }
+    
+    if(!is.null(trim_min)) { x3[x3<trim_min] = trim_min }
+    if(!is.null(trim_max)) { x3[x3>trim_max] = trim_max }
+    
+    if(!is.null(centered_on)) { brks<-ks.diverge_color(x3, centeredOn = centered_on) }
     else { brks<-ks.diverge_color(x3, centeredOn = median(x3)) }
-
+    
     # colors = seq(min(x2), max(x2), by = 0.01)
     # my_palette <- colorRampPalette(c("blue", "white", "red"))(n = length(colors) - 1)
-
+    
     rlab = as.matrix(rlab)
     ks.heatmap.3(x3, hclustfun=ks.myclust, distfun=ks.mydist,
                  RowSideColors=t(rlab),
