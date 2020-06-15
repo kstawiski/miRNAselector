@@ -6,11 +6,13 @@
 #' @param rlab Data frame of factors to be marked on heatmap (like batch or class). Maximum of 2 levels for every variable is supported.
 #' @param zscore Whether to z-score values before clustering and plotting.
 #' @param expression_name What should be written on the plot?
+#' @param trim_min Trim lower than.. Useful for setting appropriate scale
+#' @param trim_max Trim greater than.. Useful for setting appropriate scale
 #'
 #' @return Heatmap.
 #'
 #' @export
-ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)") {
+ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))
@@ -54,6 +56,10 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   if(zscore == F) {
     brks<-ks.diverge_color(x2, centeredOn = median(x2))
 
+
+  if(!is.null(trim_min)) { x2[x2<trim_min] = trim_min }
+  if(!is.null(trim_max)) { x2[x2>trim_max] = trim_max }
+
     # colors = seq(min(x2), max(x2), by = 0.01)
     # my_palette <- colorRampPalette(c("blue", "white", "red"))(n = length(colors) - 1)
 
@@ -75,6 +81,9 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
     for(i in 1:ncol(x2)) {
       x3[,i] = scale(x2[,i])
     }
+
+    if(!is.null(trim_min)) { x3[x3<trim_min] = trim_min }
+    if(!is.null(trim_max)) { x3[x3>trim_max] = trim_max }
 
     brks<-ks.diverge_color(x3, centeredOn = median(0))
 
