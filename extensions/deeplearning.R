@@ -40,20 +40,20 @@ ks.keras_create_model <- function(i, hyperparameters, how_many_features = ncol(x
   #   layer_dense(units = 1, activation = 'sigmoid')
   library(keras)
   tempmodel <- keras_model_sequential()
-  if(hyperparameters[i,10]==T) { layer_dense(tempmodel , units = hyperparameters[i,1], kernel_regularizer = regularizer_l2(l = 0.001),
+  if(hyperparameters[i,10]==T) { layer_dense(tempmodel , units = hyperparameters[i,1], kernel_regularizer = regularizer_l1(l = 0.001),
                                              activation = hyperparameters[i,4], input_shape = c(how_many_features)) } else 
                                              { layer_dense(tempmodel , units = hyperparameters[i,1], activation = hyperparameters[i,4], 
                                                            input_shape = c(how_many_features)) }
   if(hyperparameters[i,7]>0) { layer_dropout(tempmodel , rate = hyperparameters[i,7]) }
   if(hyperparameters[i,2]>0) {
     if(hyperparameters[i,11]==T) { layer_dense(tempmodel , units = hyperparameters[i,2], activation = hyperparameters[i,5], 
-                                               kernel_regularizer = regularizer_l2(l = 0.001)) } else 
+                                               kernel_regularizer = regularizer_l1(l = 0.001)) } else 
                                                {layer_dense(tempmodel, units = hyperparameters[i,2], activation = hyperparameters[i,5]) } }
   
   if(hyperparameters[i,2]>0 & hyperparameters[i,8]>0) { layer_dropout(tempmodel, rate = hyperparameters[i,8]) }
   if(hyperparameters[i,3]>0) {
     if(hyperparameters[i,12]==T) { layer_dense(tempmodel, units = hyperparameters[i,3], activation = hyperparameters[i,6], 
-                                               kernel_regularizer = regularizer_l2(l = 0.001)) } else 
+                                               kernel_regularizer = regularizer_l1(l = 0.001)) } else 
                                                { layer_dense(tempmodel, units = hyperparameters[i,3], activation = hyperparameters[i,6])} }
   if(hyperparameters[i,3]>0 & hyperparameters[i,9]>0) { layer_dropout(rate = hyperparameters[i,9]) }
   layer_dense(tempmodel, units = 2, activation = 'softmax')
