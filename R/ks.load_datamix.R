@@ -10,11 +10,12 @@
 #' @param use_smote_not_rose Set TRUE for SMOTE instead of ROSE.
 #' @param smote_over Oversampling of minority class in SMOTE function (deterimes the number of cases in final dataset). See `perc.over` in `DMwR::SMOTE()`` function.
 #' @param replace_smote For some analyses we may want to replace imbalanced train dataset with balanced dataset. This saved coding time in some functions.
+#' @param selected_miRNAs If null - take all features staring with "hsa", if set - vector of feature names to be selected.
 #'
 #' @return The list of objects in the following order: train, test, valid, train_smoted, trainx, trainx_smoted. (trainx contains only the miRNA data without metadata)
 #'
 #' @export
-ks.load_datamix = function(wd = getwd(), smote_over = 10000, use_smote_not_rose = T, replace_smote = F) {
+ks.load_datamix = function(wd = getwd(), smote_over = 10000, use_smote_not_rose = T, replace_smote = F, selected_miRNAs = NULL) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))
@@ -37,10 +38,17 @@ ks.load_datamix = function(wd = getwd(), smote_over = 10000, use_smote_not_rose 
   suppressMessages(library(tidyverse))
   oldwd = getwd()
   setwd(wd)
+  
+  if(is.null(selected_miRNAs)) {
   train = dplyr::select(read.csv("mixed_train.csv", stringsAsFactors = F), starts_with("hsa"), Class)
-
   test = dplyr::select(read.csv("mixed_test.csv", stringsAsFactors = F), starts_with("hsa"), Class)
-  valid = dplyr::select(read.csv("mixed_valid.csv", stringsAsFactors = F), starts_with("hsa"), Class)
+  valid = dplyr::select(read.csv("mixed_valid.csv", stringsAsFactors = F), starts_with("hsa"), Class) } else {
+    temp = c(selected_miRNAs, "Class")
+    train = dplyr::select(read.csv("mixed_train.csv", stringsAsFactors = F), temp)
+    test = dplyr::select(read.csv("mixed_test.csv", stringsAsFactors = F), temp)
+    valid = dplyr::select(read.csv("mixed_valid.csv", stringsAsFactors = F), temp, Class)
+  }
+  
   train$Class = factor(train$Class, levels = c("Control","Cancer"))
   test$Class = factor(test$Class, levels = c("Control","Cancer"))
   valid$Class = factor(valid$Class, levels = c("Control","Cancer"))
@@ -74,8 +82,14 @@ ks.load_datamix = function(wd = getwd(), smote_over = 10000, use_smote_not_rose 
 
   if (replace_smote == T) { train = train_smoted }
 
-  trainx = dplyr::select(train, starts_with("hsa"))
-  trainx_smoted = dplyr::select(train_smoted, starts_with("hsa"))
+  if(is.null(selected_miRNAs)) {
+      trainx = dplyr::select(train, starts_with("hsa"))
+      trainx_smoted = dplyr::select(train_smoted, starts_with("hsa"))
+  } else {
+      trainx = dplyr::select(train, selected_miRNAs)
+      trainx_smoted = dplyr::select(train_smoted, selected_miRNAs)    
+  }
+  
   setwd(oldwd)
   return(list(train, test, valid, train_smoted, trainx, trainx_smoted))
 }
