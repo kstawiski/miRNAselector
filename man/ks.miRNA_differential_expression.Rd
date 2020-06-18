@@ -4,12 +4,14 @@
 \alias{ks.miRNA_differential_expression}
 \title{ks.miRNA_differential_expression}
 \usage{
-ks.miRNA_differential_expression(ttpm_pofiltrze, klasy)
+ks.miRNA_differential_expression(ttpm_pofiltrze, klasy, mode = "logtpm")
 }
 \arguments{
 \item{ttpm_pofiltrze}{matrix of log-transformed TPM-normalized miRNAs counts with miRNAs placed in `ttpm` design (i.e. columns and cases placed as rows)}
 
 \item{klasy}{vector describing label for each case. It should contain only "Cancer" and "Control" labeles!!!!}
+
+\item{mode}{use 'logtpm' for log(TPM) data or 'deltact' for qPCR deltaCt values. This parameters sets how the fold-change is calculated.}
 }
 \value{
 Data frame with results.

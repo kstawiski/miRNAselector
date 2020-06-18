@@ -8,7 +8,8 @@ ks.load_datamix(
   wd = getwd(),
   smote_over = 10000,
   use_smote_not_rose = T,
-  replace_smote = F
+  replace_smote = F,
+  selected_miRNAs = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ ks.load_datamix(
 \item{use_smote_not_rose}{Set TRUE for SMOTE instead of ROSE.}
 
 \item{replace_smote}{For some analyses we may want to replace imbalanced train dataset with balanced dataset. This saved coding time in some functions.}
+
+\item{selected_miRNAs}{If null - take all features staring with "hsa", if set - vector of feature names to be selected.}
 }
 \value{
 The list of objects in the following order: train, test, valid, train_smoted, trainx, trainx_smoted. (trainx contains only the miRNA data without metadata)

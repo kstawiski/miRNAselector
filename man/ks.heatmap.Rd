@@ -8,7 +8,11 @@ ks.heatmap(
   x = trainx[, 1:10],
   rlab = data.frame(Batch = dane$Batch, Class = dane$Class),
   zscore = F,
-  margins = c(10, 10)
+  margins = c(10, 10),
+  expression_name = "log10(TPM)",
+  trim_min = NULL,
+  trim_max = NULL,
+  centered_on = NULL
 )
 }
 \arguments{
@@ -17,6 +21,14 @@ ks.heatmap(
 \item{rlab}{Data frame of factors to be marked on heatmap (like batch or class). Maximum of 2 levels for every variable is supported.}
 
 \item{zscore}{Whether to z-score values before clustering and plotting.}
+
+\item{expression_name}{What should be written on the plot?}
+
+\item{trim_min}{Trim lower than.. Useful for setting appropriate scale}
+
+\item{trim_max}{Trim greater than.. Useful for setting appropriate scale}
+
+\item{centered_on}{On which value should the scale be centered? If null - median will be used.}
 }
 \value{
 Heatmap.
