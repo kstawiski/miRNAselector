@@ -18,7 +18,7 @@ packages = c("remotes","devtools","parallel","rlang","ps","roxygen2", "plotly", 
                        "rpart", "party", "mgcv", "GDCRNATools", "rJava", "cutpointr", "HTqPCR", "nondetects",
                        "imputeMissings", "visdat", "naniar", "stringr", "R.utils", "TCGAbiolinks", "GDCRNATools",
                        "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
-                       "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis","funModeling")
+                       "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis","funModeling", "mnormt")
 
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
@@ -56,5 +56,5 @@ if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_g
 if(grepl("64", Sys.info()[["machine"]], fixed = TRUE) && !keras::is_keras_available()) { message("Keras is not installed. Please run keras::install_keras() later.") }
 
 # miRNAselector
-if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector") }
+if("miRNAselector" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("kstawiski/miRNAselector", upgrade = "never") }
 message("OK! miRNAselector is installed correctly!")

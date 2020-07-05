@@ -51,7 +51,7 @@ ks.heatmap.3 <- function(x,
                          lwid = NULL,
                          ColSideColorsSize = 1,
                          RowSideColorsSize = 1,
-                         KeyValueName="Value",...){
+                         KeyValueName="Value",assigcode=assigcode,assigcolor=assigcolor,legend_pos=legend_pos, ...){
 
   invalid <- function (x) {
     if (missing(x) || is.null(x) || length(x) == 0)
@@ -265,6 +265,7 @@ ks.heatmap.3 <- function(x,
 
   layout(lmat, widths = lwid, heights = lhei, respect = FALSE)
 
+
   if (!missing(RowSideColors)) {
     if (!is.matrix(RowSideColors)){
       par(mar = c(margins[1], 0, 0, 0.5))
@@ -312,6 +313,9 @@ ks.heatmap.3 <- function(x,
     }
   }
 
+
+
+
   par(mar = c(margins[1], 0, 0, margins[2]))
   x <- t(x)
   cellnote <- t(cellnote)
@@ -324,6 +328,7 @@ ks.heatmap.3 <- function(x,
   }
   else iy <- 1:nr
   image(1:nc, 1:nr, x, xlim = 0.5 + c(0, nc), ylim = 0.5 + c(0, nr), axes = FALSE, xlab = "", ylab = "", col = col, breaks = breaks, ...)
+
   retval$carpet <- x
   if (exists("ddr"))
     retval$rowDendrogram <- ddr
@@ -335,13 +340,16 @@ ks.heatmap.3 <- function(x,
     mmat <- ifelse(is.na(x), 1, NA)
     image(1:nc, 1:nr, mmat, axes = FALSE, xlab = "", ylab = "",
           col = na.color, add = TRUE)
+
   }
   axis(1, 1:nc, labels = labCol, las = 2, line = -0.5, tick = 0,
        cex.axis = cexCol)
+
   if (!is.null(xlab))
     mtext(xlab, side = 1, line = margins[1] - 1.25)
   axis(4, iy, labels = labRow, las = 2, line = -0.5, tick = 0,
        cex.axis = cexRow)
+
   if (!is.null(ylab))
     mtext(ylab, side = 4, line = margins[2] - 1.25)
   if (!missing(add.expr))
@@ -409,6 +417,9 @@ ks.heatmap.3 <- function(x,
       max.raw <- max(x, na.rm = TRUE)
     }
 
+    # cool1
+    legend(legend_pos, assigcode, fill=assigcolor, horiz=F, bg="transparent", cex=0.9, box.lty=0)
+
     z <- seq(min.raw, max.raw, length = length(col))
     image(z = matrix(z, ncol = 1), col = col, breaks = tmpbreaks,
           xaxt = "n", yaxt = "n")
@@ -450,5 +461,6 @@ ks.heatmap.3 <- function(x,
   else plot.new()
   retval$colorTable <- data.frame(low = retval$breaks[-length(retval$breaks)],
                                   high = retval$breaks[-1], color = retval$col)
+  # legend("topright", assigcode, fill=assigcolor, horiz=F, bg="transparent", cex=0.5)
   invisible(retval)
 }

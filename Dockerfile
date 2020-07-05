@@ -18,20 +18,17 @@ RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
 # Keras, tensorflow, jupyter
 RUN apt-get update --fix-missing && \
     apt-get install -y apt-utils sshfs cifs-utils libffi-dev libssl-dev wget bzip2 ca-certificates build-essential cmake git unzip pkg-config libopenblas-dev liblapack-dev libhdf5-serial-dev libglib2.0-0 libxext6 libsm6 libxrender1 gfortran-7 gcc-7 && apt-get clean && \
-    conda update --all && conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow-mkl keras jupyter jupytext numpy pandas r r-devtools r-essentials r-biocmanager r-remotes r-keras r-rjava pandoc r-reticulate r-magick r-xml r-rgl opencv pkgconfig && echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
+    conda update --all && conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow-mkl keras jupyter jupytext numpy pandas r pandoc r-rgl opencv pkgconfig && echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
 
 # R:
 # RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -sc)-cran40/" && apt update && apt -y dist-upgrade && apt install -y r-base-dev texlive-full texlive-xetex ttf-mscorefonts-installer r-recommended build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk && Rscript -e "install.packages(c('remotes','devtools','BiocManager','keras'))"
-
-# MXNET:
-RUN pip install --upgrade cmake && cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git && cd /incubator-mxnet && mkdir build && cd build && cmake -DUSE_CUDA=OFF -DUSE_MKL_IF_AVAILABLE=ON -DUSE_MKLDNN=OFF -DUSE_OPENMP=ON -DUSE_OPENCV=ON .. && make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas && make install && cp -a . .. && cp -a . ../lib && cd /incubator-mxnet/ && make -f R-package/Makefile rpkg
 
 # Setup R env
 COPY vignettes/setup.R /
 COPY docker/register_jupyter.R /
 COPY docker/keras.R /
 
-RUN Rscript -e "chooseCRANmirror(ind=1)" && Rscript /setup.R && echo 'root:biostat' | chpasswd 
+RUN Rscript -e "chooseCRANmirror(ind=1); update.packages(ask = F);" && Rscript /setup.R && echo 'root:biostat' | chpasswd 
 RUN Rscript /register_jupyter.R && jupyter notebook --generate-config && mkdir /miRNAselector/ 
 
 # Setup keras in R env
@@ -51,6 +48,9 @@ COPY docker/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 # Extentions
 RUN conda install -c conda-forge jupyter_contrib_nbextensions nbresuse && jupyter contrib nbextension install --sys-prefix && jupyter nbextension enable varInspector/main && jupyter nbextension install --py nbresuse --sys-prefix && jupyter nbextension enable --py nbresuse --sys-prefix && conda update --all
+
+# MXNET:
+RUN pip install --upgrade cmake && cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git && cd /incubator-mxnet && mkdir build && cd build && cmake -DUSE_CUDA=OFF -DUSE_MKL_IF_AVAILABLE=ON -DUSE_MKLDNN=OFF -DUSE_OPENMP=ON -DUSE_OPENCV=ON .. && make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas && make install && cp -a . .. && cp -a . ../lib && cd /incubator-mxnet/ && make -f R-package/Makefile rpkg
 
 EXPOSE 8888
 EXPOSE 80

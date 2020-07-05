@@ -9,11 +9,12 @@
 #' @param trim_min Trim lower than.. Useful for setting appropriate scale
 #' @param trim_max Trim greater than.. Useful for setting appropriate scale
 #' @param centered_on On which value should the scale be centered? If null - median will be used.
+#' @param legend_pos Where should the legend should be? Default: topright
 #'
 #' @return Heatmap.
 #'
 #' @export
-ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL, centered_on = NULL) {
+ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL, centered_on = NULL, legend_pos = "topright", ...) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))
@@ -53,22 +54,22 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
   #levels(rlab$Class) = c("red","green") # red - cancer, green - control
   x2 = as.matrix(x)
   colnames(x2) = gsub("\\.","-", colnames(x2))
-  
-  
-  
+
+
+
   if(zscore == F) {
     if(!is.null(trim_min)) { x2[x2<trim_min] = trim_min }
     if(!is.null(trim_max)) { x2[x2>trim_max] = trim_max }
-    
-    
+
+
     if(!is.null(centered_on)) { brks<-ks.diverge_color(x2, centeredOn = centered_on) }
     else { brks<-ks.diverge_color(x2, centeredOn = median(x2)) }
-    
-    
-    
+
+
+
     # colors = seq(min(x2), max(x2), by = 0.01)
     # my_palette <- colorRampPalette(c("blue", "white", "red"))(n = length(colors) - 1)
-    
+
     rlab = as.matrix(rlab)
     ks.heatmap.3(x2, hclustfun=ks.myclust, distfun=ks.mydist,
                  RowSideColors=t(rlab),
@@ -76,28 +77,26 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
                  KeyValueName=expression_name,
                  symm=F,symkey=F,symbreaks=T, scale="none",
                  col=as.character(brks[[2]]),
-                 breaks=as.numeric(brks[[1]]$brks),
+                 breaks=as.numeric(brks[[1]]$brks), assigcode=assigcode, assigcolor=assigcolor, legend_pos = legend_pos, ...
                  #legend = T
                  #,scale="column"
     )
-    legend("topright",
-           assigcode, fill=assigcolor, horiz=F, bg="transparent", cex=0.5)
   } else {
     x3 = x2
     for(i in 1:ncol(x2)) {
       x3[,i] = scale(x2[,i])
     }
-    
-    
+
+
     if(!is.null(trim_min)) { x3[x3<trim_min] = trim_min }
     if(!is.null(trim_max)) { x3[x3>trim_max] = trim_max }
-    
+
     if(!is.null(centered_on)) { brks<-ks.diverge_color(x3, centeredOn = centered_on) }
     else { brks<-ks.diverge_color(x3, centeredOn = median(x3)) }
-    
+
     # colors = seq(min(x2), max(x2), by = 0.01)
     # my_palette <- colorRampPalette(c("blue", "white", "red"))(n = length(colors) - 1)
-    
+
     rlab = as.matrix(rlab)
     ks.heatmap.3(x3, hclustfun=ks.myclust, distfun=ks.mydist,
                  RowSideColors=t(rlab),
@@ -105,11 +104,9 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
                  KeyValueName=paste0("Z-score ",expression_name),
                  symm=F,symkey=F,symbreaks=T, scale="none",
                  col=as.character(brks[[2]]),
-                 breaks=as.numeric(brks[[1]]$brks),
+                 breaks=as.numeric(brks[[1]]$brks), assigcode=assigcode, assigcolor=assigcolor, legend_pos = legend_pos, ...
                  #legend = T
                  #,scale="column"
     )
-    legend("topright",
-           assigcode, fill=assigcolor, horiz=F, bg="transparent", cex=0.5)
   }
 }
