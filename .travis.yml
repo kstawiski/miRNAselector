@@ -4,7 +4,7 @@ language: r
 
 before_install:
   - sudo apt-get update && sudo apt-get -y install libxml2-dev libmagick++-dev libxml2-dev cifs-utils libffi-dev libssl-dev libcurl4-gnutls-dev libxml2-dev libssl-dev default-jre default-jdk wget bzip2 ca-certificates build-essential cmake git unzip pkg-config libopenblas-dev liblapack-dev libhdf5-serial-dev libglib2.0-0 libxext6 libsm6 libxrender1 && sudo apt-get install -y mc apt-transport-https screen build-essential libxml2-dev xorg ca-certificates cmake curl git libatlas-base-dev libcurl4-openssl-dev libjemalloc-dev liblapack-dev libopenblas-dev libopencv-dev libzmq3-dev software-properties-common sudo unzip wget 
-  - Rscript -e 'remotes::install_cran("pkgdown")'
+  - Rscript -e 'install.packages(c("devtools","remotes")); remotes::install_cran("pkgdown")'
   - Rscript -e 'devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")'
 
 before_script:
