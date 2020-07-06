@@ -3,7 +3,6 @@
 language: r
 cache: packages
 
-
 r_packages:
     - R6
     - assertthat
@@ -17,6 +16,7 @@ r_packages:
     - remotes
 
 before_cache:
+  - sudo apt-get -y install libxml2-dev
   - Rscript -e 'remotes::install_cran("pkgdown")'
   - Rscript -e 'devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")'
 
