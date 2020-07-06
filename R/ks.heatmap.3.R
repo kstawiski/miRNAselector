@@ -51,7 +51,7 @@ ks.heatmap.3 <- function(x,
                          lwid = NULL,
                          ColSideColorsSize = 1,
                          RowSideColorsSize = 1,
-                         KeyValueName="Value",assigcode=assigcode,assigcolor=assigcolor,legend_pos=legend_pos, ...){
+                         KeyValueName="Value",assigcode=assigcode,assigcolor=assigcolor,legend_pos=legend_pos,legend_cex=legend_cex, ...) {
 
   invalid <- function (x) {
     if (missing(x) || is.null(x) || length(x) == 0)
@@ -418,7 +418,8 @@ ks.heatmap.3 <- function(x,
     }
 
     # cool1
-    legend(legend_pos, assigcode, fill=assigcolor, horiz=F, bg="transparent", cex=0.9, box.lty=0)
+    if(!is.null(legend_pos)) {
+    legend(legend_pos, assigcode, fill=assigcolor, horiz=F, bg="transparent", cex=legend_cex, box.lty=0) }
 
     z <- seq(min.raw, max.raw, length = length(col))
     image(z = matrix(z, ncol = 1), col = col, breaks = tmpbreaks,

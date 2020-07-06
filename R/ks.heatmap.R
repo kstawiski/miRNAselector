@@ -10,11 +10,12 @@
 #' @param trim_max Trim greater than.. Useful for setting appropriate scale
 #' @param centered_on On which value should the scale be centered? If null - median will be used.
 #' @param legend_pos Where should the legend should be? Default: topright
+#' @param legend_cex How large should the legend should be? Default: 0.8
 #'
 #' @return Heatmap.
 #'
 #' @export
-ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL, centered_on = NULL, legend_pos = "topright", ...) {
+ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, Class = dane$Class), zscore = F, margins = c(10,10), expression_name = "log10(TPM)", trim_min = NULL, trim_max = NULL, centered_on = NULL, legend_pos = "topright", legend_cex = 0.8, ...) {
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))
@@ -77,7 +78,7 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
                  KeyValueName=expression_name,
                  symm=F,symkey=F,symbreaks=T, scale="none",
                  col=as.character(brks[[2]]),
-                 breaks=as.numeric(brks[[1]]$brks), assigcode=assigcode, assigcolor=assigcolor, legend_pos = legend_pos, ...
+                 breaks=as.numeric(brks[[1]]$brks), assigcode=assigcode, assigcolor=assigcolor, legend_pos = legend_pos, legend_cex = legend_cex, ...
                  #legend = T
                  #,scale="column"
     )
@@ -104,7 +105,7 @@ ks.heatmap = function(x = trainx[,1:10], rlab = data.frame(Batch = dane$Batch, C
                  KeyValueName=paste0("Z-score ",expression_name),
                  symm=F,symkey=F,symbreaks=T, scale="none",
                  col=as.character(brks[[2]]),
-                 breaks=as.numeric(brks[[1]]$brks), assigcode=assigcode, assigcolor=assigcolor, legend_pos = legend_pos, ...
+                 breaks=as.numeric(brks[[1]]$brks), assigcode=assigcode, assigcolor=assigcolor, legend_pos = legend_pos, legend_cex = legend_cex, ...
                  #legend = T
                  #,scale="column"
     )
