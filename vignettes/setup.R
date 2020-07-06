@@ -28,6 +28,9 @@ library(remotes)
 # Paczki z githuba
 if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
 if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
+if("mnormt" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("cran/mnormt") }
+if("purrrogress" %in% rownames(installed.packages()) == FALSE) {  remotes::install_github("halpo/purrrogress") } 
+
 
 # tryCatch(
 #         {
