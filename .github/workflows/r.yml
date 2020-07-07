@@ -5,8 +5,8 @@ on:
 name: R package
 
 jobs:
-  pkgdown:
-    runs-on: macOS-latest
+  Rpackage:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: s-weigand/setup-conda@v1
