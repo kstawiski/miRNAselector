@@ -201,17 +201,20 @@ Correlation matrix (correlation coef.): [Download result_preprocessing_correlati
 
 Details: [Download result_preprocessing_correlationmatrix_details.csv](/e/files/result_preprocessing_correlationmatrix_details.csv)
 
-## Metadata
-
-```{r metadata}
-ks.table(psych::describe(metadane))
-fwrite(psych::describe(metadane), "result_preprocessing_metadata.csv")
-```
-[Download result_preprocessing_metadata.csv](/e/files/result_preprocessing_metadata.csv)
-
-
 # Analysis (whole dataset)
 
+Differential expression:
+
+```{r wholeset-de}
+if(config['input_format'] == "transformed" | config['input_format'] == "counts") {
+DE = ks.miRNA_differential_expression(datasetx, metadane$Class, mode = "logtpm")
+}
+if(config['input_format'] == "deltact") {
+DE = ks.miRNA_differential_expression(datasetx, metadane$Class, mode = "deltact")
+}
+fwrite(DE, "result_preprocessing_wholedataset_DE.csv")
+ks.table(DE)
+```
 
 
 # Prepare split
@@ -219,10 +222,11 @@ fwrite(psych::describe(metadane), "result_preprocessing_metadata.csv")
 Splitting the dataset to training, testing and validation datasets.
 
 ```{r prepare-split}
-mixed = ks.prepare_split(metadane = metadane, ttpm = datasetx, train_proc = config[["training_split"]])
+mixed = ks.prepare_split(metadane = metadane, ttpm = datasetx, train_proc = as.numeric(config[["training_split"]]))
 ```
 
 ## Comparison of splits
+
 
 
 # Closing credits 

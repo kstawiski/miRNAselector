@@ -193,17 +193,19 @@ echo $form->input_select('correct_names', 'Correct human miRNA names (correct al
 if(file_get_contents('/miRNAselector/var_seemslikecounts.txt') == "TRUE") {
     $options = array(
         'counts'    => 'Read counts (require transformation to log10(TPM))',
-        'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)',
+        'transformed'    => 'Already normalized and log10-transformed (e.g. log(TPM))',
+        'deltact' => 'Already normalized (e.g. deltaCt)'
       );
       echo $form->input_select('input_format', 'Input features format:','','','','','counts',$options);
 } else {
     $options = array(
-        'transformed'    => 'Already normalized (e.g. log(TPM), deltaCt)'
+        'transformed'    => 'Already normalized and log-transormed (e.g. log(TPM))',
+        'deltact' => 'Already normalized (e.g. deltaCt)'
       );
       echo $form->input_select('input_format', 'Input features format:','','','','','transformed',$options);
 }
 
-echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized library sizes are not used. The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p>";
+echo "<p>If you choose counts - the counts will be transformed to TPM (counts/transcripts per milion, normalized library sizes are not used. The value 0.001 is later added to TPM values and those are later log10-transformed, meaning that value -3 is considered as no expression.</p><p>If you fail to select if your data is already log10-transormed you may end up with incorrect FC results.</p>";
 
 // Korekcja
 if(file_get_contents('/miRNAselector/var_seemslikecounts.txt') == "TRUE") {
