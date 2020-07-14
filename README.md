@@ -2,7 +2,7 @@
 
 # miRNAselector
 
-![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R package and environment](https://github.com/kstawiski/miRNAselector/workflows/R%20package%20and%20environment/badge.svg)
+![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R package](https://github.com/kstawiski/miRNAselector/workflows/R%20package/badge.svg)
 
 Environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
