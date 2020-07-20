@@ -15,6 +15,7 @@ VignetteBuilder: knitr
 StagedInstall: yes
 Imports: 
     dplyr,
+    snow,
     remotes,
     devtools,
     ellipsis,

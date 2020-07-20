@@ -19,5 +19,15 @@ jobs:
           Rscript -e 'update.packages(ask = F); install.packages(c("devtools","remotes")); remotes::install_cran("pkgdown");'
           Rscript -e 'devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")'
 
+      - name: Build package
+        run: |
+          R CMD build .
+          mv miRNAselector*.tar.gz miRNAselector.tar.gz
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: R-package
+          path: miRNAselector.tar.gz
+          
       - name: Install package
         run: R CMD INSTALL .
