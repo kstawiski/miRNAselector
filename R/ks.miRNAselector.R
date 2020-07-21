@@ -778,8 +778,8 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   #use_python("/anaconda3/bin/python", required = T)
 
 
-  conda_list()
-  use_condaenv("tensorflow", required = T)
+  # conda_list()
+  # use_condaenv("tensorflow", required = T)
   py_config()
 
   dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
