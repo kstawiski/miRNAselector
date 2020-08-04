@@ -63,6 +63,123 @@ function matematyczny_input($ma) {
 
 switch($_GET['type'])
 {
+    
+    case "new_analysis":
+        $analysis_id = hash("sha1", uniqid("miRNAselector",TRUE));
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $mimes = array('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel','text/plain','text/csv','text/tsv');
+        if(in_array($_FILES['fileToUpload']['type'],$mimes)) {
+            $uploadOk = 1;
+        } else {
+        $uploadOk = 0; $msg .= "Your upload file is not a correct csv-formatted oraz Excel file. Please try again."; $msg = urlencode($msg); header("Location: /start.php?msg=" . $msg); die();
+        }
+        
+        $file_extension = explode('.',$_FILES["fileToUpload"]["name"]);
+        $file_extension = strtolower(end($file_extension));
+        $accepted_formate = array('csv');
+        if(in_array($file_extension,$accepted_formate))
+        {
+            $upload_type = "csv";
+            $target_file = $target_dir . "data.csv";
+            $uploadOk = 1;
+        }
+
+        $accepted_formate = array('xlsx');
+        if(in_array($file_extension,$accepted_formate))
+        {
+            $upload_type = "xlsx";
+            $target_file = $target_dir . "data.xlsx";
+            $uploadOk = 1;
+        }
+
+        $accepted_formate = array('csv','xlsx');
+        if(!in_array($file_extension,$accepted_formate))
+        {
+            $uploadOk = 0; $msg .= "The file has to have xlsx or csv extension. "; $msg = urlencode($msg); header("Location: /start.php?msg=" . $msg); die();
+        }
+        
+            // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        $msg = $msg . "Your file was not uploaded. Please try again. "; header("Location: /start.php?msg=" . $msg); die();
+    // if everything is ok, try to upload file
+    } else {
+        exec("mkdir " . $target_dir);
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        $msg = "The file `". basename( $_FILES["fileToUpload"]["name"]). "` has been uploaded. It was saved in the main project directory. You can continue with formal checking of file and starting the pipeline.";
+        
+        exec("cp /miRNAselector/miRNAselector/docker/1_formalcheckcsv.R " . $target_dir . "formalcheckcsv.R");
+        exec("cd " . $target_dir . " && Rscript formalcheckcsv.R 2>&1 | tee -a " . $target_dir . "initial_check.txt");
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    } else {
+        $msg = $msg . "There was an error uploading your file. ";
+        header("Location: /start.php?msg=" . $msg); die();
+    }
+    }
+        
+        break;
+    
+
+        case "analysis_de":
+            session_start();
+            $target_dir = "/miRNAselector/" . $_SESSION["analysis_id"] . "/";
+            file_put_contents($target_dir . 'var_demode.txt', $_POST['demode']);
+            exec("cp /miRNAselector/miRNAselector/templetes/DE.rmd " . $target_dir . "DE.rmd");
+            exec("cd " . $target_dir . " && Rscript -e \"knitr::knit2html('DE.rmd')\" 2>&1 | tee -a " . $target_dir . "log.txt");
+            header("Location: /analysis.php?id=" . $_SESSION["analysis_id"]); die();
+        break;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // STARE FUNKCJE:
     case "upload":
         $target_dir = "/miRNAselector/";
         $target_file = $target_dir . "data.csv";

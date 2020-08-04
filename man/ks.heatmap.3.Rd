@@ -55,6 +55,10 @@ ks.heatmap.3(
   ColSideColorsSize = 1,
   RowSideColorsSize = 1,
   KeyValueName = "Value",
+  assigcode = assigcode,
+  assigcolor = assigcolor,
+  legend_pos = legend_pos,
+  legend_cex = legend_cex,
   ...
 )
 }

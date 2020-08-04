@@ -12,7 +12,10 @@ ks.heatmap(
   expression_name = "log10(TPM)",
   trim_min = NULL,
   trim_max = NULL,
-  centered_on = NULL
+  centered_on = NULL,
+  legend_pos = "topright",
+  legend_cex = 0.8,
+  ...
 )
 }
 \arguments{
@@ -29,6 +32,10 @@ ks.heatmap(
 \item{trim_max}{Trim greater than.. Useful for setting appropriate scale}
 
 \item{centered_on}{On which value should the scale be centered? If null - median will be used.}
+
+\item{legend_pos}{Where should the legend should be? Default: topright}
+
+\item{legend_cex}{How large should the legend should be? Default: 0.8}
 }
 \value{
 Heatmap.
