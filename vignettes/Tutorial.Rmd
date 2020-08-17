@@ -594,3 +594,10 @@ unlink("temp", recursive=TRUE)
 unlink("models", recursive=TRUE)
 ```
 
+
+# Multivariate
+
+```{r}
+daneDFS = data.table::fread("daneDFS.csv")
+```
+

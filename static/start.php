@@ -135,6 +135,13 @@
                     <hr>
                     <p><b>Upload the file for the analysis:</b></p>
                     <form action="process.php?type=new_analysis" method="post" enctype="multipart/form-data">
+                        <p>Type of expression data:
+                        <select name="type" id="type">
+                            <option value="logtpm">Log10-transformed values (e.g. logTPM from NGS experiments)</option>
+                            <option value="deltact">Crude values (e.g. deltaCt values from qPCR analysis)</option>
+                        </select>
+                        </p>
+                        
                         <p>Select <code>.csv</code> (comma-seperated values) or <code>.xlsx</code> (Microsoft Excel file) file to start the analysis:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
 
