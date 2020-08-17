@@ -21,3 +21,7 @@ jobs:
           
       - name: Install package
         run: R CMD INSTALL .
+
+      - name: Check loading
+        run: |
+          Rscript -e 'library(miRNAselector); sessionInfo();'
