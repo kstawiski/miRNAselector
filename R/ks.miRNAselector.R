@@ -34,6 +34,7 @@
 #' @param conda_path Patch to "conda" bindary used for executing python scripts.
 #' @param debug Gives additional debug information (saves .rdata after feature selection is completed, prints formulas to log)
 #' @param timeout_sec Timeout after the method is terminated if not finished. It may be useful to keep the long methods limited, not to wait ethernity for the results.
+#' @param type Parameter 'mode' forwarded to ks.miRNA_differential_expression which is essential in many feature selection methods. Note that if 'var_type.txt' file exists in the working directory it is superior to the value set directly in function - as designed for GUI. Please refer to ks.miRNA_differential_expression manual to understand how 'mode' works.
 #'
 #' @return The list of selected formulas. Note that, due to purpose of this package `ks.merge_formulas` may be a better option to get the output of processes run by this function.
 #' @examples
@@ -64,7 +65,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
                             max_iterations = 10, code_path = system.file("extdata", "", package = "miRNAselector"),
                             register_parallel = T, clx = NULL, stamp = as.numeric(Sys.time()),
                             prefer_no_features = 11, conda_path = "/home/konrad/anaconda3/bin/conda", debug = F,
-                            timeout_sec = 172800) {
+                            timeout_sec = 172800, type = "deltact") {
 
   oldwd = getwd()
   setwd(wd)
@@ -122,7 +123,8 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   }
 
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Standard DE...")
-  wyniki = ks.miRNA_differential_expression(trainx, train$Class)
+  if(file.exists("var_type.txt")) { type = readLines("var_type.txt", warn = F) } 
+  wyniki = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
   istotne = filter(wyniki, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
   istotne_top = wyniki %>% arrange(`p-value BH`) %>% head(prefer_no_features)
   istotne_topBonf = wyniki %>% arrange(`p-value Bonferroni`) %>% head(prefer_no_features)
@@ -138,7 +140,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   train_sig_smoted$Class = factor(train_sig_smoted$Class, levels = c("Control","Cancer"))
   trainx_sig_smoted = dplyr::select(train_sig_smoted, starts_with("hsa"))
 
-  wyniki_smoted = ks.miRNA_differential_expression(trainx_smoted, train_smoted$Class)
+  wyniki_smoted = ks.miRNA_differential_expression(trainx_smoted, train_smoted$Class, mode = type)
   istotne_smoted = filter(wyniki_smoted, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
   istotne_top_smoted = wyniki_smoted %>% arrange(`p-value BH`) %>% head(prefer_no_features)
   istotne_topBonf_smoted = wyniki_smoted %>% arrange(`p-value Bonferroni`) %>% head(prefer_no_features)
@@ -813,7 +815,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   out <- tryCatch(
     {
       setwd(paste0(code_path,"wx/DearWXpub/src/"))
-      system(paste0(conda_path," activate base"))
+      # system(paste0(conda_path," activate base"))
       py_run_file("wx_konsta.py", local = T)
 
       np <- import("numpy")
@@ -1032,7 +1034,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     }
     formulas[["Mystepwise_glm_binomial"]] = ks.create_miRNA_formula(colnames(trainx)[wybrane])
 
-    wyniki = ks.miRNA_differential_expression(trainx, train$Class)
+    wyniki = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
     istotne = filter(wyniki, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
 
     temp = capture.output(My.stepwise.glm(Y = "Class", as.character(istotne$miR), data = train, sle = 0.05, sls = 0.05, myfamily = "binomial"))
@@ -1076,7 +1078,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     }
     formulas[["Mystepwise_glm_binomialSMOTE"]] = ks.create_miRNA_formula(colnames(trainx_smoted)[wybrane])
 
-    wyniki = ks.miRNA_differential_expression(trainx, train$Class)
+    wyniki = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
     istotne = filter(wyniki, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
 
     temp = capture.output(My.stepwise.glm(Y = "Class", as.character(istotne$miR), data = train_smoted, sle = 0.05, sls = 0.05, myfamily = "binomial"))
@@ -1111,7 +1113,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
     formulas[["stepAIC"]] = temp2$formula
 
-    wyniki = ks.miRNA_differential_expression(trainx, train$Class)
+    wyniki = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
     istotne = filter(wyniki, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
 
     train.sig = dplyr::select(train, as.character(istotne$miR), Class)
@@ -1140,7 +1142,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
     formulas[["stepAIC_SMOTE"]] = temp2$formula
 
-    wyniki = ks.miRNA_differential_expression(trainx, train$Class)
+    wyniki = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
     istotne = filter(wyniki, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
 
     train.sig = dplyr::select(train_smoted, as.character(istotne$miR), Class)
