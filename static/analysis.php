@@ -139,24 +139,66 @@ $_SESSION["analysis_id"]=$_GET['id'];
 <p><font size="1">Notes: <i>The viewer is limited to 100 columns and 1000 rows.</i></font></p></div>
             </div>
 
-            <div class="panel panel-warning">
-            <div class="panel-heading"><i class="fas fa-table"></i>&emsp;&emsp;Differential analysis</div>
+            <div class="panel panel-primary">
+            <div class="panel-heading"><i class="fas fa-chart-bar"></i>&emsp;&emsp;Exploratory analysis</div>
             <div class="panel-body">
-<?php if(file_exists($target_dir . "DE.html")) { echo file_get_contents($target_dir . "DE.html"); } else { ?>
-    <?php
-        $form = new Formr('bootstrap');
-        echo $form->form_open('','','process.php?type=analysis_de');
-        $options = array(
-            'logtpm'    => 'Normalized and log10-transformed (e.g. log(TPM))',
-            'deltact' => 'Normalized but not log10-tranformed (e.g. deltaCt)'
-          );
-        echo $form->input_select('demode', 'Differential analysis mode:','','','','','logtpm',$options);
-        
+<?php
+$images = glob($target_dir."exploratory_*.png");
+foreach($images as $image) {
+    $image3 = str_replace("/miRNAselector","/e/files", $image);
+    $image2 = str_replace("/miRNAselector","/e/view", $image);
+    echo '<a href="'.$image2.'" target="_blank" onclick="window.open(\''. $image2 . '\',\'popup\',\'width=600,height=600\'); return false;"><img src="'.$image3.'" width="49%" /></a>';
+}
+?>
+<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
+<table class="table">
 
-    ?>
+<tbody>
 
+<tr>
+<td>Training set:</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_train.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_train.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_train.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
 
-<?php } ?>
+<tr>
+<td>Testing set:</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_test.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_test.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_test.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Validation set:</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_valid.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_valid.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_valid.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Differential expression analysis (training set only):</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/DE_train.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/DE_train.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/DE_train.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Differential expression analysis (whole dataset):</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/DE_mixed.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/DE_mixed.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/DE_mixed.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Re-do the initial check and default exploratory analysis:</td>
+<td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R" class="btn btn-danger" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td>
+</tr>
+
+<tr>
+<td>Create your own analysis:</td>
+<td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/own_analysis.R" class="btn btn-danger" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/own_analysis.R','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td>
+</tr>
+
+</tbody>
+</table>
             </div>
 
         </div>

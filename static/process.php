@@ -107,10 +107,12 @@ switch($_GET['type'])
     // if everything is ok, try to upload file
     } else {
         exec("mkdir " . $target_dir);
+        file_put_contents($target_dir . '/var_type.txt', $_POST['type']);
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $msg = "The file `". basename( $_FILES["fileToUpload"]["name"]). "` has been uploaded. It was saved in the main project directory. You can continue with formal checking of file and starting the pipeline.";
-        file_put_contents('/miRNAselector/'. $target_dir . '/var_type.txt', $_POST['type']);
+       
         exec("cp /miRNAselector/miRNAselector/docker/1_formalcheckcsv.R " . $target_dir . "formalcheckcsv.R");
+        exec("cp /miRNAselector/miRNAselector/docker/own_analysis.R " . $target_dir . "own_analysis.R");
         exec("cd " . $target_dir . " && Rscript formalcheckcsv.R 2>&1 | tee -a " . $target_dir . "initial_check.txt");
         header("Location: /analysis.php?id=" . $analysis_id); die();
     } else {

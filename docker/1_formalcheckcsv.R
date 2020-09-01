@@ -1,3 +1,4 @@
+options(warn=-1)
 suppressMessages(suppressMessages(library(data.table)))
 suppressMessages(suppressMessages(library(dplyr)))
 writeLines("ERROR", "var_initcheck.txt", sep="")
@@ -45,9 +46,102 @@ if(sum(like_counts)/ncol(x)) { cat("\n✓ Feature values are positive integers. 
 }
 writeLines(as.character(positive), "var_seemslikecounts.txt", sep="")
 
+suppressMessages(library(miRNAselector))
+if("mix" %in% colnames(dane)) {
+    if(sum(which(dane$mix == 'train')) > 0) { 
+    cat(paste0("\n✓ Samples in training set: ", sum(which(dane$mix == 'train'))));
+    } else {
+        cat(paste0("\n✓ Samples in training set: ", sum(which(dane$mix == 'train'))));
+        stop("There are no samples in training set! Please fix the 'mix' variable. This variable should contain the assignment to 'train', 'test' and 'valid' groups.")
+    }
+    if(sum(which(dane$mix == 'test')) > 0) { 
+    cat(paste0("\n✓ Samples in test set: ", sum(which(dane$mix == 'test'))));
+    } else {
+        cat(paste0("\n✓ Samples in test set: ", sum(which(dane$mix == 'test'))));
+        stop("There are no samples in test set! Please fix the 'mix' variable. This variable should contain the assignment to 'train', 'test' and 'valid' groups.")
+    }
+    if(sum(which(dane$mix == 'valid')) > 0) { 
+    cat(paste0("\n✓ Samples in validation set: ", sum(which(dane$mix == 'valid'))));
+    } else {
+        cat(paste0("\n✓ Samples in validation set: ", sum(which(dane$mix == 'valid'))));
+        stop("There are no samples in validation set! Please fix the 'mix' variable. This variable should contain the assignment to 'train', 'test' and 'valid' groups.")
+    }
+    train = dplyr::filter(dane, mix == "train")
+    fwrite(train, "mixed_train.csv")
+    test = dplyr::filter(dane, mix == "test")
+    fwrite(test, "mixed_test.csv")
+    valid = dplyr::filter(dane, mix == "valid")
+    fwrite(valid, "mixed_valid.csv")
+    mixed = rbind(train,test,valid)
+    fwrite(mixed, "data_start.csv")
+    fwrite(mixed, "mixed.csv")
+} else {
+    cat("\n✓ The data is not splitted, i.e. doesn't have 'train', 'test' and 'valid' in 'mix' variable. We will perform data splitting (60% train, 20% test, 20% valid). ");
+    metadane = dplyr::select(dane, -starts_with("hsa"))
+    ttpm_pofiltrze = dplyr::select(dane, starts_with("hsa"))
+    mixed = ks.prepare_split(metadane = metadane, ttpm = ttpm_pofiltrze, train_proc = 0.6)
+    fwrite(mixed, "data_start.csv")
+    fwrite(mixed, "mixed.csv")
+}
+
+dane = ks.load_datamix(use_smote_not_rose = T)  # load mixed_*.csv files
+train = dane[[1]]
+test = dane[[2]]
+valid = dane[[3]]
+train_smoted = dane[[4]]
+trainx = dane[[5]]
+trainx_smoted = dane[[6]]  # get the objects from list to make the code more readable.
+cat("\n✓ All datasets can be loaded. SMOTE-based balancing can be performed. ");
+
+type = readLines("var_type.txt", warn = F)
+x_mix = dplyr::select(mixed, starts_with("hsa"))
+DE_mix = ks.miRNA_differential_expression(x_mix, mixed$Class, mode = type)
+fwrite(DE_mix, "DE_mixed.csv")
+DE_train = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
+fwrite(DE_train, "DE_train.csv")
+cat("\n✓ DE was performed for whole dataset (mixed) and for training datasets. ");
+
+png("exploratory_pca.png", width = 1170, height = 658)
+ks.PCA(trainx, train$Class)
+suppressMessages(graphics.off())
+png("exploratory_vulcano.png", width = 1170, height = 658)
+ks.vulcano_plot(DE_train$miR, DE = DE_train, only_label = DE_train$miR[DE_train$`p-value` < 0.05])
+suppressMessages(graphics.off())
+png("exploratory_heatmap.png", width = 1170, height = 658)
+ks.heatmap(x = trainx, rlab = data.frame(Class = train$Class), expression_name = "Expression")
+suppressMessages(graphics.off())
+png("exploratory_heatmapsig.png", width = 1170, height = 658)
+ks.heatmap(x = trainx[,DE_train$miR[DE_train$`p-value` < 0.05]], rlab = data.frame(Class = train$Class), expression_name = "Expression")
+suppressMessages(graphics.off())
+png("exploratory_heatmapz.png", width = 1170, height = 658)
+ks.heatmap(x = trainx, rlab = data.frame(Class = train$Class), expression_name = "Expression", zscore = T)
+suppressMessages(graphics.off())
+png("exploratory_heatmapzsig.png", width = 1170, height = 658)
+ks.heatmap(x = trainx[,DE_train$miR[DE_train$`p-value` < 0.05]], rlab = data.frame(Class = train$Class), expression_name = "Expression", zscore = T)
+suppressMessages(graphics.off())
+png("exploratory_heatmapmix.png", width = 1170, height = 658)
+ks.heatmap(x = dplyr::select(mixed, DE_train$miR[DE_train$`p-value` < 0.05]), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix), expression_name = "Expression")
+suppressMessages(graphics.off())
+png("exploratory_heatmapmixz.png", width = 1170, height = 658)
+ks.heatmap(x = dplyr::select(mixed, DE_train$miR[DE_train$`p-value` < 0.05]), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix), expression_name = "Expression", zscore = T)
+suppressMessages(graphics.off())
+if(batch){
+png("exploratory_pcab.png", width = 1170, height = 658)
+meta = paste0(mixed$Class, " - ", mixed$Batch)    
+ks.PCA(dplyr::select(mixed, starts_with("hsa")), meta)
+suppressMessages(graphics.off())
+png("exploratory_heatmapmixb.png", width = 1170, height = 658)
+ks.heatmap(x = dplyr::select(mixed, DE_train$miR[DE_train$`p-value` < 0.05]), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix, Batch = mixed$Batch), expression_name = "Expression")
+suppressMessages(graphics.off())
+png("exploratory_heatmapmixzb.png", width = 1170, height = 658)
+ks.heatmap(x = dplyr::select(mixed, DE_train$miR[DE_train$`p-value` < 0.05]), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix, Batch = mixed$Batch), expression_name = "Expression", zscore = T)
+suppressMessages(graphics.off())
+}
+cat("\n✓ PCA, vulcano plot and heatmaps were generated. ");
 
 if(!file.exists("data_start.csv")) { fwrite(dane, "data_start.csv") }
 # Out: czy missing,czy batch
 writeLines(as.character(batch), "var_batch.txt", sep="")
 writeLines(as.character(missing), "var_missing.txt", sep="")
 writeLines("OK", "var_initcheck.txt", sep="")
+cat("\n✓ The files are ready for further analysis. ");

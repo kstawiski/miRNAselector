@@ -124,7 +124,7 @@
                         <li>All variables which name starts with <code>hsa</code> will be considered a features of interest. Features of interest must be numeric and has no missing values.</li>
                         <li>All variables which name doesn't start with <code>hsa</code> will be considered a metadata.</li>
                         <li>The dataset has to have the variable <code>Class</code> with no missing data and with values expicitly encoded as <code>Cancer</code> or <code>Control</code> cases.</li>
-                        <li>The pipeline will perform data spltting in ratio 60% (training set) : 20% (testing set) : 20% (validation set). If you wish to enforce your way of spltting, the submitted file should have the variable named <code>Mix</code> with values <code>train</code>, <code>test</code> and <code>valid</code>.</li>
+                        <li>The pipeline will perform data spltting in ratio 60% (training set) : 20% (testing set) : 20% (validation set). If you wish to enforce your way of spltting, the submitted file should have the variable named <code>mix</code> with values <code>train</code>, <code>test</code> and <code>valid</code>.</li>
                     </ul>
                     </p>
                     <p><b>See exemplary files:</b>
