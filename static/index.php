@@ -3,7 +3,7 @@ exec("chown -R mirnaselector /miRNAselector");
 require_once 'class.formr.php';
 if (!file_exists('/miRNAselector/var_status.txt')) { file_put_contents('/miRNAselector/var_status.txt', "[0] INITIAL (UNCONFIGURED)"); } // Wyjściowy status.
 $status = file_get_contents('/miRNAselector/var_status.txt');
-
+$version = file_get_contents('/version.txt');
 $pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-task | awk '{print $2}'");
 if($pid != "") { header("Location: /inprogress.php"); }
 
@@ -398,7 +398,7 @@ echo $form->form_close();
     <hr />
     <footer class="footer">
         <div class="container">
-            <span class="text-muted">miRNAselector by Konrad Stawiski and Marcin Kaszkowiak&emsp;&emsp;&emsp;&emsp;<i
+            <span class="text-muted">miRNAselector (v1.0 build by <?php echo $version; ?>)&emsp;&emsp;&emsp;&emsp;<i
                     class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i
                     class="fas fa-globe-europe"></i>
                 <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i
