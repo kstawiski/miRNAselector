@@ -31,7 +31,9 @@ As docker image updates itself, it may take few minutes for the app to be operat
 
 ### R package:
 
-We recommend installing the package in own Anaconda enviorment:
+1. Installing the package in own Anaconda enviorment:
+
+Use e.g. `conda create -n mirnaselector` and `conda activate mirnaselector` to set up your enviorment. 
 
 ```
 conda update --all 
@@ -41,7 +43,9 @@ Rscript -e 'update.packages(ask = F); install.packages(c("devtools","remotes"));
 Rscript -e 'devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")'
 ```
 
-You can also setup the package in your own R enviroment.
+If you have compatible GPU you can consider changing `tensorflow` to `tensorflow-gpu` in `conda install` command.
+
+2. Setup the package in your own R enviroment.
 
 ```
 library("devtools") # if not installed, install via install.packages('devtools')
@@ -52,6 +56,8 @@ install_keras()
 library(miRNAselector)
 ks.setup()
 ```
+
+Please note that application of `mxnet` requires the `mxnet` R package which is not installed automatically. You can search for `mxnet R package` in Google to find the tutorial on package installation or just use our docker container.
 
 ## Footnote
 
@@ -64,6 +70,6 @@ Authors:
 - [Konrad Stawiski, M.D. (konrad@konsta.com.pl)](https://konsta.com.pl)
 - Marcin Kaszkowiak.
 
-For any troubleshouting use [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues).
+For any troubleshooting use [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues).
 
 Department of Biostatistics and Translational Medicine, Medical Univeristy of Lodz, Poland (https://biostat.umed.pl) 
