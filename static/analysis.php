@@ -377,6 +377,15 @@ foreach($images as $image) {
     <td>Description</td>
     <td>References</td>
 </tr>
+
+
+
+<tr>
+    <td>Options:</td>
+    <td colspan="2">
+        Timeout...
+    </td>
+</tr>
 </tbody>
 </form></table>
             </div>
