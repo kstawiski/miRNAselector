@@ -12,7 +12,7 @@ ks.log = function(message_to_log = "Working...", logfile = "temp.log") {
   timestamp = as.character(Sys.time())
   pid = as.character(R.utils::getBuiltinPid.GString())
   sink(logfile, append=TRUE)
-  to_write = paste0("\n[",timestamp," | host:", hostname," pid:", pid,"] ", message_to_log)
+  to_write = paste0("\n[",timestamp," | pid:", pid,"] ", message_to_log)
 cat(to_write)
 sink()
   message(to_write)

@@ -24,6 +24,97 @@ $_SESSION["analysis_id"]=$_GET['id'];
     <meta name="description" content="miRNAselector - a tool for selecting great miRNA biomarkers." />
     <meta name="author" content="Konrad Stawiski (konrad@konsta.com.pl)" />
     <link rel="stylesheet" href="css/starter-template.css" />
+    <style>
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+    </style>
     <script src="all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -201,8 +292,98 @@ foreach($images as $image) {
 </table>
             </div>
 
+            <div class="panel panel-primary">
+            <div class="panel-heading"><i class="fas fa-chart-bar"></i>&emsp;&emsp;Exploratory analysis</div>
+            <div class="panel-body">
+<?php
+$images = glob($target_dir."exploratory_*.png");
+foreach($images as $image) {
+    $image3 = str_replace("/miRNAselector","/e/files", $image);
+    $image2 = str_replace("/miRNAselector","/e/view", $image);
+    echo '<a href="'.$image2.'" target="_blank" onclick="window.open(\''. $image2 . '\',\'popup\',\'width=600,height=600\'); return false;"><img src="'.$image3.'" width="49%" /></a>';
+}
+?>
+<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
+<table class="table">
+
+<tbody>
+
+<tr>
+<td>Training set:</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_train.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_train.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_train.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Testing set:</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_test.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_test.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_test.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Validation set:</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_valid.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_valid.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_valid.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Differential expression analysis (training set only):</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/DE_train.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/DE_train.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/DE_train.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Differential expression analysis (whole dataset):</td>
+<td><a href="view.php?f=<?php echo $_GET['id']; ?>/DE_mixed.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/DE_mixed.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/DE_mixed.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
+</tr>
+
+<tr>
+<td>Re-do the initial check and default exploratory analysis:</td>
+<td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R" class="btn btn-danger" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td>
+</tr>
+
+<tr>
+<td>Create your own analysis:</td>
+<td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/own_analysis.R" class="btn btn-danger" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/own_analysis.R','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td>
+</tr>
+
+</tbody>
+</table>
+            </div>
+
+
         </div>
-            
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading"><i class="fas fa-chart-bar"></i>&emsp;&emsp;Feature selection</div>
+            <div class="panel-body">
+<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
+<table class="table"><form>
+<thead><th>Select</th><th>ID</th><th>Description</th><th>References</th></td></thead>
+<tbody>
+<tr>
+    <td><label class="switch"><input type="checkbox" checked><span class="slider round"></span></label></td>
+    <td>No: 1<br />Name: all</td>
+    <td>Description</td>
+    <td>References</td>
+</tr>
+<tr>
+<td><label class="switch"><input type="checkbox" checked><span class="slider round"></span></label></td>
+    <td>No: 2<br />Name: sig</td>
+    <td>Description</td>
+    <td>References</td>
+</tr>
+</tbody>
+</form></table>
+            </div>
+
+
+        </div>
+
     <!--Modal: Name-->
     <hr />
     <footer class="footer">
