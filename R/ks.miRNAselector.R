@@ -105,6 +105,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   #pdf(paste0("temp/",stamp,paste0(m, collapse = "+"),"featureselection.pdf"))
 
 
+  if(file.exists("var_type.txt")) { type = readLines("var_type.txt", warn = F) } 
 
   wynik_finalny = withTimeout({
   dane = ks.load_datamix(); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
@@ -123,7 +124,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   }
 
   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Standard DE...")
-  if(file.exists("var_type.txt")) { type = readLines("var_type.txt", warn = F) } 
+  
   wyniki = ks.miRNA_differential_expression(trainx, train$Class, mode = type)
   istotne = filter(wyniki, `p-value BH` <= 0.05) %>% arrange(`p-value BH`)
   istotne_top = wyniki %>% arrange(`p-value BH`) %>% head(prefer_no_features)
