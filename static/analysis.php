@@ -292,90 +292,26 @@ foreach($images as $image) {
 </table>
             </div>
 
-            <div class="panel panel-primary">
-            <div class="panel-heading"><i class="fas fa-chart-bar"></i>&emsp;&emsp;Exploratory analysis</div>
-            <div class="panel-body">
-<?php
-$images = glob($target_dir."exploratory_*.png");
-foreach($images as $image) {
-    $image3 = str_replace("/miRNAselector","/e/files", $image);
-    $image2 = str_replace("/miRNAselector","/e/view", $image);
-    echo '<a href="'.$image2.'" target="_blank" onclick="window.open(\''. $image2 . '\',\'popup\',\'width=600,height=600\'); return false;"><img src="'.$image3.'" width="49%" /></a>';
-}
-?>
-<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
-<table class="table">
-
-<tbody>
-
-<tr>
-<td>Training set:</td>
-<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_train.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_train.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_train.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
-</tr>
-
-<tr>
-<td>Testing set:</td>
-<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_test.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_test.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_test.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
-</tr>
-
-<tr>
-<td>Validation set:</td>
-<td><a href="view.php?f=<?php echo $_GET['id']; ?>/mixed_valid.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/mixed_valid.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/mixed_valid.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
-</tr>
-
-<tr>
-<td>Differential expression analysis (training set only):</td>
-<td><a href="view.php?f=<?php echo $_GET['id']; ?>/DE_train.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/DE_train.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/DE_train.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
-</tr>
-
-<tr>
-<td>Differential expression analysis (whole dataset):</td>
-<td><a href="view.php?f=<?php echo $_GET['id']; ?>/DE_mixed.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/DE_mixed.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/DE_mixed.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td>
-</tr>
-
-<tr>
-<td>Re-do the initial check and default exploratory analysis:</td>
-<td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R" class="btn btn-danger" role="button" target="popup"
-                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td>
-</tr>
-
-<tr>
-<td>Create your own analysis:</td>
-<td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/own_analysis.R" class="btn btn-danger" role="button" target="popup"
-                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/own_analysis.R','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td>
-</tr>
-
-</tbody>
-</table>
-            </div>
-
-
-        </div>
-
 
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-chart-bar"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
 <p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
-<table class="table"><form>
-<thead><th>Select</th><th>ID</th><th>Description</th><th>References</th></td></thead>
+<table class="table">
+<form action="process.php?type=new_fs" method="post">
+<input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
+<thead><th>Select</th><th>ID</th><th>Description</th></td></thead>
 <tbody>
 <tr>
-    <td><label class="switch"><input type="checkbox" checked><span class="slider round"></span></label></td>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="1" checked><span class="slider round"></span></label></td>
     <td>No: 1<br />Name: all</td>
-    <td>Description</td>
-    <td>References</td>
+    <td>Get all features (all features staring with 'hsa').</td>
 </tr>
 <tr>
-<td><label class="switch"><input type="checkbox" checked><span class="slider round"></span></label></td>
-    <td>No: 2<br />Name: sig</td>
-    <td>Description</td>
-    <td>References</td>
+<td><label class="switch"><input type="checkbox" name="method[]" value="2" checked><span class="slider round"></span></label></td>
+    <td>No: 2<br />Name: sig, sigtop, sigtopBonf, sigtopHolm, topFC, sigSMOTE, sigtopSMOTE, sigtopBonfSMOTE, sigtopHolmSMOTE, topFCSMOTE</td>
+    <td>Selects microRNAs significantly differently expressed between classes by performing unpaired t-test with and without correction for multiple testing. We get: <code>sig</code> - all significant (adjusted p-value less or equal to 0.05) miRNAs with comparison using unpaired t-test and after the Benjamini-Hochberg procedure (BH, false discovery rate); <code>sigtop</code> - <code>sig</code> but limited only to the your prefered number of features (most significant features sorted by p-value), <code>sigtopBonf</code> - uses Bonferroni instead of BH correction, <code>sigtopHolm</code> - uses Holm–Bonferroni instead of BH correction, <code>topFC</code> - selects prefered number of features based on decreasing absolute value of fold change in differential analysis.
+    <br />All the methods are also checked on dataset balanced with SMOTE (<a href="https://arxiv.org/pdf/1106.1813.pdf" target="_blank">Synthetic Minority Oversampling TEchnique</a>) - those formulas which names are appended with <code>SMOTE</code>.</td>
 </tr>
 
 
@@ -387,7 +323,11 @@ foreach($images as $image) {
     </td>
 </tr>
 </tbody>
-</form></table>
+</table>
+<button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
+<i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
+</button>
+</form>
             </div>
 
 
