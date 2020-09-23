@@ -1,6 +1,6 @@
 <html>
 <?php 
-if(empty($_GET['id'])) {
+if(!isset($_GET['id'])) {
 $czy_dziala = "Not running";
 $target_log = "/task.log";
 if(file_exists($target_log)) { 
@@ -28,8 +28,8 @@ else {
         if ($pid != "") { $czy_dziala = "Running"; }
         $skonczone = 0; if (strpos($zawartosc_logu, '[miRNAselector: TASK COMPLETED]') !== false) { $skonczone = 1; } 
         if (strpos($zawartosc_logu, 'Error') !== false) { $skonczone = 1; } 
+} else { $msg = urlencode("The task was not initialized. Please run it again. Go again to your analysis and init it."); header("Location: /?msg=" . $msg); die(); }
 }
-
 // if()
 ?>
 
