@@ -397,7 +397,7 @@ foreach($images as $image) {
                 <p>Details:
                   <br>
                   <table class="table">
-                  <tr><td>All formulas selected by the methods:<td><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv" class="btn btn-info" role="button" target="popup"
+                  <tr><td>All formulas selected by the methods:</td><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
                    <tr><td>Final set of formulas selected by the methods:<br /><font size="1"><i>(formulas with more than prefered number of features were removed, classical selection methods are intact)</i></font><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
