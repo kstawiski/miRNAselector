@@ -8,6 +8,30 @@ $_SESSION["analysis_id"]=$_GET['id'];
 $pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-" . $_GET['id'] ." | awk '{print $2}'");
 if ($pid != "") { header("Location: /inprogress.php?id=" . $_GET['id']); die(); }
 
+// Funkcje specyficzne
+function konsta_readcsv($filename, $header=false) {
+  $handle = fopen($filename, "r");
+  echo '<table class="table">';
+  //display header row if true
+  if ($header) {
+      $csvcontents = fgetcsv($handle);
+      echo '<tr>';
+      foreach ($csvcontents as $headercolumn) {
+          echo "<th>$headercolumn</th>";
+      }
+      echo '</tr>';
+  }
+  // displaying contents
+  while ($csvcontents = fgetcsv($handle)) {
+      echo '<tr>';
+      foreach ($csvcontents as $column) {
+          echo "<td>$column</td>";
+      }
+      echo '</tr>';
+  }
+  echo '</table>';
+  fclose($handle);
+  }
 
 ?>
 <html>
@@ -298,7 +322,7 @@ foreach($images as $image) {
 </table>
             </div>
 
-
+<?php if(!file_exists($target_dir . "featureselection_formulas_all.csv"))  { ?>
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
@@ -363,7 +387,33 @@ foreach($images as $image) {
 </form>
         </div>
         </div>
+<?php } else { ?>
+  <div class="panel panel-success">
+            <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
+            <div class="panel-body">
+              <p><b>Final set of feature sets selected for further evaluation:</b>
+              <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a></font><br>
+                <?php konsta_readcsv("featureselection_formulas_final.csv"); ?></p>
+                <p>Details:
+                  <br>
+                  <table class="table">
+                  <tr><td>All formulas selected by the methods:<td><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
+                   <tr><td>Final set of formulas selected by the methods:<br /><font size="1"><i>(formulas with more than prefered number of features were removed, classical selection methods are intact)</i></font><td><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
+                  <tr><td>Options:</td><td>
+                  <a href="/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log" class="btn btn-primary" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R','popup','width=600,height=600'); return false;"><i class="fas fa-history"></i> View log</a>&emsp;
+                        
+                  </td></tr>
+                      
+                  </table>
+                </p>
 
+            </div>
+</div>
+
+<?php } ?>
 
     <!--Modal: Name-->
     <hr />
