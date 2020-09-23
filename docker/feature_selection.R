@@ -2,6 +2,7 @@ options(warn = -1)
 if(file.exists("task.log")) { file.remove("task.log") }
 con <- file("task.log")
 sink(con, append=TRUE)
+sink(con, append=TRUE, type = "message")
 
 library(miRNAselector)
 # suppressMessages(library(foreach))
@@ -36,3 +37,4 @@ selected_sets_of_miRNAs = ks.merge_formulas(max_miRNAs = prefer_no_features)
 
 cat("[miRNAselector: TASK COMPLETED]")
 sink() 
+sink(type = "message")
