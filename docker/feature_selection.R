@@ -5,7 +5,7 @@ sink(con, append=TRUE)
 sink(con, append=TRUE, type = "message")
 
 library(miRNAselector)
-suppressMessages(library(foreach))
+# suppressMessages(library(foreach))
 # suppressMessages(library(doParallel))
 # suppressMessages(library(parallel))
 # suppressMessages(library(doParallel))
