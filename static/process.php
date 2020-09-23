@@ -140,6 +140,12 @@ switch($_GET['type'])
         $target_dir = "/miRNAselector/" . $analysis_id . "/";
         if (!file_exists($target_dir)) { die('Analysis not found.'); }
 
+        // Debug
+        ob_flush();
+        ob_start();
+        var_dump($_POST);
+        file_put_contents($target_dir . '/debug.txt', ob_get_flush());
+
         // Save selected methods as csv
         $fp = fopen($target_dir . '/selected_fs_methods.csv', 'w'); 
         foreach ($_POST['method'] as $fields) { fputcsv($fp, $fields); }
