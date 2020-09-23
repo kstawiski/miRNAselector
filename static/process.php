@@ -166,6 +166,33 @@ switch($_GET['type'])
         header("Location: /analysis.php?id=" . $analysis_id); die();
     break;
     
+    case "delete_fs":
+        // Sanity check
+        $analysis_id = $_GET['analysisid'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+
+        $dirPath = $target_dir . "temp";
+        if (! is_dir($dirPath)) {
+            throw new InvalidArgumentException("$dirPath must be a directory");
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                self::deleteDir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dirPath);
+        unlink($target_dir . "featureselection_formulas_all.csv");
+
+        // Redirect to analysis
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    break;
     
     
     
