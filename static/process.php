@@ -147,9 +147,10 @@ switch($_GET['type'])
         file_put_contents($target_dir . '/debug.txt', ob_get_flush());
 
         // Save selected methods as csv
-        $fp = fopen($target_dir . '/selected_fs_methods.csv', 'w'); 
-        foreach ($_POST['method'] as $line)  { fputcsv($fp, $line); } 
-        fclose($fp);
+        $metody = "m";
+        foreach($_POST['method'] as $value){  $metody .= '\n'.$value; }
+        file_put_contents($target_dir . '/selected_methods.csv', $metody);
+
         
         // Save additional vars as files
         file_put_contents($target_dir . '/var_timeout_sec.txt', $_POST['timeout_sec']);

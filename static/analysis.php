@@ -296,7 +296,7 @@ foreach($images as $image) {
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
-<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p>
+<p><font size="1">Notes: <i>By the defult all the methods are selected, but you can turn some of them off.</i></font></p>
 <table class="table">
 <form action="process.php?type=new_fs" method="post">
 <input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
