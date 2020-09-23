@@ -403,7 +403,7 @@ foreach($images as $image) {
                         onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
                   <tr><td>Options:</td><td>
                   <a href="/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log" class="btn btn-primary" role="button" target="popup"
-                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/formalcheckcsv.R','popup','width=600,height=600'); return false;"><i class="fas fa-history"></i> View log</a>&emsp;
+                        onclick="window.open('/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log','popup','width=600,height=600'); return false;"><i class="fas fa-history"></i> View log</a>&emsp;
 
                   </td></tr>
                       
