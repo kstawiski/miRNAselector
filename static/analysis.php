@@ -33,6 +33,31 @@ function konsta_readcsv($filename, $header=false) {
   fclose($handle);
   }
 
+  function konsta_readcsv_formulas($filename, $header=true) {
+    $handle = fopen($filename, "r");
+    echo '<table class="table">';
+    //display header row if true
+    if ($header) {
+        $csvcontents = fgetcsv($handle);
+        echo '<tr>';
+        // foreach ($csvcontents as $headercolumn) {
+        //     echo "<th>$headercolumn</th>";
+        // }
+        echo '<th>Name</th><th>Features</th><th>Count</th>';
+        echo '</tr>';
+    }
+    // displaying contents
+    while ($csvcontents = fgetcsv($handle)) {
+        echo '<tr>';
+        foreach ($csvcontents as $column) {
+            echo "<td><code>$column</code></td>";
+        }
+        echo '</tr>';
+    }
+    echo '</table>';
+    fclose($handle);
+    }
+
 ?>
 <html>
 
@@ -393,7 +418,7 @@ foreach($images as $image) {
             <div class="panel-body">
               <p><b>Final set of feature sets selected for further evaluation:</b>
               <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a></font><br>
-                <?php konsta_readcsv($target_dir . "featureselection_formulas_final.csv"); ?></p>
+                <?php konsta_readcsv_formulas($target_dir . "featureselection_formulas_final.csv"); ?></p>
                 <p>Details:
                   <br>
                   <table class="table">
