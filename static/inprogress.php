@@ -1,10 +1,11 @@
 <html>
 <?php 
-
+if(empty($_GET['id'])) {
 $czy_dziala = "Not running";
-if(file_exists("/task.log")) { 
+$target_log = "/task.log";
+if(file_exists($target_log)) { 
     $pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-task | awk '{print $2}'");
-    $zawartosc_logu = file_get_contents('/task.log');
+    $zawartosc_logu = file_get_contents($target_log);
     $task_process = shell_exec('ps -ef | grep -v grep | grep mirnaselector-task');
     if($task_process == "") { $task_process = "NOT RUNNING"; }
     // $czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-task | wc -l');
@@ -12,6 +13,23 @@ if(file_exists("/task.log")) {
     $skonczone = 0; if (strpos($zawartosc_logu, '[miRNAselector: TASK COMPLETED]') !== false) { $skonczone = 1; } 
     if (strpos($zawartosc_logu, 'Error') !== false) { $skonczone = 1; } 
 } else { $msg = urlencode("The task was not initialized. Please run it again."); header("Location: /?msg=" . $msg); die(); }
+}
+else {
+    $czy_dziala = "Not running";
+    $analysis_id = $_GET['id'];
+    $target_dir = "/miRNAselector/" . $analysis_id . "/";
+    $target_log = $target_dir . "task.log";
+    if(file_exists($target_log)) { 
+        $pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-" . $analysis_id ." | awk '{print $2}'");
+        $zawartosc_logu = file_get_contents($target_log);
+        $task_process = shell_exec('ps -ef | grep -v grep | grep mirnaselector-' . $analysis_id);
+        if($task_process == "") { $task_process = "NOT RUNNING"; }
+        // $czy_dziala = shell_exec('ps -ef | grep -v grep | grep mirnaselector-task | wc -l');
+        if ($pid != "") { $czy_dziala = "Running"; }
+        $skonczone = 0; if (strpos($zawartosc_logu, '[miRNAselector: TASK COMPLETED]') !== false) { $skonczone = 1; } 
+        if (strpos($zawartosc_logu, 'Error') !== false) { $skonczone = 1; } 
+}
+
 // if()
 ?>
 
@@ -57,10 +75,9 @@ if(file_exists("/task.log")) {
             <div class="panel panel-primary">
                 <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Task status</div>
                 <div class="panel-body">
-    <p>Currenty running task: <code><?php echo file_get_contents('/task-name.txt'); ?></code></p>
     <?php if($skonczone == 1) { ?>
 	<p id="msg"><b>The task is finished.</b> Please go to the next step to analyze the results and move to next steps.</p>
-    <p><a href="/" onclick="waitingDialog.show('Loading...');" class="btn btn-success"><i class="fas fa-chart-line"></i>&emsp;Analysis & further steps</a></p>
+    <p><a href="/analysis.php?id=<?php echo $analysis_id; ?>" onclick="waitingDialog.show('Loading...');" class="btn btn-success"><i class="fas fa-chart-line"></i>&emsp;Go forward</a></p>
     <script>
         $( document ).ready(function() {
         $(document).scrollTop($(document).height()); 
@@ -73,7 +90,7 @@ if(file_exists("/task.log")) {
             async: false,
             data: {
                 "typ" : "odczyt",
-                "plik" : "/task.log"
+                "plik" : "<?php echo $target_log; ?>"
             },
             success: function() {
                 // setTimeout(function(){ get_log();}, 1000);
@@ -102,7 +119,7 @@ if(file_exists("/task.log")) {
             async: false,
             data: {
                 "typ" : "odczyt",
-                "plik" : "/task.log"
+                "plik" : "<?php echo $target_log; ?>"
             },
             success: function() {
                 //setTimeout(function(){ get_log();}, 1000);

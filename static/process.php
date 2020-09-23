@@ -157,6 +157,11 @@ switch($_GET['type'])
         file_put_contents($target_dir . '/var_prefer_no_features.txt', $_POST['prefer_no_features']);
         file_put_contents($target_dir . '/var_max_iterations.txt', $_POST['max_iterations']);
 
+        // Starting fs
+        exec("cp /miRNAselector/miRNAselector/docker/feature_selection.R " . $target_dir . "feature_selection.R");
+        exec("cd " . $target_dir . " && screen -dmS mirnaselector-". $analysis_id ." Rscript feature_selection.R");
+        sleep(3); // Wait to start writing log.
+
         // Redirect to analysis
         header("Location: /analysis.php?id=" . $analysis_id); die();
     break;

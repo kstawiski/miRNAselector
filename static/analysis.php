@@ -3,6 +3,12 @@ $target_dir = "/miRNAselector/" . $_GET['id'] . "/";
 if(!file_exists($target_dir . "initial_check.txt")) { $msg .= "This analysis does not exist. Please check if your analysis id is correct."; $msg = urlencode($msg); header("Location: /index.php?msg=" . $msg); die(); }
 session_start();
 $_SESSION["analysis_id"]=$_GET['id'];
+
+// Czy jest task in progress?
+$pid = shell_exec("ps -ef | grep -v grep | grep mirnaselector-" . $_GET['id'] ." | awk '{print $2}'");
+if ($pid != "") { header("Location: /inprogress.php?id=" . $_GET['id']); die(); }
+
+
 ?>
 <html>
 
