@@ -28,10 +28,8 @@ stopCluster(cl)
 
 con <- file("task.log")
 sink(con, append=TRUE)
-sink(con, append=TRUE, type="message")
 prefer_no_features = readLines("var_prefer_no_features.txt", warn = F)
 selected_sets_of_miRNAs = ks.merge_formulas(max_miRNAs = prefer_no_features)
 
 cat("[miRNAselector: TASK COMPLETED]")
 sink() 
-sink(type="message")
