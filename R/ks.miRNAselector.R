@@ -265,7 +265,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
   # n = 8
   n = n + 1; if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting..")); start_time <- Sys.time();
-  classloop = classifier.loop(train_sig, feature.selection = "auc", method.cross="fold-crossval", classifiers=c("svm","lda","rf","nsc"), no.feat=prefer_no_features)
+  classloop = classifier.loop(train_sig_smoted, feature.selection = "auc", method.cross="fold-crossval", classifiers=c("svm","lda","rf","nsc"), no.feat=prefer_no_features)
   f_classloop = rownames(classloop$no.selected)[classloop$no.selected[,1]>0]
   formulas[["classloopSMOTE_sig"]] = ks.create_miRNA_formula(f_classloop)
 

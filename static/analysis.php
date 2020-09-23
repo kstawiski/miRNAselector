@@ -359,15 +359,160 @@ foreach($images as $image) {
 <tbody>
 <tr>
     <td><label class="switch"><input type="checkbox" name="method[]" value="1" checked><span class="slider round"></span></label></td>
-    <td>No: 1<br />Name: all</td>
+    <td>No: 1<br /><code>all<code></td>
     <td>Get all features (all features staring with 'hsa').</td>
 </tr>
 <tr>
 <td><label class="switch"><input type="checkbox" name="method[]" value="2" checked><span class="slider round"></span></label></td>
-    <td>No: 2<br />Name: sig, sigtop, sigtopBonf, sigtopHolm, topFC, sigSMOTE, sigtopSMOTE, sigtopBonfSMOTE, sigtopHolmSMOTE, topFCSMOTE</td>
-    <td>Selects microRNAs significantly differently expressed between classes by performing unpaired t-test with and without correction for multiple testing. We get: <code>sig</code> - all significant (adjusted p-value less or equal to 0.05) miRNAs with comparison using unpaired t-test and after the Benjamini-Hochberg procedure (BH, false discovery rate); <code>sigtop</code> - <code>sig</code> but limited only to the your prefered number of features (most significant features sorted by p-value), <code>sigtopBonf</code> - uses Bonferroni instead of BH correction, <code>sigtopHolm</code> - uses Holm–Bonferroni instead of BH correction, <code>topFC</code> - selects prefered number of features based on decreasing absolute value of fold change in differential analysis.
+    <td>No: 2<br /><code>sig, sigtop, sigtopBonf, sigtopHolm, topFC, sigSMOTE, sigtopSMOTE, sigtopBonfSMOTE, sigtopHolmSMOTE, topFCSMOTE</code></td>
+    <td>Selects features significantly differently expressed between classes by performing unpaired t-test with and without correction for multiple testing. We get: <code>sig</code> - all significant (adjusted p-value less or equal to 0.05) miRNAs with comparison using unpaired t-test and after the Benjamini-Hochberg procedure (BH, false discovery rate); <code>sigtop</code> - <code>sig</code> but limited only to the your prefered number of features (most significant features sorted by p-value), <code>sigtopBonf</code> - uses Bonferroni instead of BH correction, <code>sigtopHolm</code> - uses Holm–Bonferroni instead of BH correction, <code>topFC</code> - selects prefered number of features based on decreasing absolute value of fold change in differential analysis.
     <br />All the methods are also checked on dataset balanced with SMOTE (<a href="https://arxiv.org/pdf/1106.1813.pdf" target="_blank">Synthetic Minority Oversampling TEchnique</a>) - those formulas which names are appended with <code>SMOTE</code>.</td>
 </tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="3" checked><span class="slider round"></span></label></td>
+    <td>No: 3<br /><code>fcsig, fcsigSMOTE</code></td>
+    <td>Features significant in DE analysis using unpaired t-test and which absolute log2FC is greater than 1. Thus, features significant and up- or down-regulated in the higher magnitudes. FC - fold-change, DE - differential analysis.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="4" checked><span class="slider round"></span></label></td>
+    <td>No: 4<br /><code>cfs, cfsSMOTE, cfs_sig, cfsSMOTE_sig</code></td>
+    <td><a href="https://www.cs.waikato.ac.nz/~mhall/thesis.pdf" target="_blank">Correlation-based feature selection</a> (CFS) - a heuristic algorithm selecting features that are highly correlated with class (binary) and lowly correlated with one another. It explores a search space in best-first manner, until stopping criteria are met.</td>
+</tr>
+
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="5" checked><span class="slider round"></span></label></td>
+    <td>No: 5<br /><code>classloop</code></td>
+    <td>Classifier loop - performs multiple classification procedures using various algorithms (with embedded feature ranking) and various performance metrices. Final feature selection is done by combining the results. Modeling methods used: support vector machines, linear discriminant a nalysis, random forest and nearest shrunken centroid. Features are selected based on the AUC ROC and assessed in k-fold cross-validation according to the <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/classifier.loop" target="_blank">documentation</a>. As this requires time, we do not perform it on SMOTEd dataset.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="6" checked><span class="slider round"></span></label></td>
+    <td>No: 6<br /><code>classloopSMOTE</code></td>
+    <td>Application of <code>classloop</code> on balanced dataset (with SMOTE).</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="7" checked><span class="slider round"></span></label></td>
+    <td>No: 7<br /><code>classloop_sig</code></td>
+    <td>Application of <code>classloop</code> but only on the features which are significant in DE.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="8" checked><span class="slider round"></span></label></td>
+    <td>No: 8<br /><code>classloopSMOTE_sig</code></td>
+    <td>Application of <code>classloop</code> on balanced training set and only on the features which are significant in DE (after balancing).</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="9" checked><span class="slider round"></span></label></td>
+    <td>No: 9<br /><code>fcfs</code></td>
+    <td>An algorithm similar to CFS, though exploring search space in greedy forward search manner (adding one, most attractive, feature at the time, until such addition does not improve set’s overall quality). Based on <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.411.9868&rep=rep1&type=pdf" target="_blank">Wang et al. 2005</a> and documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.forward.Corr" target="_blank">here</a>.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="10" checked><span class="slider round"></span></label></td>
+    <td>No: 10<br /><code>fcfsSMOTE</code></td>
+    <td>Application of <code>fcfs</code> on balanced training set.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="11" checked><span class="slider round"></span></label></td>
+    <td>No: 11<br /><code>fcfs_sig</code></td>
+    <td>Application of <code>fcfs</code> on features significant in DE.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="12" checked><span class="slider round"></span></label></td>
+    <td>No: 12<br /><code>fcfsSMOTE_sig</code></td>
+    <td>Application of <code>fcfs</code> on balanced dataset and on features significant in DE (after balancing).</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="13" checked><span class="slider round"></span></label></td>
+    <td>No: 13<br /><code>fwrap</code></td>
+    <td>A decision tree algorithm and forward search strategy documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.forward.wrapper" target="_blank">here</a>.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="14" checked><span class="slider round"></span></label></td>
+    <td>No: 14<br /><code>fwrapSMOTE</code></td>
+    <td>Application of <code>fwrap</code> on balanced training set.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="15" checked><span class="slider round"></span></label></td>
+    <td>No: 15<br /><code>fwrap_sig</code></td>
+    <td>Application of <code>fwrap</code> on features significant in DE.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="16" checked><span class="slider round"></span></label></td>
+    <td>No: 16<br /><code>fwrapSMOTE_sig</code></td>
+    <td>Application of <code>fwrap</code> on balanced dataset and on features significant in DE (after balancing).</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="17" checked><span class="slider round"></span></label></td>
+    <td>No: 17<br /><code>AUC_MDL</code></td>
+    <td>Feature ranking based on ROC AUC and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="18" checked><span class="slider round"></span></label></td>
+    <td>No: 18<br /><code>SU_MDL</code></td>
+    <td>Feature ranking based on symmetrical uncertainty and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="19" checked><span class="slider round"></span></label></td>
+    <td>No: 19<br /><code>CorrSF_MDL</code></td>
+    <td>Feature ranking based on CFS algorithm with forward search and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="20" checked><span class="slider round"></span></label></td>
+    <td>No: 20<br /><code>AUC_MDLSMOTE</code></td>
+    <td>Feature ranking based on ROC AUC and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Performed on the training set balanced with SMOTE.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="21" checked><span class="slider round"></span></label></td>
+    <td>No: 21<br /><code>SU_MDLSMOTE</code></td>
+    <td>Feature ranking based on symmetrical uncertainty and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Performed on the training set balanced with SMOTE.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="22" checked><span class="slider round"></span></label></td>
+    <td>No: 22<br /><code>CorrSF_MDLSMOTE</code></td>
+    <td>Feature ranking based on CFS algorithm with forward search and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Performed on the training set balanced with SMOTE.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="23" checked><span class="slider round"></span></label></td>
+    <td>No: 23<br /><code>AUC_MDL_sig</code></td>
+    <td>Feature ranking based on ROC AUC and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Only features significant in DE are allowed.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="24" checked><span class="slider round"></span></label></td>
+    <td>No: 24<br /><code>SU_MDL_sig</code></td>
+    <td>Feature ranking based on symmetrical uncertainty and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Only features significant in DE are allowed.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="25" checked><span class="slider round"></span></label></td>
+    <td>No: 25<br /><code>CorrSF_MDL_sig</code></td>
+    <td>Feature ranking based on CFS algorithm with forward search and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Only features significant in DE are allowed.</td>
+</tr>
+
+
+
+
+
+
 
 
 
