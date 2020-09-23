@@ -25,7 +25,7 @@
 #'
 #' @param wd Working directory with data (`mixed_train.csv`, `mixed_test.csv` and `mixed_validation.csv` as created by `ks.prepare_split` have to be present).
 #' @param m Methods of feature selection to be performed. This has to be a vector of integers with minimum of 1 and maximum of 70. For the definition of numbers please see the vignette.
-#' @param max_iteration Maximum number of iterations in selected methods. Setting this too high may results in very long comupting time.
+#' @param max_iterations Maximum number of iterations in selected methods. Setting this too high may results in very long comupting time.
 #' @param code_path A folder where the python external scripts are placed (especially for WxNet method). By default the additional code is provided in the package.
 #' @param register_parallel Where to use parallel processing to speed up computing time. Seting it to FALSE may aid in debuging.
 #' @param clx This parameter may be used for passing the already register computing cluster (created and registered with `doParallel` tools). This may lower the computing time by saving the time to register new cluster.

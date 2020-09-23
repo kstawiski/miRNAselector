@@ -296,7 +296,7 @@ foreach($images as $image) {
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
-<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
+<p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p>
 <table class="table">
 <form action="process.php?type=new_fs" method="post">
 <input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
@@ -321,11 +321,29 @@ foreach($images as $image) {
     <td colspan="2">
     <div class="form-group row">
     <div class="col-sm-7">
+    <p><u>Prefered number of features</u><br />
+<font size="1"><i>(some of the methods do not select features but rank them, how many features are acceptable for you?)</i></font></p>
+    </div>
+    <div class="col-sm-5">
+      <input class="form-control" id="prefer_no_features" type="number" min="1" max="50" value="10" />
+    </div>
+  </div>
+    <div class="form-group row">
+    <div class="col-sm-7">
     <p><u>Timeout for selected methods</u><br />
 <font size="1"><i>(max time for the method to run in seconds, if you do not want to wait the ethernity for the results in misconfigured pipeline)</i></font></p>
     </div>
     <div class="col-sm-5">
-      <input class="form-control" id="timeout" type="number" min="0" max="2629743" value="86400" />
+      <input class="form-control" id="timeout_sec" type="number" min="0" max="2629743" value="86400" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-7">
+    <p><u>Maximum number of iterations</u><br />
+<font size="1"><i>(maximum number of iterations in selected methods, setting this too high may results in very long comupting time)</i></font></p>
+    </div>
+    <div class="col-sm-5">
+      <input class="form-control" id="max_iterations" type="number" min="1" max="50" value="10" />
     </div>
   </div>
     </td>
@@ -337,10 +355,9 @@ foreach($images as $image) {
 <i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
 </button></p>
 </form>
-            </div>
-
-
         </div>
+        </div>
+
 
     <!--Modal: Name-->
     <hr />

@@ -132,6 +132,27 @@ switch($_GET['type'])
             exec("cd " . $target_dir . " && Rscript -e \"knitr::knit2html('DE.rmd')\" 2>&1 | tee -a " . $target_dir . "log.txt");
             header("Location: /analysis.php?id=" . $_SESSION["analysis_id"]); die();
         break;
+
+    // Feature selection invoked by analysis.php
+    case "new_fs":
+        // Sanity check
+        $analysis_id = $_POST['analysisid'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+
+        // Save selected methods as csv
+        $fp = fopen($target_dir . '/selected_fs_methods.csv', 'w'); 
+        foreach ($_POST['method'] as $fields) { fputcsv($fp, $fields); }
+        fclose($fp);
+        
+        // Save additional vars as files
+        file_put_contents($target_dir . '/var_timeout_sec.txt', $_POST['timeout_sec']);
+        file_put_contents($target_dir . '/var_prefer_no_features.txt', $_POST['prefer_no_features']);
+        file_put_contents($target_dir . '/var_max_iterations.txt', $_POST['max_iterations']);
+
+        // Redirect to analysis
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    break;
     
     
     
