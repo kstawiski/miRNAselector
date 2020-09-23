@@ -7,5 +7,6 @@
 #'
 #' @export
 ks.create_miRNA_formula = function(wybrane_miRy) {
+  wybrane_miRy<-wybrane_miRy[!is.na(wybrane_miRy)]
   as.formula(paste0("Class ~ ",paste0(as.character(wybrane_miRy), collapse = " + ")))
 }
