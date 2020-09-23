@@ -320,11 +320,11 @@ foreach($images as $image) {
     <td>Options:</td>
     <td colspan="2">
     <div class="form-group row">
-    <div class="col-sm-6">
-    <p>Timeout for selected methods:<br />
-    (max time for the method to run in seconds, <i>if you do not want to wait the ethernity for the results in misconfigured pipeline</i>):</p>
+    <div class="col-sm-8">
+    <p><u>Timeout for selected methods:</u><br />
+<i>(max time for the method to run in seconds, if you do not want to wait the ethernity for the results in misconfigured pipeline)</i></p>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <input class="form-control" id="timeout" type="number" min="0" max="2629743" value="86400" />
     </div>
   </div>
