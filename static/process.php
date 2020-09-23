@@ -148,7 +148,7 @@ switch($_GET['type'])
 
         // Save selected methods as csv
         $fp = fopen($target_dir . '/selected_fs_methods.csv', 'w'); 
-        foreach ($_POST['method'] as $fields) { fputcsv($fp, $fields); }
+        foreach ($_POST['method'] as $line)  { fputcsv($fp, $line); } 
         fclose($fp);
         
         // Save additional vars as files

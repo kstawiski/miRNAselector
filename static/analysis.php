@@ -325,7 +325,7 @@ foreach($images as $image) {
 <font size="1"><i>(some of the methods do not select features but rank them, how many features are acceptable for you?)</i></font></p>
     </div>
     <div class="col-sm-5">
-      <input class="form-control" id="prefer_no_features" type="number" min="1" max="50" value="10" />
+      <input class="form-control" id="prefer_no_features" name="prefer_no_features" type="number" min="1" max="50" value="10" />
     </div>
   </div>
     <div class="form-group row">
@@ -334,7 +334,7 @@ foreach($images as $image) {
 <font size="1"><i>(max time for the method to run in seconds, if you do not want to wait the ethernity for the results in misconfigured pipeline)</i></font></p>
     </div>
     <div class="col-sm-5">
-      <input class="form-control" id="timeout_sec" type="number" min="0" max="2629743" value="86400" />
+      <input class="form-control" id="timeout_sec" name="timeout_sec" type="number" min="0" max="2629743" value="86400" />
     </div>
   </div>
   <div class="form-group row">
@@ -343,7 +343,7 @@ foreach($images as $image) {
 <font size="1"><i>(maximum number of iterations in selected methods, setting this too high may results in very long comupting time)</i></font></p>
     </div>
     <div class="col-sm-5">
-      <input class="form-control" id="max_iterations" type="number" min="1" max="50" value="10" />
+      <input class="form-control" id="max_iterations" name="max_iterations" type="number" min="1" max="50" value="10" />
     </div>
   </div>
     </td>
