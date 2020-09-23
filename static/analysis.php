@@ -419,8 +419,8 @@ foreach($images as $image) {
               <p><h3>Final set of feature sets selected for further evaluation:</h3>
               <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a></font><br></p>
                 <p><?php konsta_readcsv_formulas($target_dir . "featureselection_formulas_final.csv"); ?></p>
-                <p>Details:
-                  <br>
+                <p><h4>Details:</h4>
+                  
                   <table class="table">
                   <tr><td>All formulas selected by the methods:</td><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
