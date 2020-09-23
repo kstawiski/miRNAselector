@@ -416,9 +416,9 @@ foreach($images as $image) {
   <div class="panel panel-success">
             <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
-              <p><b>Final set of feature sets selected for further evaluation:</b>
-              <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a></font><br>
-                <?php konsta_readcsv_formulas($target_dir . "featureselection_formulas_final.csv"); ?></p>
+              <p><h3>Final set of feature sets selected for further evaluation:</h3>
+              <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a></font><br></p>
+                <p><?php konsta_readcsv_formulas($target_dir . "featureselection_formulas_final.csv"); ?></p>
                 <p>Details:
                   <br>
                   <table class="table">
