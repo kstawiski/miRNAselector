@@ -294,7 +294,7 @@ foreach($images as $image) {
 
 
         <div class="panel panel-primary">
-            <div class="panel-heading"><i class="fas fa-chart-bar"></i>&emsp;&emsp;Feature selection</div>
+            <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
 <p><font size="1">Notes: <i>If mix is not labeled the heatmap was constructed based on training set. Some of the heatmaps use raw expression, some using z-scoring. Features marked on vulcano plot are significant in DE. You can re-create and customize those plots below.</i></font></p></div>
 <table class="table">
@@ -319,14 +319,20 @@ foreach($images as $image) {
 <tr>
     <td>Options:</td>
     <td colspan="2">
-        Timeout...
+    <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Timeout (max time for the method to run in seconds, <i>if you do not want to wait the ethernity for the results in misconfigured pipeline</i>):</label>
+    <div class="col-sm-10">
+      <input class="form-control" id="timeout" type="number" min="0" max="2629743" value="86400" />
+    </div>
+  </div>
     </td>
 </tr>
 </tbody>
 </table>
+<p>
 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
 <i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
-</button>
+</button></p>
 </form>
             </div>
 
@@ -347,7 +353,8 @@ foreach($images as $image) {
         </div>
     </footer>
     <!-- /.container -->
-</body>
+</div>
+  </body>
 
 </html>
 
