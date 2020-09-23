@@ -148,7 +148,7 @@ switch($_GET['type'])
 
         // Save selected methods as csv
         $metody = "m";
-        foreach($_POST['method'] as $value){  $metody .= '\n'.$value; }
+        foreach($_POST['method'] as $value){  $metody .= PHP_EOL . $value; }
         file_put_contents($target_dir . '/selected_methods.csv', $metody);
 
         
