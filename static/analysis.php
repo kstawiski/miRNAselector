@@ -767,7 +767,7 @@ foreach($images as $image) {
 // Po selekcji zmiennych, przygotowanie benchmarku.
 if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <div class="panel panel-primary">
-            <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
+            <div class="panel-heading"><i class="fas fa-award"></i>&emsp;&emsp;Benchmarking</div>
             <div class="panel-body">
 <p><font size="1">Notes: <i>By the defult all the methods are selected, but you can turn some of them off.</i></font></p>
 <table class="table">
