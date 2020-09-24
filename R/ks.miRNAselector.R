@@ -494,7 +494,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
                            boosting = boostingControl(mstop = 100, nu = 0.1),
                            cores = parallel::detectCores()-1)
   formulas[["bounceR-full_SIG"]] = mrmr@opt_formula
-  formulas[["bounceR-stability_SMOTE"]] = ks.create_miRNA_formula(as.character(mrmr@stability[1:prefer_no_features,] %>% pull('feature')))
+  formulas[["bounceR-stability_SIG_SMOTE"]] = ks.create_miRNA_formula(as.character(mrmr@stability[1:prefer_no_features,] %>% pull('feature')))
   end_time <- Sys.time(); saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS")); saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
   if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
   }

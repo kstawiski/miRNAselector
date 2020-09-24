@@ -508,6 +508,73 @@ foreach($images as $image) {
     <td>Feature ranking based on CFS algorithm with forward search and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Only features significant in DE are allowed.</td>
 </tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="26" checked><span class="slider round"></span></label></td>
+    <td>No: 26<br /><code>AUC_MDLSMOTE_sig</code></td>
+    <td>Feature ranking based on ROC AUC and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Performed on the training set balanced with SMOTE. Only features significant in DE are allowed.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="27" checked><span class="slider round"></span></label></td>
+    <td>No: 27<br /><code>SU_MDLSMOTE_sig</code></td>
+    <td>Feature ranking based on symmetrical uncertainty and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Performed on the training set balanced with SMOTE. Only features significant in DE are allowed.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="28" checked><span class="slider round"></span></label></td>
+    <td>No: 28<br /><code>CorrSF_MDLSMOTE_sig</code></td>
+    <td>Feature ranking based on CFS algorithm with forward search and minimal description length (MDL) discretization algorithm documented <a href="https://www.rdocumentation.org/packages/Biocomb/versions/0.4/topics/select.process" target="_blank">here</a>. After the ranking, the number of features are limited as set in options below. Performed on the training set balanced with SMOTE. Only features significant in DE are allowed.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="29" checked><span class="slider round"></span></label></td>
+    <td>No: 29<br /><code>bounceR-full, bounceR-stability</code></td>
+    <td>A component-wise-boosting-based algorithm selecting optimal features in multiple iterations of single feature-models construction. See the source <a href="https://github.com/STATWORX/bounceR" target="_blank">here</a>. <code>bounceR-stability</code> gets the most stable features. Wrapper methods implemented here leverage componentwise boosting as a weak learners.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="30" checked><span class="slider round"></span></label></td>
+    <td>No: 30<br /><code>bounceR-full_SMOTE, bounceR-stability_SMOTE</code></td>
+    <td>A component-wise-boosting-based algorithm selecting optimal features in multiple iterations of single feature-models construction. See the source <a href="https://github.com/STATWORX/bounceR" target="_blank">here</a>. <code>bounceR-stability</code> gets the most stable features. Wrapper methods implemented here leverage componentwise boosting as a weak learners. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="31" checked><span class="slider round"></span></label></td>
+    <td>No: 31<br /><code>bounceR-full_SIG, bounceR-stability_SIG_SMOTE</code></td>
+    <td>A component-wise-boosting-based algorithm selecting optimal features in multiple iterations of single feature-models construction. See the source <a href="https://github.com/STATWORX/bounceR" target="_blank">here</a>. <code>bounceR-stability</code> gets the most stable features. Wrapper methods implemented here leverage componentwise boosting as a weak learners. Only features significant in DE are allowed. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="32" checked><span class="slider round"></span></label></td>
+    <td>No: 32<br /><code>bounceR-full_SIGSMOTE, bounceR-stability_SIGSMOTE</code></td>
+    <td>A component-wise-boosting-based algorithm selecting optimal features in multiple iterations of single feature-models construction. See the source <a href="https://github.com/STATWORX/bounceR" target="_blank">here</a>. <code>bounceR-stability</code> gets the most stable features. Wrapper methods implemented here leverage componentwise boosting as a weak learners. Only features significant in DE are allowed. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="33" checked><span class="slider round"></span></label></td>
+    <td>No: 33<br /><code>RandomForestRFE</code></td>
+    <td>Recursively eliminates features from the feature space based on ranking from Random Forrest classifier (retrained woth resampling after each elimination). Details are available <a href="https://topepo.github.io/caret/recursive-feature-elimination.html#search" target="_blank">here</a>. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="34" checked><span class="slider round"></span></label></td>
+    <td>No: 34<br /><code>RandomForestRFESMOTE</code></td>
+    <td>Recursively eliminates features from the feature space based on ranking from Random Forrest classifier (retrained woth resampling after each elimination). Details are available <a href="https://topepo.github.io/caret/recursive-feature-elimination.html#search" target="_blank">here</a>. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="35" checked><span class="slider round"></span></label></td>
+    <td>No: 35<br /><code>RandomForestRFE_sig</code></td>
+    <td>Recursively eliminates features from the feature space based on ranking from Random Forrest classifier (retrained woth resampling after each elimination). Details are available <a href="https://topepo.github.io/caret/recursive-feature-elimination.html#search" target="_blank">here</a>. Only features significant in DE are allowed.  </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="36" checked><span class="slider round"></span></label></td>
+    <td>No: 36<br /><code>RandomForestRFESMOTE_sig</code></td>
+    <td>Recursively eliminates features from the feature space based on ranking from Random Forrest classifier (retrained woth resampling after each elimination). Details are available <a href="https://topepo.github.io/caret/recursive-feature-elimination.html#search" target="_blank">here</a>. Only features significant in DE are allowed. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+
 
 
 
