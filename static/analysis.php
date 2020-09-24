@@ -739,7 +739,7 @@ function toggle(source) {
 <p>
 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
 <i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
-</button>&emsp;<a href="process.php?type=delete_fs2&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-success" role="button"><i class="fas fa-trash-restore"></i> Recover interrupted selection</a>&emsp;<input type="submit" type="checkbox" onClick="toggle(this)">Toggle all methods</input></p>
+</button>&emsp;<a href="process.php?type=delete_fs2&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-success" role="button"><i class="fas fa-trash-restore"></i> Recover interrupted selection</a>&emsp;<input type="checkbox" onClick="toggle(this)">Toggle all methods</input></p>
 </form>
         </div>
         </div>
