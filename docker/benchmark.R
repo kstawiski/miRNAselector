@@ -15,7 +15,8 @@ if (length(mxnet) == 0) { mxnet = FALSE }
 search_iters_mxnet = as.numeric(readLines("var_search_iters_mxnet.txt", warn = F))
 search_iters = as.numeric(readLines("var_search_iters.txt", warn = F))
 holdout = ifelse(readLines("var_holdout.txt", warn = F) == "TRUE", TRUE, FALSE)
-gpu = tensorflow::tf$test$is_gpu_available()
+# gpu = tensorflow::tf$test$is_gpu_available()
+gpu = F # force GPU to F
 
 cat("Ok. Starting benchmark. This will take a while.. be patient. You can monitor this by checking CPU-load and temp/benchmark.csv for preliminary results.\n")
 ks.benchmark(
