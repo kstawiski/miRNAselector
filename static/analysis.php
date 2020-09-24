@@ -540,7 +540,7 @@ foreach($images as $image) {
 
 <tr>
 <td><label class="switch"><input type="checkbox" name="method[]" value="31" checked><span class="slider round"></span></label></td>
-    <td>No: 31<br /><code>bounceR-full_SIG, bounceR-stability_SIG_SMOTE</code></td>
+    <td>No: 31<br /><code>bounceR-full_SIG, bounceR-stability_SIG</code></td>
     <td>A component-wise-boosting-based algorithm selecting optimal features in multiple iterations of single feature-models construction. See the source <a href="https://github.com/STATWORX/bounceR" target="_blank">here</a>. <code>bounceR-stability</code> gets the most stable features. Wrapper methods implemented here leverage componentwise boosting as a weak learners. Only features significant in DE are allowed. </td>
 </tr>
 
