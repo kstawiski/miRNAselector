@@ -303,7 +303,9 @@ Pearls about the methods:
 
 Notes about methods:
 
-Comming soon...
+```{r}
+shiny::includeHTML("methods.html")
+```
 
 The `miRNAselector` functions saves all output files to `temp/` directory. As users may want to run multiple selection methods in different configurations, we do not recommend using the return of this function in the following steps. Instead, we provide `ks.merge_formulas()` which conviniently summerizes the results of feature selection. We can do:
 
