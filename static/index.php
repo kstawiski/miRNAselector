@@ -139,7 +139,8 @@ if($pid != "") { header("Location: /inprogress.php"); }
                     <div class="col">
                         <p><a href="/start.php" role="button" class="btn btn-info"><i class="fas fa-plus"></i>&emsp;New analysis</a></p>
                     </div>
-                <div class="col">
+                    <div class="container">
+                    <div class="col">
                 <p><form action="/analysis.php" method="get">
                 <div class="form-group">
                     <label for="id">Analysis ID:</label>
@@ -147,7 +148,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 </div>
                 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Loading...');"><i class="fas fa-folder-open"></i>&emsp;Resume analysis</button>
                 </form></p>
-                </div>
+                </div></div>
                 </div>
                 </div>
             </div>
