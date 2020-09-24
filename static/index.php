@@ -143,8 +143,8 @@ if($pid != "") { header("Location: /inprogress.php"); }
                     <td>
                         <h4>Resume analysis:</h4>
                 <p><form action="/analysis.php" method="get">
-                    <input type="text" id="id" name="id" placeholder="Provide analysis ID" class="form-control">
-                <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Loading...');"><i class="fas fa-folder-open"></i>&emsp;Resume analysis</button>
+                    <p><input type="text" id="id" name="id" placeholder="Provide analysis ID" class="form-control"></p>
+                <p><button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Loading...');"><i class="fas fa-folder-open"></i>&emsp;Resume analysis</button></p>
                 </form></p>
             </td></tr>
             </table>
