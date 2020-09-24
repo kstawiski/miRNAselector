@@ -258,7 +258,7 @@ switch($_GET['type'])
         // Save additional vars as files
         file_put_contents($target_dir . '/var_mxnet.txt', $_POST['mxnet']);
         file_put_contents($target_dir . '/var_search_iters_mxnet.txt', $_POST['search_iters_mxnet']);
-        file_put_contents($target_dir . '/var_search_iter.txt', $_POST['search_iter']);
+        file_put_contents($target_dir . '/var_search_iters.txt', $_POST['search_iter']);
         file_put_contents($target_dir . '/var_holdout.txt', $_POST['holdout']);
 
         // Starting benchmark
