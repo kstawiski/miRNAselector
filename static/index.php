@@ -127,7 +127,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <div class="panel-body"><b><?php echo htmlentities($_GET['msg']); ?></b></div>
             </div>
             <?php } ?>
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Welcome to miRNAselector</div>
                 <div class="panel-body">This is a very cool welcome message we will write later.</div>
             </div>
@@ -135,21 +135,24 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <div class="panel-heading"><i class="fas fa-chart-pie"></i>&emsp;&emsp;Analysis</div>
                 <div class="panel-body">
                 You can start new analysis or resume your previous one.
-                <a href="/start.php" role="button" class="btn btn-info"><i class="fas fa-plus"></i>&emsp;New analysis</a>
-                <hr>
-                <form action="/analysis.php" method="get"><div class="form-group">
+                <div class="row">
+    <div class="col-sm">
+        <p><a href="/start.php" role="button" class="btn btn-info"><i class="fas fa-plus"></i>&emsp;New analysis</a></p>
+    </div>
+    <div class="col-sm">
+      <p><form action="/analysis.php" method="get"><div class="form-group">
                     <label for="id">Analysis ID:</label>
                     <input type="text" class="form-control" id="id" name="id">
                 </div>
                 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Loading...');"><i class="fas fa-folder-open"></i>&emsp;Resume analysis</button>
-            </form>
-
-
+            </form></p>
+    </div>
+  </div>
                 </div>
                 
             </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Extensions</div>
+            <div class="panel panel-warning">
+                <div class="panel-heading"><i class="fas fa-puzzle-piece"></i>&emsp;&emsp;Extensions</div>
                 <div class="panel-body">Coming soon...</div>
             </div>
 
