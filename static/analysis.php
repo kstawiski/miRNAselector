@@ -739,7 +739,7 @@ function toggle(source) {
 <p>
 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
 <i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
-</button>&emsp;<button type="submit" class="btn btn-primary" value="Upload" name="submit" onclick="toggle(this);">Toggle all</button></p>
+</button>&emsp;<input type="submit" type="checkbox" onClick="toggle(this)">Toggle all</button></p>
 </form>
         </div>
         </div>
