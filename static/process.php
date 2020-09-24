@@ -193,8 +193,49 @@ switch($_GET['type'])
         // Redirect to analysis
         header("Location: /analysis.php?id=" . $analysis_id); die();
     break;
+
+    case "delete_fs2":
+        // Sanity check
+        $analysis_id = $_GET['analysisid'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+
+        // $dirPath = $target_dir . "temp";
+        // if (! is_dir($dirPath)) {
+        //     throw new InvalidArgumentException("$dirPath must be a directory");
+        // }
+        // if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+        //     $dirPath .= '/';
+        // }
+        // $files = glob($dirPath . '*', GLOB_MARK);
+        // foreach ($files as $file) {
+        //     if (is_dir($file)) {
+        //         self::deleteDir($file);
+        //     } else {
+        //         unlink($file);
+        //     }
+        // }
+        // rmdir($dirPath);
+        unlink($target_dir . "featureselection_formulas_all.csv");
+
+        // Redirect to analysis
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    break;
     
-    
+    case "recover_fs":
+        // Sanity check
+        $analysis_id = $_GET['analysisid'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+
+        // Starting fs
+        exec("cp /miRNAselector/miRNAselector/docker/recover_fs.R " . $target_dir . "recover_fs.R");
+        exec("cd " . $target_dir . " && screen -dmS mirnaselector-". $analysis_id ." Rscript recover_fs.R");
+        sleep(3); // Wait to start writing log.
+
+        // Redirect to analysis
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    break;
     
     
     
