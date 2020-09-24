@@ -236,7 +236,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
     <hr />
     <footer class="footer">
         <div class="container">
-            <span class="text-muted">miRNAselector (v1.0 build by <?php echo $version; ?>)&emsp;&emsp;&emsp;&emsp;<i
+            <span class="text-muted">miRNAselector v1.0.<?php echo $version; ?>&emsp;&emsp;&emsp;&emsp;<i
                     class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i
                     class="fas fa-globe-europe"></i>
                 <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i
