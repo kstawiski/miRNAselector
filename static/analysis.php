@@ -763,7 +763,136 @@ foreach($images as $image) {
 
             </div>
 </div>
+<?php 
+// Po selekcji zmiennych, przygotowanie benchmarku.
+if(!file_exists($target_dir . "featureselection_formulas_all.csv"))  { ?>
+<div class="panel panel-primary">
+            <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
+            <div class="panel-body">
+<p><font size="1">Notes: <i>By the defult all the methods are selected, but you can turn some of them off.</i></font></p>
+<table class="table">
+<form action="process.php?type=new_benchmark" method="post">
+<input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
+<thead><th>Select</th><th>ID</th><th>Description</th></td></thead>
+<tbody>
+<tr>
+    <td><font size="1">Always enabled.</font></td>
+    <td><code>glm<code></td>
+    <td>Logistic regression (generalized linear model with binomial link function).</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="mlp" checked><span class="slider round"></span></label></td>
+    <td><code>mlp<code></td>
+    <td>Multilayer perceptron (MLP) -  fully connected feedforward neural network with 1 hidden layer and logistic activiation function. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/mlp.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/RSNNS" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="mlpML" checked><span class="slider round"></span></label></td>
+    <td><code>mlpML<code></td>
+    <td>Multilayer perceptron (MLP) -  fully connected feedforward neural network with up to 3 hidden layers and logistic activiation function. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/mlpML.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/RSNNS" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="svmRadial" checked><span class="slider round"></span></label></td>
+    <td><code>svmRadial<code></td>
+    <td>Support vector machines with radial basis function kernel. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/svmRadial.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/kernlab" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="svmLinear" checked><span class="slider round"></span></label></td>
+    <td><code>svmLinear<code></td>
+    <td>Support vector machines with linear kernel. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/svmLinear.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/kernlab" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="rf" checked><span class="slider round"></span></label></td>
+    <td><code>rf<code></td>
+    <td>Random forest. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/rf.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/randomForest" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="C5.0" checked><span class="slider round"></span></label></td>
+    <td><code>C5.0<code></td>
+    <td>C5.0 decision trees and rule-based models. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/C5.0.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/C50" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="rpart" checked><span class="slider round"></span></label></td>
+    <td><code>rpart<code></td>
+    <td>CART decision trees with modulation of complexity parameter. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/rpart.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/rpart" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="rpart2" checked><span class="slider round"></span></label></td>
+    <td><code>rpart2<code></td>
+    <td>CART decision trees with modulation of max tree depth. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/rpart2.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/rpart" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="ctree" checked><span class="slider round"></span></label></td>
+    <td><code>ctree<code></td>
+    <td>Conditional inference trees. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/ctree.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/party" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="mxnet" value="1"><span class="slider round"></span></label></td>
+    <td><code>mxnet<code></td>
+    <td>MXNET-based deep neural networks up to 2 hidden layers, with multiple activation functions tested. Details: <a href="https://github.com/kstawiski/miRNAselector/blob/09cb16c077594b436c642754e4d86c0d65e5790c/R/ks.benchmark.R#L173" target="_blank">code</a>, <a href="https://mxnet.apache.org/" target="_blank">package</a>.
+    <br>
+        It uses early stopping, but what maximum number of epochs should be used? <input class="form-control" id="search_iters_mxnet" name="search_iters_mxnet" type="number" min="1" max="500000" value="2000" /> 
+</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="xgbTree"><span class="slider round"></span></label></td>
+    <td><code>xgbTree<code></td>
+    <td>eXtreme gradient boosting. (note: this is a time-consuming method). Details: <a href="https://github.com/topepo/caret/blob/master/models/files/xgbTree.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/xgboost" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="mlpKerasDropoutCost"><span class="slider round"></span></label></td>
+    <td><code>mlpKerasDropoutCost<code></td>
+    <td>Keras-based (tensorflow) neural networks with 1 hidden layer and dropout. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/mlpKerasDropoutCost.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/keras" target="_blank">package</a>.</td>
+</tr>
+<tr>
+    <td><label class="switch"><input type="checkbox" name="method[]" value="mlpKerasDecayCost"><span class="slider round"></span></label></td>
+    <td><code>mlpKerasDecayCost<code></td>
+    <td>Keras-based (tensorflow) neural networks with 1 hidden layer and with weight decay. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/mlpKerasDecayCost.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/keras" target="_blank">package</a>.</td>
+</tr>
 
+<tr>
+    <td>Options:</td>
+    <td colspan="2">
+    <div class="form-group row">
+    <div class="col-sm-7">
+    <p><u>Number of random hyperparameter sets</u><br />
+<font size="1"><i>(hyperparameter search is performed via <a href="https://topepo.github.io/caret/random-hyperparameter-search.html" target="_blank">random search</a>, how many should be checked?)</i></font></p>
+    </div>
+    <div class="col-sm-5">
+      <input class="form-control" id="search_iter" name="search_iter" type="number" min="1" max="500000" value="2000" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-7">
+    <p><u>Number of random hyperparameter sets</u><br />
+<font size="1"><i>(hyperparameter search is performed via <a href="https://topepo.github.io/caret/random-hyperparameter-search.html" target="_blank">random search</a>, how many should be checked?)</i></font></p>
+    </div>
+    <div class="col-sm-5">
+    <select class="form-control" id="holdout" name="holdout">
+        <option value="TRUE" selected>Holdout-validation (on test set)</option>
+        <option value="FALSE">10-fold cross-validation repeated 5 times</option>
+    </select>  
+    </div>
+  </div>
+  
+    </td>
+</tr>
+</tbody>
+</table>
+<p>
+<button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
+<i class="fas fa-clipboard-check"></i>&emsp;Start benchmarking feature sets
+</button>&emsp;</p>
+</form>
+            </div>
+</div>
+
+
+<?php 
+// Analiza gdy benchmark zrobiony.
+} else { ?>
+    
+    
+<?php } ?>
 <?php } ?>
 
     <!--Modal: Name-->

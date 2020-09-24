@@ -4,9 +4,9 @@
 
 Environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
-# Installation
+## Installation
 
-## [OPTION 1] Docker version (recommended):
+### [OPTION 1] Docker version (recommended):
 
 1. GPU-based, using Nvidia CUDA: [kstawiski/mirnaselector-gpu)](https://hub.docker.com/r/kstawiski/mirnaselector-gpu)
 
@@ -33,7 +33,7 @@ Pearls:
 - Contains Jupyter-notebook-based tutorial for learning and easy implementation of R package.
 - For docker-based version we assure the correct functionality. Docker container is based on configured ubuntu.
 
-## [OPTION 2] Installation in your local R enviorment:
+### [OPTION 2] Installation in your local R enviorment:
 
 Use e.g. `conda create -n mirnaselector` and `conda activate mirnaselector` to set up your enviorment. 
 
@@ -61,7 +61,7 @@ ks.setup()
 
 Please note that application of `mxnet` requires the `mxnet` R package which is not installed automatically. You can search for `mxnet R package` in Google to find the tutorial on package installation or just use our docker container.
 
-# Tutorials
+## Tutorials
 
 - [Get started with basic functions of the package in local R enviorment.](articles/Tutorial.html)
 
@@ -71,9 +71,9 @@ Examplary files for the analysis:
 - [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation): `tissue_miRNA_counts_withmissing.csv`](https://github.com/kstawiski/miRNAselector/blob/master/example/tissue_miRNA_counts_withmissing.csv)
 - [TCGA-based tissue expression of miRNAs with random missing values (for testing of missing values imputation) and with batch variable (for testing of batch-effect correction): `tissue_miRNA_counts_withmissing_wthbatcheffect.csv`](https://github.com/kstawiski/miRNAselector/blob/master/example/tissue_miRNA_counts_withmissing_wthbatcheffect.csv)
 
-# Development
+## Development
 
-![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R package](https://github.com/kstawiski/miRNAselector/workflows/R%20package/badge.svg)
+![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg)     ![R package](https://github.com/kstawiski/miRNAselector/workflows/R%20package/badge.svg)
 
 - Bugs and issues: [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues)
 - Contact with developers: [Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl)](https://konsta.com.pl)
