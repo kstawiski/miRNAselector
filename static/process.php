@@ -260,6 +260,7 @@ switch($_GET['type'])
         file_put_contents($target_dir . '/var_search_iters_mxnet.txt', $_POST['search_iters_mxnet']);
         file_put_contents($target_dir . '/var_search_iters.txt', $_POST['search_iter']);
         file_put_contents($target_dir . '/var_holdout.txt', $_POST['holdout']);
+        file_put_contents($target_dir . '/var_holdout.txt', $_POST['holdout']);
 
         // Starting benchmark
         exec("cp /miRNAselector/miRNAselector/docker/benchmark.R " . $target_dir . "benchmark.R");
