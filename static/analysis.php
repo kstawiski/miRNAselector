@@ -356,13 +356,6 @@ foreach($images as $image) {
 <form action="process.php?type=new_fs" method="post">
 <input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
 <thead><th>Select</th><th>ID</th><th>Description</th></td></thead>
-<script language="JavaScript">
-function toggle(source) {
-  checkboxes = document.getElementsByName('method[]');
-  for(var checkbox in checkboxes)
-    checkbox.checked = source.checked;
-}
-</script>
 <tbody>
 <tr>
     <td><label class="switch"><input type="checkbox" name="method[]" value="1" checked><span class="slider round"></span></label></td>
@@ -739,7 +732,7 @@ function toggle(source) {
 <p>
 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
 <i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
-</button>&emsp;<a href="process.php?type=delete_fs2&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-success" role="button"><i class="fas fa-trash-restore"></i> Recover interrupted selection</a>&emsp;<input type="checkbox" onClick="toggle(this)">Toggle all methods</input></p>
+</button>&emsp;<a href="process.php?type=recover_fs&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-primary" role="button"><i class="fas fa-trash-restore"></i> Recover interrupted selection</a></p>
 </form>
         </div>
         </div>
