@@ -574,12 +574,65 @@ foreach($images as $image) {
     <td>Recursively eliminates features from the feature space based on ranking from Random Forrest classifier (retrained woth resampling after each elimination). Details are available <a href="https://topepo.github.io/caret/recursive-feature-elimination.html#search" target="_blank">here</a>. Only features significant in DE are allowed. Performed on the training set balanced with SMOTE. </td>
 </tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="37" checked><span class="slider round"></span></label></td>
+    <td>No: 37<br /><code>GeneticAlgorithmRF</code></td>
+    <td>Uses genetic algorithm principle to search for optimal subset of the feature space. This uses internally implemented random forest model and 10-fold cross validation to assess performance of the "chromosomes" in each generation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html" target="_blank">here</a>. </td>
+</tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="38" checked><span class="slider round"></span></label></td>
+    <td>No: 38<br /><code>GeneticAlgorithmRFSMOTE</code></td>
+    <td>Uses genetic algorithm principle to search for optimal subset of the feature space. This uses internally implemented random forest model and 10-fold cross validation to assess performance of the "chromosomes" in each generation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html" target="_blank">here</a>. Performed on the training set balanced with SMOTE. </td>
+</tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="39" checked><span class="slider round"></span></label></td>
+    <td>No: 39<br /><code>GeneticAlgorithmRF_sig</code></td>
+    <td>Uses genetic algorithm principle to search for optimal subset of the feature space. This uses internally implemented random forest model and 10-fold cross validation to assess performance of the "chromosomes" in each generation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html" target="_blank">here</a>. Only features significant in DE are allowed.  </td>
+</tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="40" checked><span class="slider round"></span></label></td>
+    <td>No: 40<br /><code>GeneticAlgorithmRFSMOTE_sig</code></td>
+    <td>Uses genetic algorithm principle to search for optimal subset of the feature space. This uses internally implemented random forest model and 10-fold cross validation to assess performance of the "chromosomes" in each generation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html" target="_blank">here</a>. Only features significant in DE are allowed. Performed on the training set balanced with SMOTE. </td>
+</tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="41" checked><span class="slider round"></span></label></td>
+    <td>No: 41<br /><code>SimulatedAnnealingRF</code></td>
+    <td>Simulated Annealing - explores a feature space by randomly modifying a given feature subset and evaluating classification performance using new attributes to check whether changes were beneficial. It is is a global search method that makes small random changes (i.e. perturbations) to an initial candidate solution. In this method also random forest is used as a model for evaluation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-simulated-annealing.html" target="_blank">here</a>. </td>
+</tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="42" checked><span class="slider round"></span></label></td>
+    <td>No: 42<br /><code>SimulatedAnnealingRFSMOTE</code></td>
+    <td>Simulated Annealing - explores a feature space by randomly modifying a given feature subset and evaluating classification performance using new attributes to check whether changes were beneficial. It is is a global search method that makes small random changes (i.e. perturbations) to an initial candidate solution. In this method also random forest is used as a model for evaluation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-simulated-annealing.html" target="_blank">here</a>. Performed on the training set balanced with SMOTE. </td>
+</tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="43" checked><span class="slider round"></span></label></td>
+    <td>No: 43<br /><code>SimulatedAnnealingRF_sig</code></td>
+    <td>Simulated Annealing - explores a feature space by randomly modifying a given feature subset and evaluating classification performance using new attributes to check whether changes were beneficial. It is is a global search method that makes small random changes (i.e. perturbations) to an initial candidate solution. In this method also random forest is used as a model for evaluation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-simulated-annealing.html" target="_blank">here</a>. Only features significant in DE are allowed.  </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="44" checked><span class="slider round"></span></label></td>
+    <td>No: 44<br /><code>SimulatedAnnealingRFSMOTE_sig</code></td>
+    <td>Simulated Annealing - explores a feature space by randomly modifying a given feature subset and evaluating classification performance using new attributes to check whether changes were beneficial. It is is a global search method that makes small random changes (i.e. perturbations) to an initial candidate solution. In this method also random forest is used as a model for evaluation. Details are available <a href="https://topepo.github.io/caret/feature-selection-using-simulated-annealing.html" target="_blank">here</a>. Only features significant in DE are allowed. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="45" checked><span class="slider round"></span></label></td>
+    <td>No: 45<br /><code>Boruta</code></td>
+    <td>Boruta - utilizes random forrest algorithm to iteratively remove features proved to be less relevant than random variables. Details are available in paper by <a href="https://www.jstatsoft.org/v36/i11/paper/" target="_blank">Kursa et al. 2010</a> or <a href="https://www.datacamp.com/community/tutorials/feature-selection-R-boruta" target="_blank">this blog post</a>. Only features significant in DE are allowed. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="46" checked><span class="slider round"></span></label></td>
+    <td>No: 46<br /><code>BorutaSMOTE</code></td>
+    <td>Boruta - utilizes random forrest algorithm to iteratively remove features proved to be less relevant than random variables. Details are available in paper by <a href="https://www.jstatsoft.org/v36/i11/paper/" target="_blank">Kursa et al. 2010</a> or <a href="https://www.datacamp.com/community/tutorials/feature-selection-R-boruta" target="_blank">this blog post</a>. Performed on the training set balanced with SMOTE. </td>
+</tr>
 
 
 
