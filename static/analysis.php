@@ -826,7 +826,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
     <td>Conditional inference trees. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/ctree.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/party" target="_blank">package</a>.</td>
 </tr>
 <tr>
-    <td><label class="switch"><input type="checkbox" name="mxnet" value="1"><span class="slider round"></span></label></td>
+    <td><label class="switch"><input type="checkbox" name="mxnet" value="TRUE"><span class="slider round"></span></label></td>
     <td><code>mxnet<code></td>
     <td>MXNET-based deep neural networks up to 2 hidden layers, with multiple activation functions tested. Details: <a href="https://github.com/kstawiski/miRNAselector/blob/09cb16c077594b436c642754e4d86c0d65e5790c/R/ks.benchmark.R#L173" target="_blank">code</a>, <a href="https://mxnet.apache.org/" target="_blank">package</a>.
     <br>

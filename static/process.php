@@ -237,7 +237,38 @@ switch($_GET['type'])
         header("Location: /analysis.php?id=" . $analysis_id); die();
     break;
     
-    
+    // Benchmarking invoked by analysis.php
+    case "new_benchmark":
+        // Sanity check
+        $analysis_id = $_POST['analysisid'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+
+        // Debug
+        ob_flush();
+        ob_start();
+        var_dump($_POST);
+        file_put_contents($target_dir . '/debug.txt', ob_get_flush());
+
+        // Save selected methods as csv
+        $metody = "m";
+        foreach($_POST['method'] as $value){  $metody .= PHP_EOL . $value; }
+        file_put_contents($target_dir . '/selected_benchmark.csv', $metody);
+
+        // Save additional vars as files
+        file_put_contents($target_dir . '/var_mxnet.txt', $_POST['mxnet']);
+        file_put_contents($target_dir . '/var_search_iters_mxnet.txt', $_POST['search_iters_mxnet']);
+        file_put_contents($target_dir . '/var_search_iter.txt', $_POST['search_iter']);
+        file_put_contents($target_dir . '/var_holdout.txt', $_POST['holdout']);
+
+        // Starting benchmark
+        exec("cp /miRNAselector/miRNAselector/docker/benchmark.R " . $target_dir . "benchmark.R");
+        exec("cd " . $target_dir . " && screen -dmS mirnaselector-". $analysis_id ." Rscript benchmark.R");
+        sleep(3); // Wait to start writing log.
+
+        // Redirect to analysis
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    break;
     
     
     
