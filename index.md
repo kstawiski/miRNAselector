@@ -2,29 +2,33 @@
 
 ![](https://github.com/kstawiski/miRNAselector/raw/master/vignettes/logo.png)
 
-`miRNAselector` can perform basic analysis of NGS (miRNA-seq, RNA-seq) counts or normalized values from any . Initially developed for miRNA-seq.
+Environment, docker-based application and R package for biomarker signiture selection from high-throughput experiments. Initially developed for miRNA-seq.
 
 # Installation
 
 ## [OPTION 1] Docker version (recommended):
+
+1. GPU-based, using Nvidia CUDA: [kstawiski/mirnaselector-gpu)](https://hub.docker.com/r/kstawiski/mirnaselector-gpu)
+
+```
+docker run --name mirnaselector --restart always -d -p 28888:80 --gpus all -v $(pwd)/:/miRNAselector/host/ kstawiski/mirnaselector-gpu
+```
+
+2. CPU-based: [kstawiski/mirnaselector](https://hub.docker.com/r/kstawiski/mirnaselector)
+
+```
+docker run --name mirnaselector --restart always -d -p 28888:80 -v $(pwd)/:/miRNAselector/host/ kstawiski/mirnaselector
+```
+
+As docker image updates itself, it may take few minutes for the app to be operational. You can check logs using `docker logs mirnaselector`. The GUI is accessable via `http://your-host-ip:28888/`. If you use command above, your working directory will be binded as `/miRNAselector/host/`.
+
+3. Lite dev CPU-based version, used in CI and debuging, does not contain `mxnet` library: [kstawiski/mirnaselector-ci](https://hub.docker.com/r/kstawiski/mirnaselector-ci)
 
 If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
 Our public docker images: 
 
 - Docker Hub: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector)
-
-Alternatives:
-
-- Built by workflow on GitHub (without `mxnet` package installed): [`kstawiski/mirnaselector-ci`](https://hub.docker.com/r/kstawiski/mirnaselector-ci)
-
-Quick-start command: 
-
-```
-docker run --name mirnaselector -p 28888:80 kstawiski/mirnaselector
-```
-
-and go to [`http://127.0.0.1:28888`](http://127.0.0.1:28888) on your local machine for GUI. You can change `28888` to the port you desire.
 
 Pearls:
 
@@ -35,15 +39,31 @@ Pearls:
 
 ## [OPTION 2] Installation in your local R enviorment:
 
-Run following commands in your local R:
+Use e.g. `conda create -n mirnaselector` and `conda activate mirnaselector` to set up your enviorment. 
 
 ```
-library("devtools")
+conda update --all 
+conda install --channel "conda-forge" --channel "anaconda" --channel "r" tensorflow keras jupyter jupytext numpy pandas r r-devtools r-rgl r-rjava r-mnormt r-purrrogress r-xml gxx_linux-64 libxml2 pandoc r-rjava r-magick opencv pkgconfig gfortran_linux-64
+echo "options(repos=structure(c(CRAN='http://cran.r-project.org')))" >> ~/.Rprofile
+Rscript -e 'update.packages(ask = F); install.packages(c("devtools","remotes"));'
+Rscript -e 'devtools::source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")'
+```
+
+If you have compatible GPU you can consider changing `tensorflow` to `tensorflow-gpu` in `conda install` command.
+
+2. Setup the package in your own R enviroment.
+
+```
+library("devtools") # if not installed, install via install.packages('devtools')
 source_url("https://raw.githubusercontent.com/kstawiski/miRNAselector/master/vignettes/setup.R")
 install_github("kstawiski/miRNAselector", force = T)
+library(keras)
+install_keras()
 library(miRNAselector)
+ks.setup()
 ```
-or run `vignettes/setup.R` script to install nessesary libraries.
+
+Please note that application of `mxnet` requires the `mxnet` R package which is not installed automatically. You can search for `mxnet R package` in Google to find the tutorial on package installation or just use our docker container.
 
 # Tutorials
 
@@ -61,3 +81,18 @@ Examplary files for the analysis:
 
 - Bugs and issues: [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues)
 - Contact with developers: [Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl)](https://konsta.com.pl)
+
+## Footnote
+
+Citation:
+
+`In press.`
+
+Authors:
+
+- [Konrad Stawiski, M.D. (konrad@konsta.com.pl)](https://konsta.com.pl)
+- Marcin Kaszkowiak.
+
+For any troubleshooting use [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues).
+
+Department of Biostatistics and Translational Medicine, Medical Univeristy of Lodz, Poland (https://biostat.umed.pl) 
