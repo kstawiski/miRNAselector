@@ -765,7 +765,7 @@ foreach($images as $image) {
 </div>
 <?php 
 // Po selekcji zmiennych, przygotowanie benchmarku.
-if(!file_exists($target_dir . "featureselection_formulas_all.csv"))  { ?>
+if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
