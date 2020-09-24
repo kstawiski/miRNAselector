@@ -134,17 +134,15 @@ if($pid != "") { header("Location: /inprogress.php"); }
             <div class="panel panel-primary">
                 <div class="panel-heading"><i class="fas fa-chart-pie"></i>&emsp;&emsp;Analysis</div>
                 <div class="panel-body">
-                You can start new analysis or resume your previous one.
+                <p>You can start new analysis or resume your previous one.</p>
                 <table class="table">
                     <tr><td>
-                        <p><a href="/start.php" role="button" class="btn btn-info"><i class="fas fa-plus"></i>&emsp;New analysis</a></p>
+                        <p><a href="/start.php" role="button" class="btn btn-primary"><i class="fas fa-plus"></i>&emsp;New analysis</a></p>
                     </td>
                     <td>
                 <p><form action="/analysis.php" method="get">
-                <div class="form-group">
                     <label for="id">Analysis ID:</label>
                     <input type="text" class="form-control" id="id" name="id">
-                </div>
                 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Loading...');"><i class="fas fa-folder-open"></i>&emsp;Resume analysis</button>
                 </form></p>
             </td></tr>
