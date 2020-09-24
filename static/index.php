@@ -137,13 +137,13 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <p>You can start new analysis or resume your previous one.</p>
                 <table class="table">
                     <tr><td>
-                    <h5>Start new analysis</h5>    
+                    <h4>Start new analysis:</h4>    
                     <p><a href="/start.php" role="button" class="btn btn-primary"><i class="fas fa-plus"></i>&emsp;New analysis</a></p>
                     </td>
                     <td>
-                        <h5>Resume analysis</h5>
+                        <h4>Resume analysis:</h4>
                 <p><form action="/analysis.php" method="get">
-                    <input type="text" id="id" name="id" placeholder="Provide analysis ID"><br>
+                    <input type="text" id="id" name="id" placeholder="Provide analysis ID" class="form-control"><br>
                 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Loading...');"><i class="fas fa-folder-open"></i>&emsp;Resume analysis</button>
                 </form></p>
             </td></tr>
