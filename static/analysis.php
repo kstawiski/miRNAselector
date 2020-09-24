@@ -751,8 +751,10 @@ foreach($images as $image) {
                    <tr><td>Final set of formulas selected by the methods:<br /><font size="1"><i>(formulas with more than prefered number of features were removed, classical selection methods are intact)</i></font><td><a href="view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('view.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv','popup','width=600,height=600'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_final.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
                   <tr><td>Options:</td><td>
-                  <a href="/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log" class="btn btn-primary" role="button" target="popup"
-                        onclick="window.open('/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log','popup','width=600,height=600'); return false;"><i class="fas fa-history"></i> View log</a>&emsp;<a href="process.php?type=delete_fs&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data regarding your feature selection')"><i class="fas fa-trash"></i> Re-run selection (delete previous)</a>&emsp;<a href="process.php?type=delete_fs2&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-success" role="button"><i class="fas fa-plus"></i> Add or re-run some methods</a>
+                  <p><a href="/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log" class="btn btn-primary" role="button" target="popup"
+                        onclick="window.open('/e/edit/<?php echo $_GET['id']; ?>/temp/featureselection.log','popup','width=600,height=600'); return false;"><i class="fas fa-history"></i> View log</a>&emsp;<a href="process.php?type=delete_fs2&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-success" role="button"><i class="fas fa-plus"></i> Add or re-run some methods</a></p>
+                        <p><a href="process.php?type=delete_fs&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data regarding your feature selection')"><i class="fas fa-trash"></i> Re-run selection (delete previous)</a></p>
+
 
                   </td></tr>
                       

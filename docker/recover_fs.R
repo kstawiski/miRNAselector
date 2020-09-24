@@ -42,7 +42,7 @@ timeout_sec = as.numeric(readLines("var_timeout_sec.txt", warn = F))
 # stopCluster(cl)
 
 selected_sets_of_miRNAs = ks.merge_formulas(max_miRNAs = prefer_no_features)
-cat("Recovered:")
+cat("Recovered from temporary files:\n\n")
 print(selected_sets_of_miRNAs)
 
 cat("[miRNAselector: TASK COMPLETED]")
