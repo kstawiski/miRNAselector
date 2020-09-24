@@ -1190,8 +1190,8 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     selectedMirsCV <- mk.iteratedRFE(trainSet = train_smoted, useCV = T, classLab = 'Class', checkNFeatures = prefer_no_features)$topFeaturesPerN[[prefer_no_features]]
     selectedMirsTest <- mk.iteratedRFE(trainSet = train_smoted, testSet = test, classLab = 'Class', checkNFeatures = prefer_no_features)$topFeaturesPerN[[prefer_no_features]]
 
-    formulas[["iteratedRFECV"]] = ks.create_miRNA_formula(selectedMirsCV$topFeaturesPerN[[prefer_no_features]])
-    formulas[["iteratedRFETest"]] = ks.create_miRNA_formula(selectedMirsTest$topFeaturesPerN[[prefer_no_features]])
+    formulas[["iteratedRFECV_SMOTE"]] = ks.create_miRNA_formula(selectedMirsCV$topFeaturesPerN[[prefer_no_features]])
+    formulas[["iteratedRFETest_SMOTE"]] = ks.create_miRNA_formula(selectedMirsTest$topFeaturesPerN[[prefer_no_features]])
 
     end_time <- Sys.time()
     saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS"))

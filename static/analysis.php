@@ -356,6 +356,13 @@ foreach($images as $image) {
 <form action="process.php?type=new_fs" method="post">
 <input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
 <thead><th>Select</th><th>ID</th><th>Description</th></td></thead>
+<script language="JavaScript">
+function toggle(source) {
+  checkboxes = document.getElementsByName('method[]');
+  for(var checkbox in checkboxes)
+    checkbox.checked = source.checked;
+}
+</script>
 <tbody>
 <tr>
     <td><label class="switch"><input type="checkbox" name="method[]" value="1" checked><span class="slider round"></span></label></td>
@@ -634,6 +641,65 @@ foreach($images as $image) {
     <td>Boruta - utilizes random forrest algorithm to iteratively remove features proved to be less relevant than random variables. Details are available in paper by <a href="https://www.jstatsoft.org/v36/i11/paper/" target="_blank">Kursa et al. 2010</a> or <a href="https://www.datacamp.com/community/tutorials/feature-selection-R-boruta" target="_blank">this blog post</a>. Performed on the training set balanced with SMOTE. </td>
 </tr>
 
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="47" checked><span class="slider round"></span></label></td>
+    <td>No: 47<br /><code>spFSR</code></td>
+    <td>spFSR - feature selection and ranking by simultaneous perturbation stochastic approximation. This is an algorithm based on pseudo-gradient descent stochastic optimisation with Barzilai-Borwein method for step size and gradient estimation optimization.  Details are available in paper by <a href="https://arxiv.org/abs/1804.05589" target="_blank">Zeren et al. 2018</a>. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="48" checked><span class="slider round"></span></label></td>
+    <td>No: 48<br /><code>spFSRSMOTE</code></td>
+    <td>spFSR - feature selection and ranking by simultaneous perturbation stochastic approximation. This is an algorithm based on pseudo-gradient descent stochastic optimisation with Barzilai-Borwein method for step size and gradient estimation optimization. Details are available in paper by <a href="https://arxiv.org/abs/1804.05589" target="_blank">Zeren et al. 2018</a>. Performed on the training set balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="49" checked><span class="slider round"></span></label></td>
+    <td>No: 49<br /><code>varSelRF, varSelRFSMOTE</code></td>
+    <td>varSelRF - recursively eliminates features using random forrest feature scores, seeking to minimize out-of-bag classification error.  Details are available in paper by <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-3" target="_blank">Díaz-Uriarte et al. 2006</a>. Performed on the unbalanced training set as well as on balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="50" checked><span class="slider round"></span></label></td>
+    <td>No: 50<br /><code>Wx, WxSMOTE</code></td>
+    <td>Wx - deep neural network-based (deep learning) feature (gene) selection algorithm. <a href="https://github.com/kstawiski/miRNAselector/blob/master/inst/extdata/wx/DearWXpub/src/wx_konsta.py" target="_blank">We use 2 hidden layers with 16 hidden neurons.</a> Details are available in paper by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6642261/" target="_blank">Park et al. 2019</a>. Performed on the unbalanced training set as well as on balanced with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="51" checked><span class="slider round"></span></label></td>
+    <td>No: 51<br /><code>Mystepwise_glm_binomial, Mystepwise_sig_glm_binomial</code></td>
+    <td>Stepwise variable selection procedure (with iterations between the 'forward' and 'backward' steps) for generalized linear models with logit link function (i.e. logistic regression). We use p=0.05 as a threshold for both entry (SLE) and stay (SLS). Details are available <a href="https://www.rdocumentation.org/packages/My.stepwise" target="_blank">here</a>. Performed on all features of training set as well as features initially selected in DE (significant in DE). </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="51" checked><span class="slider round"></span></label></td>
+    <td>No: 52<br /><code>Mystepwise_glm_binomialSMOTE, Mystepwise_sig_glm_binomialSMOTE</code></td>
+    <td>Stepwise variable selection procedure (with iterations between the 'forward' and 'backward' steps) for generalized linear models with logit link function (i.e. logistic regression). We use p=0.05 as a threshold for both entry (SLE) and stay (SLS). Details are available <a href="https://www.rdocumentation.org/packages/My.stepwise" target="_blank">here</a>. Performed on all features of training set as well as features initially selected in DE (significant in DE) after balancing the training set with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="53" checked><span class="slider round"></span></label></td>
+    <td>No: 53<br /><code>stepAIC, stepAICsig</code></td>
+    <td>Here we perform a stepwise model selection by AIC (Akaike Information Criterion) based on logistic regression. Details are available <a href="https://www.rdocumentation.org/packages/MASS/versions/7.3-53/topics/stepAIC" target="_blank">here</a>. Performed on all features of training set as well as features initially selected in DE (significant in DE). </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="54" checked><span class="slider round"></span></label></td>
+    <td>No: 54<br /><code>stepAIC_SMOTE, stepAICsig_SMOTE</code></td>
+    <td>Here we perform a stepwise model selection by AIC (Akaike Information Criterion) based on logistic regression. Details are available <a href="https://www.rdocumentation.org/packages/MASS/versions/7.3-53/topics/stepAIC" target="_blank">here</a>. Performed on all features of training set as well as features initially selected in DE (significant in DE) after balancing the training set with SMOTE. </td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="55"><span class="slider round"></span></label></td>
+    <td>No: 55<br /><code>iteratedRFECV, iteratedRFETest</code></td>
+    <td>Iterated RFE tested in cross-validation and on test set (watch out for bias!). See the source <a href="https://github.com/kstawiski/miRNAselector/blob/master/R/mk.iteratedRFE.R" target="_blank">here</a>.</td>
+</tr>
+
+<tr>
+<td><label class="switch"><input type="checkbox" name="method[]" value="56"><span class="slider round"></span></label></td>
+    <td>No: 56<br /><code>iteratedRFECV_SMOTE, iteratedRFETest_SMOTE</code></td>
+    <td>Iterated RFE tested in cross-validation and on test set (watch out for bias!). See the source <a href="https://github.com/kstawiski/miRNAselector/blob/master/R/mk.iteratedRFE.R" target="_blank">here</a>. Performed after balancing the training set with SMOTE. </td>
+</tr>
 
 
 <tr>
@@ -673,7 +739,7 @@ foreach($images as $image) {
 <p>
 <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Starting the analysis...');">
 <i class="fas fa-clipboard-check"></i>&emsp;Start feature selection
-</button></p>
+</button>&emsp;<button type="submit" class="btn btn-primary" value="Upload" name="submit" onclick="toggle(this);">Toggle all</button></p>
 </form>
         </div>
         </div>
