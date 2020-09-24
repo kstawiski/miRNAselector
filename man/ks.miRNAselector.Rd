@@ -15,13 +15,16 @@ ks.miRNAselector(
   prefer_no_features = 11,
   conda_path = "/home/konrad/anaconda3/bin/conda",
   debug = F,
-  timeout_sec = 172800
+  timeout_sec = 172800,
+  type = "deltact"
 )
 }
 \arguments{
 \item{wd}{Working directory with data (`mixed_train.csv`, `mixed_test.csv` and `mixed_validation.csv` as created by `ks.prepare_split` have to be present).}
 
 \item{m}{Methods of feature selection to be performed. This has to be a vector of integers with minimum of 1 and maximum of 70. For the definition of numbers please see the vignette.}
+
+\item{max_iterations}{Maximum number of iterations in selected methods. Setting this too high may results in very long comupting time.}
 
 \item{code_path}{A folder where the python external scripts are placed (especially for WxNet method). By default the additional code is provided in the package.}
 
@@ -39,7 +42,7 @@ ks.miRNAselector(
 
 \item{timeout_sec}{Timeout after the method is terminated if not finished. It may be useful to keep the long methods limited, not to wait ethernity for the results.}
 
-\item{max_iteration}{Maximum number of iterations in selected methods. Setting this too high may results in very long comupting time.}
+\item{type}{Parameter 'mode' forwarded to ks.miRNA_differential_expression which is essential in many feature selection methods. Note that if 'var_type.txt' file exists in the working directory it is superior to the value set directly in function - as designed for GUI. Please refer to ks.miRNA_differential_expression manual to understand how 'mode' works.}
 }
 \value{
 The list of selected formulas. Note that, due to purpose of this package `ks.merge_formulas` may be a better option to get the output of processes run by this function.

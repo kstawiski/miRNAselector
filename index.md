@@ -26,10 +26,6 @@ As docker image updates itself, it may take few minutes for the app to be operat
 
 If you do not know how docker works go to [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
 
-Our public docker images: 
-
-- Docker Hub: [`kstawiski/mirnaselector`](https://hub.docker.com/r/kstawiski/mirnaselector)
-
 Pearls:
 
 - Docker version contains web-based GUI allowing for easy implementation of the pipeline.
@@ -77,7 +73,7 @@ Examplary files for the analysis:
 
 # Development
 
- ![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg)   ![R package and environment](https://github.com/kstawiski/miRNAselector/workflows/R%20package%20and%20environment/badge.svg)
+![Docker](https://github.com/kstawiski/miRNAselector/workflows/Docker/badge.svg) ![R package](https://github.com/kstawiski/miRNAselector/workflows/R%20package/badge.svg)
 
 - Bugs and issues: [https://github.com/kstawiski/miRNAselector/issues](https://github.com/kstawiski/miRNAselector/issues)
 - Contact with developers: [Konrad Stawiski M.D. (konrad@konsta.com.pl, https://konsta.com.pl)](https://konsta.com.pl)
