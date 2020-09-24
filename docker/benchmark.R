@@ -10,7 +10,7 @@ library(miRNAselector)
 mm = read.csv("selected_benchmark.csv")
 m = as.character(mm$m) # which methods to check?
 
-mxnet = ifelse(readLines("var_prefer_no_features.txt", warn = F) == "TRUE", TRUE, FALSE)
+mxnet = ifelse(readLines("var_mxnet.txt", warn = F) == "TRUE", TRUE, FALSE)
 search_iters_mxnet = as.numeric(readLines("var_search_iters_mxnet.txt", warn = F))
 search_iters = as.numeric(readLines("var_search_iters.txt", warn = F))
 holdout = ifelse(readLines("var_holdout.txt", warn = F) == "TRUE", TRUE, FALSE)
