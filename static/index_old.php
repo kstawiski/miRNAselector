@@ -158,8 +158,8 @@ if($pid != "") { header("Location: /inprogress.php"); }
                     <p>Initial check status:
                         <code><b><?php $var_initcheck = file_get_contents('/miRNAselector/var_initcheck.txt'); echo $var_initcheck; ?></b></code>
                     </p>
-                    <p><a href="view.php?f=data_start.csv" class="btn btn-info" role="button" target="popup"
-                        onclick="window.open('view.php?f=data_start.csv','popup','width=600,height=600'); return false;">View
+                    <p><a href="viewer.php?f=data_start.csv" class="btn btn-info" role="button" target="popup"
+                        onclick="window.open('viewer.php?f=data_start.csv','popup','width=600,height=600'); return false;">View
                         data</a> <a href="process.php?type=cleandata" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data, configuration files and results. If you did not save them, click cancel and do it in the first place!')">Delete data
                         and restart the pipeline!</a></p>
 <p><font size="1">Notes: <i>The viewer is limited to 100 columns and 1000 rows.</i></font></p>

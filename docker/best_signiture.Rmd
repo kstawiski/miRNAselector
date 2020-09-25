@@ -262,6 +262,7 @@ ks.table(best_signatures[1, 2:4])
 This should serve as a sanity check.
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
+selected_miRNAs = ks.get_miRNAs_from_benchmark(benchmark_csv = "benchmark.csv", best_signatures$method[1])
 best_de = ks.best_signiture_de(selected_miRNAs)
 ks.table(best_de)
 ```
