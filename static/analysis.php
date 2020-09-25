@@ -897,7 +897,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
                 
                 <tr><td>Customize this automatic analysis:</td><td><p><a href="/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd" class="btn btn-danger" role="button" target="popup"
                         onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=1150,height=800'); return false;"><i class="fas fa-edit"></i> Edit & run</a>&emsp;<a href="process.php?type=best_signiture_render&id=<?php echo $_GET['id']; ?>" class="btn btn-primary" role="button" onclick="waitingDialog.show('Rendering again.. this may take a while...');"><i class="fas fa-redo"></i> Refresh best signiture analysis</a></p>
-                        <p><a href="process.php?type=delete_benchmark&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data regarding your benchmarking.')"><i class="fas fa-trash"></i> Re-run selection (delete previous)</a></p></td></tr>
+                        <p><a href="process.php?type=delete_benchmark&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data regarding your benchmarking.')"><i class="fas fa-trash"></i> Re-run benchmarking (delete previous, model files will be intact)</a></p></td></tr>
                 </table>
 
             </div>
