@@ -13,7 +13,7 @@ Go to https://kstawiski.github.io/miRNAselector/ for more details.
 ### Docker 
 
 
-1. GPU-based, using Nvidia CUDA: [kstawiski/mirnaselector-gpu)](https://hub.docker.com/r/kstawiski/mirnaselector-gpu)
+1. GPU-based, using Nvidia CUDA: [kstawiski/mirnaselector-gpu](https://hub.docker.com/r/kstawiski/mirnaselector-gpu)
 
 ```
 docker run --name mirnaselector --restart always -d -p 28888:80 --gpus all -v $(pwd)/:/miRNAselector/host/ kstawiski/mirnaselector-gpu
