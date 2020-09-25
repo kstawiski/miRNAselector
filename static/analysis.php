@@ -911,7 +911,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
             <div class="panel panel-default">
                 <div class="panel-heading"><i class="fas fa-bars"></i>&emsp;&emsp;Additional tools</div>
                 <div class="panel-body"><a href="e/tree/<?php echo $_GET['id']; ?>" role="button" class="btn btn-primary" target="popup"
-                        onclick="window.open('/e/tree/<?php echo $_GET['id']; ?>','popup','width=600,height=600'); return false;"><i class="fas fa-lock-open"></i>&emsp;Advanced features (requires coding)&emsp;<a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-sign-out-alt"></i>&emsp;Exit</a></a>
+                        onclick="window.open('/e/tree/<?php echo $_GET['id']; ?>','popup','width=600,height=600'); return false;"><i class="fas fa-lock-open"></i>&emsp;Advanced features (requires coding)</a>&emsp;<a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-sign-out-alt"></i>&emsp;Exit</a>
                     </div>
             </div>
 
