@@ -48,6 +48,7 @@ COPY docker/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 # Extentions
 RUN conda install -c conda-forge jupyter_contrib_nbextensions nbresuse && jupyter contrib nbextension install --sys-prefix && jupyter nbextension enable varInspector/main && jupyter nbextension install --py nbresuse --sys-prefix && jupyter nbextension enable --py nbresuse --sys-prefix && pip install -U scikit-learn xgboost
+RUN pip install nbzip && jupyter serverextension enable --py nbzip --sys-prefix && jupyter nbextension install --py nbzip && jupyter nbextension enable --py nbzip
 
 # MXNET:
 RUN pip install --upgrade cmake && cd / && git clone --recursive https://github.com/apache/incubator-mxnet.git && cd /incubator-mxnet && mkdir build && cd build && cmake -DUSE_CUDA=OFF -DUSE_MKL_IF_AVAILABLE=ON -DUSE_MKLDNN=OFF -DUSE_OPENMP=ON -DUSE_OPENCV=ON .. && make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas && make install && cp -a . .. && cp -a . ../lib && cd /incubator-mxnet/ && make -f R-package/Makefile rpkg
