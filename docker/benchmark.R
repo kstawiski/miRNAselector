@@ -35,7 +35,7 @@ ks.benchmark(
   stamp = "mirnaselector"
 )
 cat("\n\nBenchmarking done. Moving to the analysis of best signature...\n\n")
-rmarkdown::render("best_signiture.Rmd", params = list())
+rmarkdown::render("best_signiture.Rmd")
 
 
 cat("[miRNAselector: TASK COMPLETED]")
