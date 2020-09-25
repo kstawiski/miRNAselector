@@ -887,10 +887,14 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
     <div class="panel panel-success">
             <div class="panel-heading"><i class="fas fa-award"></i>&emsp;&emsp;Best signature</div>
             <div class="panel-body">
+            <table class="table">
+                <tr><td>Customize this automatic analysis:</td><td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd" class="btn btn-danger" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=1150,height=800'); return false;"><i class="fas fa-edit"></i> Edit & run</a>&emsp;<a href="process.php?type=best_signiture_render&id=<?php echo $_GET['id']; ?>" class="btn btn-btn-primary" role="button" onclick="waitingDialog.show('Rendering again.. this may take a while...');"><i class="fas fa-redo"></i> Refresh best signiture analysis</a></td></tr>
+                </table>    
                 <?php echo file_get_contents($target_dir . "best_signiture.html"); ?>
                 <table class="table">
                 <tr><td>Customize this automatic analysis:</td><td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd" class="btn btn-danger" role="button" target="popup"
-                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=1150,height=800'); return false;"><i class="fas fa-edit"></i> Edit & run</a>&emsp;<a href="process.php?type=best_signiture_render&id=<?php echo $_GET['id']; ?>" class="btn btn-danger" role="button" onclick="waitingDialog.show('Rendering again.. this may take a while...');"><i class="fas fa-redo"></i> Refresh best signiture analysis</a></td></tr>
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=1150,height=800'); return false;"><i class="fas fa-edit"></i> Edit & run</a>&emsp;<a href="process.php?type=best_signiture_render&id=<?php echo $_GET['id']; ?>" class="btn btn-btn-primary" role="button" onclick="waitingDialog.show('Rendering again.. this may take a while...');"><i class="fas fa-redo"></i> Refresh best signiture analysis</a></td></tr>
                 </table>
 
             </div>
