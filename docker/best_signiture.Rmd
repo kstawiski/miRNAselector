@@ -13,6 +13,7 @@ jupyter:
 output:
   html_document:
     theme: null
+    highlight: null
 ---
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
@@ -59,7 +60,7 @@ par(mfrow = c(1, 1))
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 acc = ks.best_signiture_proposals(benchmark_csv = "benchmark.csv", without_train = F)  # generates the benchmark sorted by metaindex
 best_signatures = acc[1:3, ]  # get top 3 methods
-ks.table(best_signatures[, c("metaindex", "method", "miRy")])
+ks.table(best_signatures[, c("metaindex", "method", "miRy")])  %>% kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 Performance of those signitures:
@@ -111,7 +112,7 @@ attr(overlap, "intersections")
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 acc = ks.best_signiture_proposals(benchmark_csv = "benchmark.csv", without_train = T)  # generates the benchmark sorted by metaindex
 best_signatures = acc[1:3, ]  # get top 3 methods
-ks.table(best_signatures[, c("metaindex", "method", "miRy")])
+ks.table(best_signatures[, c("metaindex", "method", "miRy")])  %>% kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 Performance of those signitures:
@@ -163,7 +164,7 @@ attr(overlap, "intersections")
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 acc = ks.best_signiture_proposals_meta11(benchmark_csv = "benchmark.csv")  # generates the benchmark sorted by metaindex
 best_signatures = acc[1:3, ]  # get top 3 methods
-ks.table(best_signatures[, c("metaindex", "method", "miRy")])
+ks.table(best_signatures[, c("metaindex", "method", "miRy")])  %>% kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 Performance of those signitures:
@@ -252,17 +253,17 @@ grid.arrange(arrangeGrob(plot5, ncol = 1, nrow = 1))
 
 ### Best feature set
 
-By default we choose the best performing set which achived the best mean accuracy in training, testing and validation. You can customize it in the code below.
+By default we choose the best performing set which achived the best mean accuracy in training, testing and validation.
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 acc1 = ks.best_signiture_proposals(benchmark_csv = "benchmark.csv", without_train = F)  # here you can customize how the best signiture is selected.
 best_signatures = acc1[1:3, ]  # get top 3 methods
 ```
 
-Best set:
+**Best set:**
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-ks.table(best_signatures[1, 2:4])
+ks.table(best_signatures[1, c("metaindex", "method", "miRy")])  %>% kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 #### DE of selected features:
@@ -272,7 +273,7 @@ This should serve as a sanity check.
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 selected_miRNAs = ks.get_miRNAs_from_benchmark(benchmark_csv = "benchmark.csv", best_signatures$method[1])
 best_de = ks.best_signiture_de(selected_miRNAs)
-ks.table(best_de)
+ks.table(best_de)  %>% kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 #### Exploratory analysis best set:

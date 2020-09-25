@@ -895,7 +895,17 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
             <div class="panel-body">
                 <?php echo file_get_contents($target_dir . "best_signiture.html"); ?>
                 <hr>
-                
+                <table class="table">
+                <tr><td>Customize this automatic analysis:</td><td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd" class="btn btn-danger" role="button" target="popup"
+                        onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td></tr>
+                <tr><td>Download the dataset with selected features:</td><td><form action="process.php?type=select_in_dataset&id=<?php echo $_GET['id']; ?>" method="get">
+                <select class="form-control" id="method" name="method">
+                        <option value="TRUE" selected>Holdout-validation (on test set)</option>
+                        <option value="FALSE">10-fold cross-validation repeated 5 times</option>
+                </select>  
+                <button type="submit" class="btn btn-primary" value="Upload" name="submit" onclick="waitingDialog.show('Preparing the file...');">
+                </form></td></tr>
+                </table>
 
             </div>
             </div>

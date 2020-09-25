@@ -271,6 +271,41 @@ switch($_GET['type'])
         // Redirect to analysis
         header("Location: /analysis.php?id=" . $analysis_id); die();
     break;
+
+    case "select_in_dataset":
+        // Sanity check
+        $analysis_id = $_GET['id'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+        
+        // Add vars
+        $method = $_GET['method'];
+        $filename = $target_dir . md5(uniqid(rand(), true)) . ".csv";
+
+        $skrypt = 'library(miRNAselector); miRNAs = ks.get_miRNAs_from_benchmark(benchmark_csv = "benchmark.csv", method = "' . $method . '"); library(dplyr); library(data.table); dane = fread("mixed.csv"); dane2 = dplyr::select(dane, -starts_with("hsa"), miRNAs); fwrite(dane2, "'. $filename .'");';
+        exec("cd " . $target_dir . " && Rscript -e '" . $skrypt . "'");
+        
+        //Get file type and set it as Content Type
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        header('Content-Type: ' . finfo_file($finfo, $filename));
+        finfo_close($finfo);
+
+        //Use Content-Disposition: attachment to specify the filename
+        header('Content-Disposition: attachment; filename='.basename($filename));
+
+        //No cache
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+
+        //Define file size
+        header('Content-Length: ' . filesize($filename));
+
+        ob_clean();
+        flush();
+        readfile($filename);
+        exit;
+    break;
     
     
     
