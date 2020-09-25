@@ -308,6 +308,18 @@ switch($_GET['type'])
         exit;
     break;
     
+
+    case "best_signiture_render":
+        // Sanity check
+        $analysis_id = $_GET['id'];
+        $target_dir = "/miRNAselector/" . $analysis_id . "/";
+        if (!file_exists($target_dir)) { die('Analysis not found.'); }
+
+        $skrypt = 'rmarkdown::render("best_signiture.Rmd")';
+        exec("cd " . $target_dir . " && Rscript -e '" . $skrypt . "'");
+        
+        header("Location: /analysis.php?id=" . $analysis_id); die();
+    break;
     
     
     
