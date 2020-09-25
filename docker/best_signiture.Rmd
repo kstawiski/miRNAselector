@@ -10,11 +10,18 @@ jupyter:
     display_name: miRNAselector
     language: R
     name: ir
-output: html_document
+output:
+  html_document:
+    theme: null
 ---
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(miRNAselector)
+options(width = 138)
+knitr::opts_chunk$set(
+    comment = '', fig.width = 11.5, fig.height = 7
+)
+library(kableExtra)
 dane = ks.load_datamix(use_smote_not_rose = T)  # load mixed_*.csv files
 train = dane[[1]]
 test = dane[[2]]
@@ -27,7 +34,7 @@ mixed = data.table::fread("mixed.csv")
 de = ks.miRNA_differential_expression(trainx, train$Class)
 ```
 
-### Check overall methods performance:
+#### Check overall methods performance:
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 metody = ks.get_benchmark_methods("benchmark.csv")  # gets the methods used in benchmark
@@ -43,9 +50,9 @@ for (i in 1:length(metody)) {
 par(mfrow = c(1, 1))
 ```
 
-## Best set proposals
+### Best set proposals
 
-### Top 3 sets which achived the best accuracy in training, testing and validation:
+#### Top 3 sets which achived the best accuracy in training, testing and validation:
 
 (metaindex = mean of all 3 accuracy metrics)
 
@@ -90,14 +97,14 @@ for (i in 1:3) {
 }
 ```
 
-Overlap of those signitures:
+##### Overlap of those signitures:
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 overlap = ks.miRNA_signiture_overlap(acc$method[1:3], "benchmark.csv")
 attr(overlap, "intersections")
 ```
 
-### Top 3 sets which achived the best accuracy in testing and validation: 
+#### Top 3 sets which achived the best accuracy in testing and validation: 
 
 (metaindex = mean of 2 accuracy metrics)
 
@@ -142,14 +149,14 @@ for (i in 1:3) {
 }
 ```
 
-Overlap of those signitures:
+##### Overlap of those signitures:
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 overlap = ks.miRNA_signiture_overlap(acc$method[1:3], "benchmark.csv")
 attr(overlap, "intersections")
 ```
 
-### Top 3 sets which achived the best sensitivity and specificity in validation: 
+#### Top 3 sets which achived the best sensitivity and specificity in validation: 
 
 (metaindex = mean of sensivitiy and specificity in validation dataset)
 
@@ -194,16 +201,16 @@ for (i in 1:3) {
 }
 ```
 
-Overlap of those signitures:
+##### Overlap of those signitures:
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 overlap = ks.miRNA_signiture_overlap(acc$method[1:3], "benchmark.csv")
 attr(overlap, "intersections")
 ```
 
-## General analysis
+### General analysis
 
-### Overfitting analysis:
+#### Overfitting analysis:
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 for (i in 1:length(metody)) {
@@ -227,7 +234,7 @@ for (i in 1:length(metody)) {
 }
 ```
 
-### Relationship between accuracy on testing and validation sets:
+#### Relationship between accuracy on testing and validation sets:
 
 For top 6 methods.
 
@@ -243,7 +250,7 @@ plot5 = ggplot(, aes(x = as.numeric(acctest), y = as.numeric(accvalid), shape = 
 grid.arrange(arrangeGrob(plot5, ncol = 1, nrow = 1))
 ```
 
-## Best feature set
+### Best feature set
 
 By default we choose the best performing set which achived the best mean accuracy in training, testing and validation. You can customize it in the code below.
 
@@ -258,7 +265,7 @@ Best set:
 ks.table(best_signatures[1, 2:4])
 ```
 
-### DE of selected features:
+#### DE of selected features:
 
 This should serve as a sanity check.
 
@@ -268,7 +275,7 @@ best_de = ks.best_signiture_de(selected_miRNAs)
 ks.table(best_de)
 ```
 
-### Exploratory analysis best set:
+#### Exploratory analysis best set:
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 ks.vulcano_plot(selected_miRNAs = de$miR, DE = de, only_label = selected_miRNAs)
