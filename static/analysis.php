@@ -55,7 +55,7 @@ function konsta_readcsv($filename, $header=false) {
             echo "<td><code>$column</code></td>";
             echo '<td><a href="/process.php?type=select_in_dataset&id=' . $_GET['id'] . '&method=' . $column .'"  class="btn btn-warning" ><i class="fas fa-download"></i></a></td>';
             $i++;
-            } else { echo "<td><code>$column</code></td>"; }
+            } else { echo "<td><code>$column</code></td>"; $i++; }
         }
         echo '</tr>';
     }
