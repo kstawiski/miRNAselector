@@ -10,6 +10,7 @@ jupyter:
     display_name: miRNAselector
     language: R
     name: ir
+output: html_document
 ---
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}

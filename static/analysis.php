@@ -890,7 +890,19 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <?php 
 // Analiza gdy benchmark zrobiony.
 } else { ?>
-    
+    <div class="panel panel-success">
+            <div class="panel-heading"><i class="fas fa-award"></i>&emsp;&emsp;Best signature</div>
+            <div class="panel-body">
+                <?php echo file_get_contents($target_dir . "best_signiture.html"); ?>
+                <hr>
+                
+
+            </div>
+            </div>
+    </div>
+
+
+
     
 <?php } ?>
 <?php } ?>
