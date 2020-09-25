@@ -7,14 +7,25 @@
 #'
 #' @param ttpm_pofiltrze matrix of log-transformed TPM-normalized miRNAs counts with miRNAs placed in `ttpm` design (i.e. columns and cases placed as rows)
 #' @param klasy vector describing label for each case. It should contain only "Cancer" and "Control" labeles!!!!
-#' @param mode use 'logtpm' for log(TPM) data or 'deltact' for qPCR deltaCt values. This parameters sets how the fold-change is calculated. 
+#' @param mode use 'logtpm' for log(TPM) data or 'deltact' for qPCR deltaCt values. This parameters sets how the fold-change is calculated. Setting it to "auto" will try to read settings from var_type.txt (used in docker). 
 #' 
 #' 
 #' @return Data frame with results.
 #'
 #' @export
-ks.miRNA_differential_expression = function(ttpm_pofiltrze, klasy, mode = "logtpm")
+ks.miRNA_differential_expression = function(ttpm_pofiltrze, klasy, mode = "auto")
 {
+  
+  # obsluga auto
+  if(mode == "auto") {
+    if(file.exists(var_type.txt"))
+    { type = readLines("var_type.txt", warn = F) 
+     mode = as.character(type) } else {
+       mode = "logtpm" # ustaw defaultowy
+     }
+  }
+  
+  
   suppressMessages(library(plyr))
   suppressMessages(library(dplyr))
   suppressMessages(library(edgeR))

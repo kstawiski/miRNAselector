@@ -230,6 +230,7 @@ switch($_GET['type'])
 
         // Starting fs
         exec("cp /miRNAselector/miRNAselector/docker/recover_fs.R " . $target_dir . "recover_fs.R");
+        exec("cp /miRNAselector/miRNAselector/docker/best_signiture.Rmd " . $target_dir . "best_signiture.Rmd");
         exec("cd " . $target_dir . " && screen -dmS mirnaselector-". $analysis_id ." Rscript recover_fs.R");
         sleep(3); // Wait to start writing log.
 

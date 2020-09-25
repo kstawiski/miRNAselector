@@ -828,7 +828,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <tr>
     <td><label class="switch"><input type="checkbox" name="mxnet" value="TRUE"><span class="slider round"></span></label></td>
     <td><code>mxnet<code></td>
-    <td>MXNET-based deep neural networks up to 2 hidden layers, with multiple activation functions tested. Details: <a href="https://github.com/kstawiski/miRNAselector/blob/09cb16c077594b436c642754e4d86c0d65e5790c/R/ks.benchmark.R#L173" target="_blank">code</a>, <a href="https://mxnet.apache.org/" target="_blank">package</a>.
+    <td>MXNET-based deep neural networks up to 2 hidden layers, with multiple activation functions tested. Note that predefined grid search is used in hyperparameter optimization for this method (not random search). Details: <a href="https://github.com/kstawiski/miRNAselector/blob/09cb16c077594b436c642754e4d86c0d65e5790c/R/ks.benchmark.R#L173" target="_blank">code</a>, <a href="https://mxnet.apache.org/" target="_blank">package</a>.
     <br>
         <i>It uses early stopping, but what maximum number of epochs should be used? <input class="form-control" id="search_iters_mxnet" name="search_iters_mxnet" type="number" min="1" max="500000" value="2000" /></i>
 </td>
