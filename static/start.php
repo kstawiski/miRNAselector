@@ -127,10 +127,7 @@
                         <li>The pipeline will perform data spltting in ratio 60% (training set) : 20% (testing set) : 20% (validation set). If you wish to enforce your way of spltting, the submitted file should have the variable named <code>mix</code> with values <code>train</code>, <code>test</code> and <code>valid</code>.</li>
                     </ul>
                     </p>
-                    <p><b>See exemplary files:</b>
-                    <ul>
-                        <li>...</li>
-                    </ul>
+                    <p><a href="https://github.com/kstawiski/miRNAselector/blob/master/example/Elias2017.csv" target="_blank">See exemplary file: <code>Elias2017.csv</code></a>. This file originates from our paper <a href="https://elifesciences.org/articles/28932" target="_blank">Elias et al. 2017</a>.
                     </p>
                     <hr>
                     <p><b>Upload the file for the analysis:</b></p>
