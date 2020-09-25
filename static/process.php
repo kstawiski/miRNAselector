@@ -265,6 +265,7 @@ switch($_GET['type'])
 
         // Starting benchmark
         exec("cp /miRNAselector/miRNAselector/docker/benchmark.R " . $target_dir . "benchmark.R");
+        exec("cp /miRNAselector/miRNAselector/docker/best_signiture.Rmd " . $target_dir . "best_signiture.Rmd");
         exec("cd " . $target_dir . " && screen -dmS mirnaselector-". $analysis_id ." Rscript benchmark.R");
         sleep(3); // Wait to start writing log.
 
