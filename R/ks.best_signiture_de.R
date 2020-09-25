@@ -40,7 +40,7 @@ ks.best_signiture_de = function(selected_miRNAs, use_mix = F)
     wyniki = ks.miRNA_differential_expression(dplyr::select(mix,starts_with("hsa")), mix$Class) }
   #write.csv(wynikiw, "DE_wszystko.csv")
 
-  wyniki = wyniki %>% arrange(`p-value BH`)
+  wyniki = wyniki %>% arrange(`p-value`)
 
-  return(wyniki[match(selected_miRNAs, wyniki$miR),c("miR","log2FC","p-value BH")])
+  return(wyniki[match(selected_miRNAs, wyniki$miR),c("miR","log2FC","p-value","p-value BH")])
 }
