@@ -43,14 +43,18 @@ function konsta_readcsv($filename, $header=false) {
         // foreach ($csvcontents as $headercolumn) {
         //     echo "<th>$headercolumn</th>";
         // }
-        echo '<th>Name</th><th>Features</th><th>Count</th>';
+        echo '<th>Name</th><th></th><th>Features</th><th>Count</th>';
         echo '</tr>';
     }
     // displaying contents
     while ($csvcontents = fgetcsv($handle)) {
         echo '<tr>';
+        $i = 1;
         foreach ($csvcontents as $column) {
+            if($i == 1) {
             echo "<td><code>$column</code></td>";
+            echo '<td><a href="/process.php?type=select_in_dataset&id=' . $_GET['id'] . '&method=' . $column .'"  class="btn btn-warning" ><i class="fas fa-download"></i></a></td>';
+            } else { echo "<td><code>$column</code></td>"; }
         }
         echo '</tr>';
     }
@@ -838,16 +842,6 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
     <td><code>xgbTree<code></td>
     <td>eXtreme gradient boosting. (note: this is a time-consuming method). Details: <a href="https://github.com/topepo/caret/blob/master/models/files/xgbTree.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/xgboost" target="_blank">package</a>.</td>
 </tr>
-<tr>
-    <td><label class="switch"><input type="checkbox" name="method[]" value="mlpKerasDropoutCost"><span class="slider round"></span></label></td>
-    <td><code>mlpKerasDropoutCost<code></td>
-    <td>Keras-based (tensorflow) neural networks with 1 hidden layer and dropout. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/mlpKerasDropoutCost.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/keras" target="_blank">package</a>.</td>
-</tr>
-<tr>
-    <td><label class="switch"><input type="checkbox" name="method[]" value="mlpKerasDecayCost"><span class="slider round"></span></label></td>
-    <td><code>mlpKerasDecayCost<code></td>
-    <td>Keras-based (tensorflow) neural networks with 1 hidden layer and with weight decay. Details: <a href="https://github.com/topepo/caret/blob/master/models/files/mlpKerasDecayCost.R" target="_blank">code</a>, <a href="https://www.rdocumentation.org/packages/keras" target="_blank">package</a>.</td>
-</tr>
 
 <tr>
     <td>Options:</td>
@@ -894,17 +888,9 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
             <div class="panel-heading"><i class="fas fa-award"></i>&emsp;&emsp;Best signature</div>
             <div class="panel-body">
                 <?php echo file_get_contents($target_dir . "best_signiture.html"); ?>
-                <hr>
                 <table class="table">
                 <tr><td>Customize this automatic analysis:</td><td><a href="/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd" class="btn btn-danger" role="button" target="popup"
                         onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=600,height=600'); return false;"><i class="fas fa-play"></i> Run</a></td></tr>
-                <tr><td>Download the dataset with selected features:</td><td><form action="process.php?type=select_in_dataset&id=<?php echo $_GET['id']; ?>" method="get">
-                <select class="form-control" id="method" name="method">
-                        <option value="TRUE" selected>Holdout-validation (on test set)</option>
-                        <option value="FALSE">10-fold cross-validation repeated 5 times</option>
-                </select>  
-                <button type="submit" class="btn btn-primary" value="Upload" name="submit" onclick="waitingDialog.show('Preparing the file...');">
-                </form></td></tr>
                 </table>
 
             </div>

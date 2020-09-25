@@ -280,7 +280,7 @@ switch($_GET['type'])
         
         // Add vars
         $method = $_GET['method'];
-        $filename = $target_dir . md5(uniqid(rand(), true)) . ".csv";
+        $filename = $target_dir . $method . ".csv";
 
         $skrypt = 'library(miRNAselector); miRNAs = ks.get_miRNAs_from_benchmark(benchmark_csv = "benchmark.csv", method = "' . $method . '"); library(dplyr); library(data.table); dane = fread("mixed.csv"); dane2 = dplyr::select(dane, -starts_with("hsa"), miRNAs); fwrite(dane2, "'. $filename .'");';
         exec("cd " . $target_dir . " && Rscript -e '" . $skrypt . "'");
