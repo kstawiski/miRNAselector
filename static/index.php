@@ -118,8 +118,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
             </p>
             <p><br></p>
         </div>
-        <p>Welcome to <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS (miRNA-seq, RNA-seq) and
-            qPCR data.</p>
+        
         <div class="panel-group">
             <?php if ($_GET["msg"] != "") { ?>
             <div class="panel panel-danger">
@@ -129,7 +128,11 @@ if($pid != "") { header("Location: /inprogress.php"); }
             <?php } ?>
             <div class="panel panel-default">
                 <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Welcome to miRNAselector</div>
-                <div class="panel-body">This is a very cool welcome message we will write later.</div>
+                <div class="panel-body"><p>Welcome to <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS (miRNA-seq, RNA-seq) and
+            qPCR data.</p>
+              
+        <p>Your current version of software: <code>miRNAselector v1.0.<?php echo $version; ?></code></p>
+        </div>
             </div>
             <div class="panel panel-primary">
                 <div class="panel-heading"><i class="fas fa-chart-pie"></i>&emsp;&emsp;Analysis</div>
@@ -236,12 +239,13 @@ if($pid != "") { header("Location: /inprogress.php"); }
     <hr />
     <footer class="footer">
         <div class="container">
-            <span class="text-muted">miRNAselector v1.0.<?php echo $version; ?>&emsp;&emsp;&emsp;&emsp;<i
+        
+            <span class="text-muted">miRNAselector by Konrad Stawiski and Marcin Kaszkowiak&emsp;&emsp;&emsp;&emsp;<i
                     class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i
                     class="fas fa-globe-europe"></i>
                 <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i
-                    class="fab fa-github"></i> <a href="https://github.com/kstawiski/miRNAselector"
-                    target="_blank">https://github.com/kstawiski/miRNAselector</a></span>
+                    class="fab fa-github"></i> <a href="https://kstawiski.github.io/miRNAselector/"
+                    target="_blank">https://kstawiski.github.io/miRNAselector/</a></span>
                     <p>&emsp;</p>
         </div>
     </footer>

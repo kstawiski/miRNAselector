@@ -226,8 +226,8 @@ else {
                     class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i
                     class="fas fa-globe-europe"></i>
                 <a href="https://biostat.umed.pl" taret="_blank">https://biostat.umed.pl</a>&emsp;&emsp;&emsp;<i
-                    class="fab fa-github"></i> <a href="https://github.com/kstawiski/miRNAselector"
-                    target="_blank">https://github.com/kstawiski/miRNAselector</a></span>
+                    class="fab fa-github"></i> <a href="https://kstawiski.github.io/miRNAselector/"
+                    target="_blank">https://kstawiski.github.io/miRNAselector/</a></span>
                     <p>&emsp;</p>
         </div>
     </footer>
