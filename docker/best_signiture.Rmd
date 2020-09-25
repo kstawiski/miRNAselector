@@ -274,11 +274,11 @@ ks.vulcano_plot(selected_miRNAs = de$miR, DE = de, only_label = selected_miRNAs)
 ```
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-ks.heatmap(x = dplyr::select(mixed, gsub("\\.", "-", selected_miRNAs)), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix), zscore = F, margins = c(10,
+ks.heatmap(x = dplyr::select(mixed, selected_miRNAs), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix), zscore = F, margins = c(10,
     10), expression_name = "value")
 ```
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-ks.heatmap(x = dplyr::select(mixed, gsub("\\.", "-", selected_miRNAs)), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix), zscore = T, margins = c(10,
+ks.heatmap(x = dplyr::select(mixed, selected_miRNAs), rlab = data.frame(Class = mixed$Class, Mix = mixed$mix), zscore = T, margins = c(10,
     10), expression_name = "value")
 ```
