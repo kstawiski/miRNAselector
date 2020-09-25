@@ -54,6 +54,7 @@ function konsta_readcsv($filename, $header=false) {
             if($i == 1) {
             echo "<td><code>$column</code></td>";
             echo '<td><a href="/process.php?type=select_in_dataset&id=' . $_GET['id'] . '&method=' . $column .'"  class="btn btn-warning" ><i class="fas fa-download"></i></a></td>';
+            $i = $i + 1;
             } else { echo "<td><code>$column</code></td>"; }
         }
         echo '</tr>';
@@ -285,8 +286,7 @@ input:checked + .slider:before {
                     </p>
                     <p><a href="viewer.php?f=<?php echo $_GET['id']; ?>/data_start.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('viewer.php?f=<?php echo $_GET['id']; ?>/data_start.csv','popup','width=600,height=600'); return false;">View
-                        data</a></p>
-<p><font size="1">Notes: <i>The viewer is limited to 100 columns and 1000 rows.</i></font></p></div>
+                        data</a></p></div>
             </div>
 
             <div class="panel panel-primary">
@@ -745,7 +745,7 @@ foreach($images as $image) {
             <div class="panel-heading"><i class="fas fa-microscope"></i>&emsp;&emsp;Feature selection</div>
             <div class="panel-body">
               <p><h3>Final set of feature sets selected for further evaluation:</h3>
-              <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a></font><br></p>
+              <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a> Using the download button you can download filtered set.</font><br></p>
                 <p><?php konsta_readcsv_formulas($target_dir . "featureselection_formulas_final.csv"); ?></p>
                 <p><h4>Details:</h4>
                   
@@ -902,6 +902,19 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
     
 <?php } ?>
 <?php } ?>
+
+            <div class="panel panel-warning">
+                <div class="panel-heading"><i class="fas fa-puzzle-piece"></i>&emsp;&emsp;Post-analysis extensions</div>
+                <div class="panel-body">Coming soon...</div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fas fa-bars"></i>&emsp;&emsp;Additional tools</div>
+                <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
+                        data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalYT2"><i class="fas fa-terminal"></i>&emsp;Shell</button>&emsp;
+                        <a href="monitor/" target="_blank" role="button" class="btn btn-info"><i class="fas fa-server"></i>&emsp;Hardware</a>&emsp;<a href="e/tree/<?php echo $_GET['id']; ?>" target="_blank" role="button" class="btn btn-primary"><i class="fas fa-lock-open"></i>&emsp;Advanced features</a>
+                    </div>
+            </div>
 
     <!--Modal: Name-->
     <hr />

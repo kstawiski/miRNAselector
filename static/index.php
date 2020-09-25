@@ -153,7 +153,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
 
 
             <div class="panel panel-warning">
-                <div class="panel-heading"><i class="fas fa-puzzle-piece"></i>&emsp;&emsp;Extensions</div>
+                <div class="panel-heading"><i class="fas fa-puzzle-piece"></i>&emsp;&emsp;Preprocessing extensions</div>
                 <div class="panel-body">Coming soon...</div>
             </div>
 
