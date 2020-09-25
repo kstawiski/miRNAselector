@@ -18,6 +18,14 @@ server {
             proxy_set_header Origin "";
         }
 
+  location ^~ /e/tree/ {
+        return 403;
+  }
+
+  location ^~ /e/tree/\\?.* {
+        return 403;
+  }
+
 	location / {
 		root /miRNAselector/miRNAselector/static/;
 		index index.php;
