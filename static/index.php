@@ -46,7 +46,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
     $(".btn-success").click(function (event) {
         waitingDialog.show('Processing.. Please wait...');
             });
-    
+
     var waitingDialog = waitingDialog || (function ($) { 'use strict';
 
 	// Creating modal dialog's DOM
@@ -111,6 +111,34 @@ if($pid != "") { header("Location: /inprogress.php"); }
 </head>
 
 <body>
+        <div id="preloader">
+        <div class="p">LOADING</div>
+        </div>
+
+        <script>
+
+        paceOptions = {
+        ajax: true,
+        document: true,
+        eventLag: false
+        };
+
+        Pace.on('done', function() {
+        $('.p').delay(500).animate({top: '30%', opacity: '0'}, 3000, $.bez([0.19,1,0.22,1]));
+
+
+        $('#preloader').delay(1500).animate({top: '-100%'}, 2000, $.bez([0.19,1,0.22,1]));
+
+        TweenMax.from(".title", 2, {
+             delay: 1.8,
+                  y: 10,
+                  opacity: 0,
+                  ease: Expo.easeInOut
+            })
+       });
+
+      </script>
+
     <div class="container">
         <div class="starter-template">
             <p>
@@ -118,7 +146,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
             </p>
             <p><br></p>
         </div>
-        
+
         <div class="panel-group">
             <?php if ($_GET["msg"] != "") { ?>
             <div class="panel panel-danger">
@@ -130,7 +158,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Welcome to miRNAselector</div>
                 <div class="panel-body"><p>Welcome to <b>miRNAselector</b> - the software intended to find the best biomarker signiture based on NGS (miRNA-seq, RNA-seq) and
             qPCR data.</p>
-              
+
         <p>Your current version of software: <code>miRNAselector v1.0.<?php echo $version; ?></code></p>
         </div>
             </div>
@@ -140,7 +168,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <p>You can start new analysis or resume your previous one.</p>
                 <table class="table">
                     <tr><td>
-                    <h4>Start new analysis:</h4>    
+                    <h4>Start new analysis:</h4>
                     <p><a href="/start.php" role="button" class="btn btn-primary"><i class="fas fa-plus"></i>&emsp;New analysis</a></p>
                     </td>
                     <td>
@@ -167,7 +195,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
                         data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalYT2"><i class="fas fa-terminal"></i>&emsp;Shell</button>&emsp;
                         <a href="monitor/" target="_blank" role="button" class="btn btn-info"><i class="fas fa-server"></i>&emsp;Hardware</a>&emsp;<a href="process.php?type=init_update" role="button" onclick="waitingDialog.show('Starting update...');" class="btn btn-primary"><i class="fas fa-arrow-up"></i></i>&emsp;Update</a>
-                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a>
+                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary" target="_blank"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a>
                     </div>
             </div>
 
@@ -239,7 +267,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
     <hr />
     <footer class="footer">
         <div class="container">
-        
+
             <span class="text-muted">miRNAselector by Konrad Stawiski and Marcin Kaszkowiak&emsp;&emsp;&emsp;&emsp;<i
                     class="fas fa-envelope"></i> konrad@konsta.com.pl&emsp;&emsp;&emsp;<i
                     class="fas fa-globe-europe"></i>

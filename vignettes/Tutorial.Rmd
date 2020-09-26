@@ -30,9 +30,6 @@ options(knitr.table.format = "html")
 library(miRNAselector)
 ```
 
-# Introduction
-
-...
 
 # Setup script
 

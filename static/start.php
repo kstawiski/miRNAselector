@@ -33,7 +33,7 @@
     $(".btn-success").click(function (event) {
         waitingDialog.show('Processing.. Please wait...');
             });
-    
+
     var waitingDialog = waitingDialog || (function ($) { 'use strict';
 
 	// Creating modal dialog's DOM
@@ -114,7 +114,7 @@
                 <div class="panel-body"><b><?php echo htmlentities($_GET['msg']); ?></b></div>
             </div>
             <?php } ?>
-            
+
             <div class="panel panel-success">
                 <div class="panel-heading"><i class="fas fa-cloud-upload-alt"></i>&emsp;&emsp;Start new analysis!</div>
                 <div class="panel-body">
@@ -138,20 +138,20 @@
                             <option value="deltact">Crude values (e.g. deltaCt values from qPCR analysis)</option>
                         </select>
                         </p>
-                        
+
                         <p>Select <code>.csv</code> (comma-seperated values) or <code>.xlsx</code> (Microsoft Excel file) file to start the analysis:</p>
                         <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload"><br />
 
                         <button type="submit" class="btn btn-success" value="Upload" name="submit" onclick="waitingDialog.show('Uploading and performing initial check...');">
                         <i class="fas fa-upload"></i>&emsp;Upload
-                        </button>
+                        </button>&emsp;<a href="/" onclick="waitingDialog.show('Going back...');" class="btn btn-success"><i class="fas fa-sign-out-alt"></i>&emsp;Exit</a>
                     </form>
 
                 </div>
             </div>
 
     </div>
-    
+
     <hr />
     <footer class="footer">
         <div class="container">

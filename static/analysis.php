@@ -164,7 +164,7 @@ input:checked + .slider:before {
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
- 
+
   /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
@@ -190,7 +190,7 @@ input:checked + .slider:before {
     $(".btn-success").click(function (event) {
         waitingDialog.show('Processing.. Please wait...');
             });
-    
+
     var waitingDialog = waitingDialog || (function ($) { 'use strict';
 
 	// Creating modal dialog's DOM
@@ -269,12 +269,12 @@ input:checked + .slider:before {
                 <div class="panel-body"><b><?php echo htmlentities($_GET['msg']); ?></b></div>
             </div>
             <?php } ?>
-            
+
             <div class="panel panel-primary">
                 <div class="panel-heading"><i class="fas fa-info"></i>&emsp;&emsp;Analysis</div>
                 <div class="panel-body"><p>Analysis ID: <code><b><?php echo $_GET['id']; ?></b></code></p><p><font size="1">Please save this analysis id for any further reference. If you loose it, you will not be able to resume your analysis.</font></p></div>
             </div>
-            
+
             <div class="panel panel-info">
                 <div class="panel-heading"><i class="fas fa-table"></i>&emsp;&emsp;Data</div>
                 <div class="panel-body">
@@ -748,7 +748,7 @@ foreach($images as $image) {
               <br /><font size="1">Notes: This table presents final formulas. <a href="https://kstawiski.github.io/miRNAselector/reference/ks.merge_formulas.html" target="_blank">The formulas with features more than the prefered number of features of features were trimmed (according to documentation).</a> Using the download button you can download filtered set.</font><br></p>
                 <p><?php konsta_readcsv_formulas($target_dir . "featureselection_formulas_final.csv"); ?></p>
                 <p><h4>Details:</h4>
-                  
+
                   <table class="table">
                   <tr><td>All formulas selected by the methods:</td><td><a href="viewer.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('viewer.php?f=<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv','popup','width=1150,height=800'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/featureselection_formulas_all.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a></td></tr>
@@ -761,13 +761,13 @@ foreach($images as $image) {
 
 
                   </td></tr>
-                      
+
                   </table>
                 </p>
 
             </div>
 </div>
-<?php 
+<?php
 // Po selekcji zmiennych, przygotowanie benchmarku.
 if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <div class="panel panel-primary">
@@ -777,7 +777,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <table class="table">
 <form action="process.php?type=new_benchmark" method="post">
 <input type="hidden" id="analysisid" name="analysisid" value="<?php echo $_GET['id']; ?>">
-<thead><th>Select</th><th>ID</th><th>Description</th></td></thead>
+<thead><tr><th>Select</th><th>ID</th><th>Description</th></tr></thead>
 <tbody>
 <tr>
     <td><font size="1">Always enabled.</font></td>
@@ -832,7 +832,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 <tr>
     <td><label class="switch"><input type="checkbox" name="mxnet" value="TRUE"><span class="slider round"></span></label></td>
     <td><code>mxnet<code></td>
-    <td>MXNET-based deep neural networks up to 2 hidden layers, with multiple activation functions tested. Note that predefined grid search is used in hyperparameter optimization for this method (not random search). Details: <a href="https://github.com/kstawiski/miRNAselector/blob/09cb16c077594b436c642754e4d86c0d65e5790c/R/ks.benchmark.R#L173" target="_blank">code</a>, <a href="https://mxnet.apache.org/" target="_blank">package</a>.
+    <td>MXNET-based deep neural networks up to 2 hidden layers, with multiple activation functions tested. Note that predefined grid search is used in hyperparameter optimization for this method (not random search). Details: <a href="https://github.com/kstawiski/miRNAselector/blob/master/R/ks.benchmark.R#L173" target="_blank">code</a>, <a href="https://mxnet.apache.org/" target="_blank">package</a>.
     <br>
         <i>It uses early stopping, but what maximum number of epochs should be used? <input class="form-control" id="search_iters_mxnet" name="search_iters_mxnet" type="number" min="1" max="500000" value="2000" /></i>
 </td>
@@ -864,10 +864,10 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
     <select class="form-control" id="holdout" name="holdout">
         <option value="TRUE" selected>Holdout-validation (on test set)</option>
         <option value="FALSE">10-fold cross-validation repeated 5 times</option>
-    </select>  
+    </select>
     </div>
   </div>
-  
+
     </td>
 </tr>
 </tbody>
@@ -881,20 +881,20 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 </div>
 
 
-<?php 
+<?php
 // Analiza gdy benchmark zrobiony.
 } else { ?>
     <div class="panel panel-success">
             <div class="panel-heading"><i class="fas fa-award"></i>&emsp;&emsp;Best signature</div>
             <div class="panel-body">
-               
+
                 <?php echo file_get_contents($target_dir . "best_signiture.html"); ?>
                 <table class="table">
                 <tr><td>Benchmark results:</td><td><p><a href="viewer.php?f=<?php echo $_GET['id']; ?>/benchmark.csv" class="btn btn-info" role="button" target="popup"
                         onclick="window.open('viewer.php?f=<?php echo $_GET['id']; ?>/benchmark.csv','popup','width=1150,height=800'); return false;"><i class="fas fa-search-plus"></i> View</a>&emsp;<a href="/e/files/<?php echo $_GET['id']; ?>/benchmark.csv"  class="btn btn-warning" ><i class="fas fa-download"></i> Download</a>&emsp;<a href="/e/edit/<?php echo $_GET['id']; ?>/temp/benchmarkmirnaselector.log" class="btn btn-primary" role="button" target="popup"
                         onclick="window.open('/e/edit/<?php echo $_GET['id']; ?>/temp/benchmarkmirnaselector.log','popup','width=1150,height=800'); return false;"><i class="fas fa-history"></i> View log</a>&emsp;<a href="/e/tree/<?php echo $_GET['id']; ?>/models" class="btn btn-primary" role="button" target="popup"
                         onclick="window.open('/e/tree/<?php echo $_GET['id']; ?>/models','popup','width=1150,height=800'); return false;"><i class="fas fa-list"></i> Browse models</a></p></td></tr>
-                
+
                 <tr><td>Customize this automatic analysis:</td><td><p><a href="/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd" class="btn btn-danger" role="button" target="popup"
                         onclick="window.open('/e/notebooks/<?php echo $_GET['id']; ?>/best_signiture.Rmd','popup','width=1150,height=800'); return false;"><i class="fas fa-edit"></i> Edit & run</a>&emsp;<a href="process.php?type=best_signiture_render&id=<?php echo $_GET['id']; ?>" class="btn btn-primary" role="button" onclick="waitingDialog.show('Rendering again.. this may take a while...');"><i class="fas fa-redo"></i> Refresh best signiture analysis</a></p>
                         <p><a href="process.php?type=delete_benchmark&analysisid=<?php echo $_GET['id']; ?>" class="btn btn-danger" role="button" onclick="return confirm('Are you sure? This will delete all the data regarding your benchmarking.')"><i class="fas fa-trash"></i> Re-run benchmarking (delete previous, model files will be intact)</a></p></td></tr>
@@ -906,7 +906,7 @@ if(!file_exists($target_dir . "benchmark.csv"))  { ?>
 
 
 
-    
+
 <?php } ?>
 <?php } ?>
 
