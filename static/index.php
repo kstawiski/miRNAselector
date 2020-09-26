@@ -44,7 +44,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
     </script>
     <script type="text/javascript">
 
-    preload = document.querySelector('.preload');
+    var preload = document.querySelector('.preload');
 
 preload.classList.add('show-preloader');
 window.addEventListener('load', () => {
