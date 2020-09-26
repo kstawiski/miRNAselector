@@ -44,15 +44,6 @@ if($pid != "") { header("Location: /inprogress.php"); }
     </script>
     <script type="text/javascript">
 
-
-$(window).load(function() {
-    setTimeout(
-        function() {
-            preload.classList.remove('show-preloader');
-        }, 1000);
-});
-
-
     $(".btn-success").click(function (event) {
         waitingDialog.show('Processing.. Please wait...');
             });
@@ -262,13 +253,6 @@ $(window).load(function() {
     </footer>
     <!-- /.container -->
 
-    <div class="preload show-preloader">
-  <div class="circles-group">
- 	<div class="circle"></div>
- 	<div class="circle"></div>
- 	<div class="circle"></div>
- 	<div class="circle"></div>
-  </div>
 </div>
 </body>
 
