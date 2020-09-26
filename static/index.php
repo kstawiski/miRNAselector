@@ -43,6 +43,16 @@ if($pid != "") { header("Location: /inprogress.php"); }
     gtag('config', 'UA-53584749-8');
     </script>
     <script type="text/javascript">
+
+    const preload = document.querySelector('.preload');
+
+preload.classList.add('show-preloader');
+window.addEventListener('load', () => {
+  	setTimeout(() => {
+    	preload.classList.remove('show-preloader');
+  	}, 2000);
+});
+
     $(".btn-success").click(function (event) {
         waitingDialog.show('Processing.. Please wait...');
             });
@@ -168,7 +178,7 @@ if($pid != "") { header("Location: /inprogress.php"); }
                 <div class="panel-body"><button type="button" class="btn btn-info" data-toggle="modal"
                         data-target="#modalYT"><i class="fas fa-tv"></i>&emsp;System monitor</button>&emsp;<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalYT2"><i class="fas fa-terminal"></i>&emsp;Shell</button>&emsp;
                         <a href="monitor/" target="_blank" role="button" class="btn btn-info"><i class="fas fa-server"></i>&emsp;Hardware</a>&emsp;<a href="process.php?type=init_update" role="button" onclick="waitingDialog.show('Starting update...');" class="btn btn-primary"><i class="fas fa-arrow-up"></i></i>&emsp;Update</a>
-                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" onclick="waitingDialog.show('Loading...');" class="btn btn-primary" target="_blank"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a>
+                    &emsp;<a href="e/notebooks/miRNAselector/vignettes/Tutorial.Rmd" role="button" class="btn btn-primary" target="_blank"><i class="fas fa-graduation-cap"></i>&emsp;Learn R package</a>
                     </div>
             </div>
 
@@ -251,6 +261,15 @@ if($pid != "") { header("Location: /inprogress.php"); }
         </div>
     </footer>
     <!-- /.container -->
+
+    <div class="preload">
+  <div class="circles-group">
+ 	<div class="circle"></div>
+ 	<div class="circle"></div>
+ 	<div class="circle"></div>
+ 	<div class="circle"></div>
+  </div>
+</div>
 </body>
 
 </html>
