@@ -31,6 +31,8 @@ if($pid != "") { header("Location: /inprogress.php"); }
     <meta name="description" content="miRNAselector - a tool for selecting great miRNA biomarkers." />
     <meta name="author" content="Konrad Stawiski (konrad@konsta.com.pl)" />
     <link rel="stylesheet" href="css/starter-template.css" />
+        <script src="https://cdn.jsdelivr.net/npm/jquery-bez@1.0.11/src/jquery.bez.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
     <script src="all.min.js"
         integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
