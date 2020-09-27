@@ -150,7 +150,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
   # Caret prep
   if (register_parallel) {
-    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting subcluster ready...")
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Getting cluster ready for parallel computations...")
     if(is.null(clx)) {
       suppressMessages(library(doParallel))
       cl <- makePSOCKcluster(useXDR = TRUE, detectCores() - 1)
@@ -1187,8 +1187,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
 
     dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
 
-    selectedMirsCV <- mk.iteratedRFE(trainSet = train_smoted, useCV = T, classLab = 'Class', checkNFeatures = prefer_no_features)$topFeaturesPerN[[prefer_no_features]]
-    selectedMirsTest <- mk.iteratedRFE(trainSet = train_smoted, testSet = test, classLab = 'Class', checkNFeatures = prefer_no_features)$topFeaturesPerN[[prefer_no_features]]
+    
 
     formulas[["iteratedRFECV_SMOTE"]] = ks.create_miRNA_formula(selectedMirsCV$topFeaturesPerN[[prefer_no_features]])
     formulas[["iteratedRFETest_SMOTE"]] = ks.create_miRNA_formula(selectedMirsTest$topFeaturesPerN[[prefer_no_features]])
@@ -1198,6 +1197,199 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
     saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
     if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
   }
+
+
+  # n = 57
+  # LASSO model with alpha = 1 (Least Absolute Shrinkage and Selection Operator - a type of regularization method that penalizes with L1-norm.). The function cv.glmnet() is used to search for a regularization parameter, namely Lambda, that controls the penalty strength
+  n = n + 1
+  if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting LASSO with and without SMOTE")
+    start_time <- Sys.time()
+
+    dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+
+    library("glmnet")
+    lasso_fit <- cv.glmnet(as.matrix(trainx), train$Class, family = "binomial", alpha = 1)
+    plot(lasso_fit)
+    coef <- predict(lasso_fit, s = "lambda.min", type = "nonzero")
+    result <- data.frame(GENE = names(as.matrix(coef(lasso_fit, s = "lambda.min"))
+                                [as.matrix(coef(lasso_fit, s = "lambda.min"))[,1]!=0, 1])[-1], 
+                   SCORE = as.numeric(as.matrix(coef(lasso_fit, s = "lambda.min"))
+                                      [as.matrix(coef(lasso_fit, 
+                                                      s = "lambda.min"))[,1]!=0, 1])[-1])
+    result <- result[order(-abs(result$SCORE)),]
+    formulas[["LASSO"]] = ks.create_miRNA_formula(as.character(result$GENE))
+    
+    lasso_fit <- cv.glmnet(as.matrix(trainx_smoted), train_smoted$Class, family = "binomial", alpha = 1)
+    plot(lasso_fit)
+    coef <- predict(lasso_fit, s = "lambda.min", type = "nonzero")
+    result <- data.frame(GENE = names(as.matrix(coef(lasso_fit, s = "lambda.min"))
+                                [as.matrix(coef(lasso_fit, s = "lambda.min"))[,1]!=0, 1])[-1], 
+                   SCORE = as.numeric(as.matrix(coef(lasso_fit, s = "lambda.min"))
+                                      [as.matrix(coef(lasso_fit, 
+                                                      s = "lambda.min"))[,1]!=0, 1])[-1])
+    result <- result[order(-abs(result$SCORE)),]
+    formulas[["LASSO_SMOTE"]] = ks.create_miRNA_formula(as.character(result$GENE))
+
+    end_time <- Sys.time()
+    saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS"))
+    saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
+    if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
+  }
+
+  # n = 58
+  # Elastic net with tuning the value of Alpha through a line search with the parallelism
+  n = n + 1
+  if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+    start_time <- Sys.time()
+
+    dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+
+    library(foreach)
+    library(glmnet)
+
+    a <- seq(0.1, 0.9, 0.05)
+    search <- foreach(i = a, .combine = rbind) %dopar% {
+        library(miRNAselector)
+        dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+        library(glmnet)
+        cv <- cv.glmnet(as.matrix(trainx), train$Class, family = "binomial", nfold = 10, parallel = TRUE, alpha = i)
+        data.frame(cvm = cv$cvm[cv$lambda == cv$lambda.1se], lambda.1se = cv$lambda.1se, alpha = i)
+    }
+    cv3 <- search[search$cvm == min(search$cvm), ]
+    md3 <- glmnet(as.matrix(trainx), train$Class, family = "binomial", lambda = cv3$lambda.1se, alpha = cv3$alpha)
+    result <- data.frame(GENE = names(as.matrix(coef(md3, s = "lambda.min"))
+                                      [as.matrix(coef(md3, s = "lambda.min"))[,1]!=0, 1])[-1], 
+                          SCORE = as.numeric(as.matrix(coef(md3, s = "lambda.min"))
+                                            [as.matrix(coef(md3, 
+                                                            s = "lambda.min"))[,1]!=0, 1])[-1])
+    result <- result[order(-abs(result$SCORE)),]
+    formulas[["ElasticNet"]] = ks.create_miRNA_formula(as.character(result$GENE))
+
+
+    # SMOTE:
+    a <- seq(0.1, 0.9, 0.05)
+    search <- foreach(i = a, .combine = rbind) %dopar% {
+        library(miRNAselector)
+        dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+        library(glmnet)
+        cv <- cv.glmnet(as.matrix(trainx_smoted), train_smoted$Class, family = "binomial", nfold = 10, parallel = TRUE, alpha = i)
+        data.frame(cvm = cv$cvm[cv$lambda == cv$lambda.1se], lambda.1se = cv$lambda.1se, alpha = i)
+    }
+    cv3 <- search[search$cvm == min(search$cvm), ]
+    md3 <- glmnet(as.matrix(trainx_smoted), train_smoted$Class, family = "binomial", lambda = cv3$lambda.1se, alpha = cv3$alpha)
+    result <- data.frame(GENE = names(as.matrix(coef(md3, s = "lambda.min"))
+                                      [as.matrix(coef(md3, s = "lambda.min"))[,1]!=0, 1])[-1], 
+                          SCORE = as.numeric(as.matrix(coef(md3, s = "lambda.min"))
+                                            [as.matrix(coef(md3, 
+                                                            s = "lambda.min"))[,1]!=0, 1])[-1])
+    result <- result[order(-abs(result$SCORE)),]
+    formulas[["ElasticNet_SMOTE"]] = ks.create_miRNA_formula(as.character(result$GENE))
+    
+    
+
+    end_time <- Sys.time()
+    saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS"))
+    saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
+    if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
+  }
+
+  # # n = 59
+  # # Ridge regression sorted
+  # n = n + 1
+  # if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
+  #   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+  #   start_time <- Sys.time()
+
+  #   dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+
+  #   library(glmnet)
+  #   fit <- cv.glmnet(as.matrix(trainx), train$Class, family = "binomial", alpha = 0)
+  #   formulas[["Ridge"]] = ks.create_miRNA_formula(as.character(names(sort(abs(coef(fit)[-1,]), decreasing = T)[1:prefer_no_features])))
+
+  #   fit <- cv.glmnet(as.matrix(trainx_smoted), train_smoted$Class, family = "binomial", alpha = 0)
+  #   formulas[["Ridge_SMOTE"]] = ks.create_miRNA_formula(as.character(names(sort(abs(coef(fit)[-1,]), decreasing = T)[1:prefer_no_features])))
+
+  #   end_time <- Sys.time()
+  #   saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS"))
+  #   saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
+  #   if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
+  # }
+
+  # n = 59
+  # Stepwise LDA
+  n = n + 1
+  if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+    start_time <- Sys.time()
+
+    dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+
+    tempdb = cbind(`Class` = train$Class, trainx)
+    library(caret)
+    slda <- train(Class ~ ., data = tempdb,
+              method = "stepLDA",
+              trControl = trainControl(method = "loocv"))
+    formulas[["stepLDA"]] = ks.create_miRNA_formula(predictors(slda))
+
+tempdb = cbind(`Class` = train_smoted$Class, trainx_smoted)
+    library(caret)
+    slda <- train(Class ~ ., data = tempdb,
+              method = "stepLDA",
+              trControl = trainControl(method = "loocv"))
+    formulas[["stepLDA_SMOTE"]] = ks.create_miRNA_formula(predictors(slda))
+
+    end_time <- Sys.time()
+    saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS"))
+    saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
+    if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
+  }
+
+
+  # n = 60
+  # feseR
+  n = n + 1
+  if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+    start_time <- Sys.time()
+
+    dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
+
+    library(feseR)
+    features <- as.matrix(scale(trainx, center=TRUE, scale=TRUE))
+    rownames(features) = 1:nrow(features)
+    cls <- as.numeric(train$Class)-1
+    try({ output <- filter.corr(features = features, class = cls, mincorr = 0.2); formulas[["feseR_filter.corr"]] = ks.create_miRNA_formula(colnames(output)); }, silent = T)
+    try({ output <- filter.gain.inf(features = features, class = cls, zero.gain.out = TRUE); formulas[["feseR_gain.inf"]] = ks.create_miRNA_formula(colnames(output)); }, silent = T)
+    try({ output <- filter.matrix.corr(features = features, maxcorr = 0.75); formulas[["feseR_matrix.corr"]] = ks.create_miRNA_formula(colnames(output)); }, silent = T)
+    try({ output <- combineFS(features = features, class = cls,
+                        univariate = 'corr', mincorr = 0.2,
+                        multivariate = 'mcorr', maxcorr = 0.75,
+                        wrapper = 'rfe.rf', number.cv = 10, 
+                        group.sizes = 1:prefer_no_features, 
+                        extfolds = 20); formulas[["feseR_combineFS_RF"]] = ks.create_miRNA_formula(output$opt.variables); }, silent = T)
+
+    features <- as.matrix(scale(trainx_smoted, center=TRUE, scale=TRUE))
+    rownames(features) = 1:nrow(features)
+    cls <- as.numeric(train_smoted$Class)-1
+    try({ output <- filter.corr(features = features, class = cls, mincorr = 0.2); formulas[["feseR_filter.corr_SMOTE"]] = ks.create_miRNA_formula(colnames(output)); }, silent = T)
+    try({ output <- filter.gain.inf(features = features, class = cls, zero.gain.out = TRUE); formulas[["feseR_gain.inf_SMOTE"]] = ks.create_miRNA_formula(colnames(output)); }, silent = T)
+    try({ output <- filter.matrix.corr(features = features, maxcorr = 0.75); formulas[["feseR_matrix.corr_SMOTE"]] = ks.create_miRNA_formula(colnames(output)); }, silent = T)
+    try({ output <- combineFS(features = features, class = cls,
+                        univariate = 'corr', mincorr = 0.2,
+                        multivariate = 'mcorr', maxcorr = 0.75,
+                        wrapper = 'rfe.rf', number.cv = 10, 
+                        group.sizes = 1:prefer_no_features, 
+                        extfolds = 20); formulas[["feseR_combineFS_RF_SMOTE"]] = ks.create_miRNA_formula(output$opt.variables); }, silent = T)
+
+
+    end_time <- Sys.time()
+    saveRDS(end_time - start_time, paste0("temp/time",n,"-",run_id,".RDS"))
+    saveRDS(formulas, paste0("temp/formulas",run_id,"-",n,".RDS"))
+    if(debug) { save(list = ls(), file = paste0("temp/all",n,"-",run_id,".rdata")); print(formulas) }
+  }
+
 
   # End
   ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Ending task. Selected: \n", formulas))
