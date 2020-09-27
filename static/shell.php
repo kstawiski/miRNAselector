@@ -1,4 +1,9 @@
 <?php
+if (strpos($_SERVER['REQUEST_URI'], 'public') !== false) {
+    die('Not allowed in public (demo) version.');
+}
+?>
+<?php
 
 function featureShell($cmd, $cwd) {
     $stdout = array();

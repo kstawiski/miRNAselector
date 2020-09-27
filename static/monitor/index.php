@@ -1,4 +1,9 @@
-<!doctype html>
+<?php
+if (strpos($_SERVER['REQUEST_URI'], 'public') !== false) {
+    die('Not allowed in public (demo) version.');
+}
+?>
+!doctype html>
 <html class="no-js">
     <head>
         <meta charset="utf-8">
