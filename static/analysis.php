@@ -699,25 +699,25 @@ foreach($images as $image) {
 </tr>
 
     <tr>
-<td><label class="switch"><input type="checkbox" name="method[]" value="57"><span class="slider round"></span></label></td>
+<td><label class="switch"><input type="checkbox" name="method[]" value="57" checked><span class="slider round"></span></label></td>
         <td>No: 57<br /><code>LASSO, LASSO_SMOTE</code></td>
         <td>Feature selection based on LASSO (Least Absolute Shrinkage and Selection Operator) model with alpha = 1  - penalizes with L1-norm; with 10-fold cross-validation. See the source <a href="https://www.rdocumentation.org/packages/glmnet/versions/4.0-2/topics/glmnet" target="_blank">here</a>. Performed on originial training set and after balancing the training set with SMOTE. </td>
     </tr>
 
     <tr>
-<td><label class="switch"><input type="checkbox" name="method[]" value="58"><span class="slider round"></span></label></td>
+<td><label class="switch"><input type="checkbox" name="method[]" value="58" checked><span class="slider round"></span></label></td>
         <td>No: 58<br /><code>ElasticNet, ElasticNet_SMOTE</code></td>
         <td>Feature selection based on elastic net with tuning the value of alpha through a line search. See the source <a href="https://www.rdocumentation.org/packages/glmnet/versions/4.0-2/topics/glmnet" target="_blank">here</a>. Performed on originial training set and after balancing the training set with SMOTE. </td>
     </tr>
 
     <tr>
-<td><label class="switch"><input type="checkbox" name="method[]" value="59"><span class="slider round"></span></label></td>
+<td><label class="switch"><input type="checkbox" name="method[]" value="59" checked><span class="slider round"></span></label></td>
         <td>No: 59<br /><code>stepLDA, stepLDA_SMOTE</code></td>
         <td>Forward/backward variable selection (both directions) for linear discriminant analysis. See the source <a href="https://www.rdocumentation.org/packages/klaR" target="_blank">here</a>. Performed on originial training set and after balancing the training set with SMOTE. </td>
     </tr>
 
     <tr>
-<td><label class="switch"><input type="checkbox" name="method[]" value="60"><span class="slider round"></span></label></td>
+<td><label class="switch"><input type="checkbox" name="method[]" value="60" checked><span class="slider round"></span></label></td>
         <td>No: 60<br /><code>feseR_filter.corr, feseR_gain.inf, feseR_matrix.corr, feseR_combineFS_RF, feseR_filter.corr_SMOTE, feseR_gain.inf_SMOTE, feseR_matrix.corr_SMOTE, feseR_combineFS_RF_SMOTE</code></td>
         <td>Set of feature selection methods embeded in feseR package published by Perez-Rivelor et al. All default parameters are used, but mincorr is set to 0.2. See the paper <a href="https://doi.org/10.1371/journal.pone.0189875" target="_blank">here</a>. Performed on originial training set and after balancing the training set with SMOTE. </td>
     </tr>
