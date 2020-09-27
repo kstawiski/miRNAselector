@@ -1299,7 +1299,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   # # Ridge regression sorted
   # n = n + 1
   # if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
-  #   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+  #   ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting Ridge")
   #   start_time <- Sys.time()
 
   #   dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
@@ -1321,7 +1321,7 @@ ks.miRNAselector = function(wd = getwd(), m = c(1:70),
   # Stepwise LDA
   n = n + 1
   if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
-    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting stepLDA")
     start_time <- Sys.time()
 
     dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
@@ -1351,7 +1351,7 @@ tempdb = cbind(`Class` = train_smoted$Class, trainx_smoted)
   # feseR
   n = n + 1
   if (n %in% m) { ks.log(logfile = "temp/featureselection.log",  message_to_log = paste0("Matched method ", n, " with those requested.. Starting.."));
-    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting ElasticNet with and without SMOTE")
+    ks.log(logfile = "temp/featureselection.log",  message_to_log = "Starting feseR")
     start_time <- Sys.time()
 
     dane = ks.load_datamix(replace_smote = F); train = dane[[1]]; test = dane[[2]]; valid = dane[[3]]; train_smoted = dane[[4]]; trainx = dane[[5]]; trainx_smoted = dane[[6]]
