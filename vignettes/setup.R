@@ -18,7 +18,7 @@ packages = c("remotes","devtools","parallel","rlang","ps","roxygen2", "plotly", 
                        "rpart", "party", "mgcv", "GDCRNATools", "rJava", "cutpointr", "HTqPCR", "nondetects",
                        "imputeMissings", "visdat", "naniar", "stringr", "R.utils", "TCGAbiolinks", "GDCRNATools",
                        "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
-                       "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis","funModeling", "mnormt","xlsx")
+                       "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis","funModeling", "mnormt","xlsx","klaR")
 
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
@@ -30,6 +30,7 @@ if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_gi
 if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
 if("mnormt" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("cran/mnormt") }
 if("purrrogress" %in% rownames(installed.packages()) == FALSE) {  remotes::install_github("halpo/purrrogress") } 
+if("feseR" %in% rownames(installed.packages()) == FALSE) { install_github("enriquea/feseR") }
 
 
 # tryCatch(

@@ -170,14 +170,14 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
 
       # wyniki2 = tryCatch({
       if(algorytm == "mxnet") {
-        hyperparameters = expand.grid(layer1 = seq(2,14,1), layer2 = c(0,2,4), layer3 = c(0), activation = c('relu', 'sigmoid', 'tanh', 'softrelu'),
+        hyperparameters = expand.grid(layer1 = unique(ceiling(seq(2, ncol(trainx)/2, length.out = 10))), layer2 = unique(ceiling(seq(0, ncol(trainx)/4, length.out = 5))), layer3 =unique(ceiling(seq(0, ncol(trainx)/8, length.out = 5))), activation = c('relu', 'sigmoid'),
                                       dropout = c(0,0.05),learning.rate= c(0.00001, 0.01), momentum = c(0, 0.8, 0.99))
         train_control <- trainControl(method="cv", repeats=5, number = 10, classProbs = TRUE,verboseIter = TRUE, summaryFunction = twoClassSummary, savePredictions = TRUE)
         if(holdout == T) { train_control <- trainControl(method="cv", index= fit_on, indexOut = pred_on, indexFinal = fit_on[[1]], verboseIter = TRUE,
                                                          classProbs = TRUE, summaryFunction = twoClassSummary, savePredictions = TRUE) }
         model1 = caret::train(as.formula(formulas[[i]]), ctx = mxctx, optimizer = 'sgd',
                               #optimizer_params=(('learning_rate',0.1),('lr_scheduler',lr_sch)),
-                              #preProc = c("center", "scale"),
+                              preProc = c("center", "scale"),
                               #epoch.end.callback = mx.callback.early.stop(5,10,NULL, maximize=TRUE, verbose=TRUE),
                               #eval.data = list(data=dplyr::select(test, starts_with("hsa")),label=dplyr::select(test, Class)),
                               epoch.end.callback=mx.callback.early.stop(30, 30),
@@ -185,14 +185,14 @@ ks.benchmark = function(wd = getwd(), search_iters = 2000, keras_epochs = 5000, 
                               num.round = search_iters_mxnet, data=temptrain, trControl=train_control, method=algorytm, tuneGrid = hyperparameters)
         print(model1$finalModel)
       } else if(algorytm == "mxnetAdam") {
-        hyperparameters = expand.grid(layer1 = seq(2,14,1), layer2 = c(0,2,4), layer3 = c(0), activation = c('relu', 'sigmoid', 'tanh', 'softrelu'),
-                                      dropout = c(0,0.05), beta1=0.9, beta2=0.999, learningrate= c(0.00001, 0.001, 0.01))
+        hyperparameters = expand.grid(layer1 = unique(ceiling(seq(2, ncol(trainx)/2, length.out = 10))), layer2 = unique(ceiling(seq(0, ncol(trainx)/4, length.out = 5))), layer3 =unique(ceiling(seq(0, ncol(trainx)/8, length.out = 5))), activation = c('relu', 'sigmoid'),
+                                      dropout = c(0,0.05), beta1=0.9, beta2=0.999, learningrate= c(0.001))
         train_control <- trainControl(method="cv", repeats=5, number = 10, classProbs = TRUE,verboseIter = TRUE, summaryFunction = twoClassSummary, savePredictions = TRUE)
         if(holdout == T) { train_control <- trainControl(method="cv", index= fit_on, indexOut = pred_on, indexFinal = fit_on[[1]], verboseIter = TRUE,
                                                          classProbs = TRUE, summaryFunction = twoClassSummary, savePredictions = TRUE) }
         model1 = caret::train(as.formula(formulas[[i]]), ctx = mxctx,
                               #optimizer_params=(('learning_rate',0.1),('lr_scheduler',lr_sch)),
-                              #preProc = c("center", "scale"),
+                              preProc = c("center", "scale"),
                               #epoch.end.callback = mx.callback.early.stop(5,10,NULL, maximize=TRUE, verbose=TRUE),
                               #eval.data = list(data=dplyr::select(test, starts_with("hsa")),label=dplyr::select(test, Class)),
                               epoch.end.callback=mx.callback.early.stop(30, 30),

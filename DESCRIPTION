@@ -91,7 +91,8 @@ Imports:
     rpart,
     sva,
     devtools,
-    nnet
+    nnet,
+    klaR
 RoxygenNote: 7.1.1
 Authors@R: c(
     person("Konrad", "Stawiski", , "konrad@konsta.com.pl", role = c("aut", "cre"),

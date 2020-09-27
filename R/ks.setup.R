@@ -26,16 +26,20 @@ ks.setup = function(keras = TRUE, msg = TRUE) {
                         "rpart", "party", "mgcv", "GDCRNATools", "rJava",
                         "imputeMissings", "visdat", "naniar", "stringr", "R.utils", "TCGAbiolinks", "GDCRNATools",
                         "kableExtra", "VIM", "mice", "MatchIt", "XML", "rmarkdown", "xtable", "ComplexHeatmap","circlize",
-                        "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis")
+                        "BiocStyle","magick", "BiocCheck","cluster","tidyselect","ellipsis","klaR")
 
     if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     BiocManager::install(setdiff(packages, rownames(installed.packages())), ask = F)  }
 
     suppressMessages(library(devtools))
     suppressMessages(library(remotes))
-    # Paczki z githuba
-    if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
-    if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
+
+# Paczki z githuba
+if("bounceR" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("STATWORX/bounceR") }
+if("ggbiplot" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("vqv/ggbiplot") }
+if("mnormt" %in% rownames(installed.packages()) == FALSE) { remotes::install_github("cran/mnormt") }
+if("purrrogress" %in% rownames(installed.packages()) == FALSE) {  remotes::install_github("halpo/purrrogress") } 
+if("feseR" %in% rownames(installed.packages()) == FALSE) { install_github("enriquea/feseR") }
 
     if(keras == TRUE) {
 
